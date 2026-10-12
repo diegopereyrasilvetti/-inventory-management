@@ -204,4 +204,9 @@
     });
 
     render();
+
+    /* Lista actual del catálogo, para que otras secciones (Ventas) tomen nombre y precio */
+    window.obtenerCatalogo = function () {
+        return productos.map(function (p) { return Object.assign({}, p); });
+    };
 })();
