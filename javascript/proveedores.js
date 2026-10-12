@@ -1,9 +1,9 @@
 (function () {
     const CLAVE = 'gestion-stock-proveedores';
     const EJEMPLOS = [
-        { id: 1, nombre: 'Distribuidora Tech', rubro: 'Tecnología', contacto: 'Carlos Gómez', telefono: '+54 11 5555-0101', email: 'ventas@distribuidoratech.example', activo: true },
+        { id: 1, nombre: 'Distribuidora Central', rubro: 'Mercadería general', contacto: 'Carlos Gómez', telefono: '+54 11 5555-0101', email: 'ventas@distribuidoracentral.example', activo: true },
         { id: 2, nombre: 'Insumos del Sur', rubro: 'Insumos', contacto: 'María López', telefono: '+54 11 5555-0102', email: '', activo: true },
-        { id: 3, nombre: 'Mayorista Central', rubro: 'General', contacto: 'Juan Pérez', telefono: '+54 11 5555-0103', email: '', activo: false }
+        { id: 3, nombre: 'Importadora Norte', rubro: 'Importación', contacto: 'Juan Pérez', telefono: '+54 11 5555-0103', email: '', activo: false }
     ];
 
     const lista = document.getElementById('prv-lista');

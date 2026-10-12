@@ -12,9 +12,9 @@
     ];
     const MONEDA = new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'ARS' });
     const EJEMPLOS = [
-        { id: 1, nombre: 'Memoria RAM 16 GB', sku: 'RAM-001', categoria: 'Memorias', marca: 'Kingston', modelo: 'Fury Beast DDR4', color: 'Negro', serial: 'KF-2024-0001', proveedor: 'Distribuidora Tech', precio: 45000 },
-        { id: 2, nombre: 'SSD 500 GB', sku: 'SSD-002', categoria: 'Almacenamiento', marca: 'Samsung', modelo: '870 EVO', color: 'Negro', serial: 'SM-2024-0002', proveedor: 'Distribuidora Tech', precio: 68000 },
-        { id: 3, nombre: 'Teclado mecánico', sku: 'TEC-003', categoria: 'Periféricos', marca: 'Redragon', modelo: 'Kumara K552', color: 'Negro y rojo', serial: 'RD-2024-0003', proveedor: 'Mayorista Norte', precio: 32000 }
+        { id: 1, nombre: 'Camiseta básica', sku: 'CAM-001', categoria: 'Indumentaria', marca: 'Marca Uno', modelo: 'Clásica', color: 'Blanco', serial: 'MU-2024-0001', proveedor: 'Distribuidora Central', precio: 45000 },
+        { id: 2, nombre: 'Taza de cerámica', sku: 'TAZ-002', categoria: 'Hogar', marca: 'Marca Dos', modelo: 'Línea 350 ml', color: 'Azul', serial: 'MD-2024-0002', proveedor: 'Insumos del Sur', precio: 68000 },
+        { id: 3, nombre: 'Cuaderno A5', sku: 'CUA-003', categoria: 'Papelería', marca: 'Marca Tres', modelo: 'Tapa dura', color: 'Negro', serial: 'MT-2024-0003', proveedor: 'Importadora Norte', precio: 32000 }
     ];
 
     const body = document.getElementById('prod-body');

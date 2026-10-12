@@ -32,9 +32,9 @@ document.addEventListener('keydown', function (e) {
 
 const CLAVE_STORAGE = 'gestion-stock-productos';
 const PRODUCTOS_INICIALES = [
-    { id: 1, nombre: 'Memoria RAM 16 GB', codigo: 'RAM-001', stock: 24, minimo: 10 },
-    { id: 2, nombre: 'SSD 500 GB', codigo: 'SSD-002', stock: 8, minimo: 10 },
-    { id: 3, nombre: 'Teclado mecánico', codigo: 'TEC-003', stock: 0, minimo: 5 }
+    { id: 1, nombre: 'Camiseta básica', codigo: 'CAM-001', stock: 24, minimo: 10 },
+    { id: 2, nombre: 'Taza de cerámica', codigo: 'TAZ-002', stock: 8, minimo: 10 },
+    { id: 3, nombre: 'Cuaderno A5', codigo: 'CUA-003', stock: 0, minimo: 5 }
 ];
 
 const ESTADOS = {
