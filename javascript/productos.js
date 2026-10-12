@@ -62,7 +62,7 @@
     }
 
     function crearFila(p) {
-        const tr = el('tr', 'grid grid-cols-[1fr_auto] items-center gap-x-3 gap-y-1.5 border-b border-(--borde) py-4 last:border-0 hover:bg-(--fondo)/60 xl:table-row xl:py-0');
+        const tr = el('tr', 'grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-3 gap-y-1.5 border-b border-(--borde) py-4 last:border-0 hover:bg-(--fondo)/60 xl:table-row xl:py-0');
 
         tr.appendChild(el('td', 'col-start-1 row-start-1 font-semibold text-(--texto) xl:py-3.5 xl:pr-4 xl:font-medium', p.nombre));
         tr.appendChild(el('td', 'col-span-2 row-start-2 font-mono text-sm text-(--texto-suave) xl:py-3.5 xl:pr-4 xl:whitespace-nowrap', p.sku));

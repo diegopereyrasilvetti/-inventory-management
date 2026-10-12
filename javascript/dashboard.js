@@ -96,7 +96,7 @@ function botonStock(id, accion, icono, etiqueta) {
 }
 
 function crearFila(p) {
-    const tr = crear('tr', 'grid grid-cols-[1fr_auto] items-center gap-x-3 gap-y-2 border-b border-(--borde) py-4 last:border-0 hover:bg-(--fondo)/60 sm:table-row sm:py-0');
+    const tr = crear('tr', 'grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-3 gap-y-2 border-b border-(--borde) py-4 last:border-0 hover:bg-(--fondo)/60 sm:table-row sm:py-0');
 
     tr.appendChild(crear('td', 'col-start-1 row-start-1 font-semibold text-(--texto) sm:py-3.5 sm:pr-4 sm:font-medium', p.nombre));
     tr.appendChild(crear('td', 'col-start-1 row-start-2 font-mono text-sm text-(--texto-suave) sm:py-3.5 sm:pr-4', p.codigo));

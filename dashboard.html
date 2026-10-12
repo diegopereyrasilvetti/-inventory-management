@@ -275,13 +275,13 @@
                 </div>
 
                 <div class="mt-4" role="table" aria-label="Documentos recientes">
-                    <div class="hidden border-b border-(--borde) pb-3 text-xs font-semibold uppercase tracking-wider text-(--texto-suave) sm:grid sm:grid-cols-[1fr_9rem_8rem] sm:gap-4" role="row">
+                    <div class="hidden border-b border-(--borde) pb-3 text-xs font-semibold uppercase tracking-wider text-(--texto-suave) sm:grid sm:grid-cols-[minmax(0,1fr)_9rem_8rem] sm:gap-4" role="row">
                         <span role="columnheader">Archivo</span>
                         <span role="columnheader">Tipo</span>
                         <span role="columnheader">Estado</span>
                     </div>
 
-                    <div class="grid grid-cols-[1fr_auto] items-center gap-x-3 gap-y-1 border-b border-(--borde) py-3.5 sm:grid-cols-[1fr_9rem_8rem] sm:gap-4" role="row">
+                    <div class="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-3 gap-y-1 border-b border-(--borde) py-3.5 sm:grid-cols-[minmax(0,1fr)_9rem_8rem] sm:gap-4" role="row">
                         <div class="flex items-center gap-3" role="cell">
                             <i class="fa-regular fa-file-lines text-lg text-(--texto-suave)" aria-hidden="true"></i>
                             <div class="min-w-0">
@@ -293,7 +293,7 @@
                         <span class="col-start-1 pl-8 text-sm text-(--texto-suave) sm:col-start-2 sm:row-start-1 sm:pl-0 sm:text-(--texto)" role="cell">Factura</span>
                     </div>
 
-                    <div class="grid grid-cols-[1fr_auto] items-center gap-x-3 gap-y-1 border-b border-(--borde) py-3.5 sm:grid-cols-[1fr_9rem_8rem] sm:gap-4" role="row">
+                    <div class="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-3 gap-y-1 border-b border-(--borde) py-3.5 sm:grid-cols-[minmax(0,1fr)_9rem_8rem] sm:gap-4" role="row">
                         <div class="flex items-center gap-3" role="cell">
                             <i class="fa-regular fa-file-lines text-lg text-(--texto-suave)" aria-hidden="true"></i>
                             <div class="min-w-0">
@@ -305,7 +305,7 @@
                         <span class="col-start-1 pl-8 text-sm text-(--texto-suave) sm:col-start-2 sm:row-start-1 sm:pl-0 sm:text-(--texto)" role="cell">Remito</span>
                     </div>
 
-                    <div class="grid grid-cols-[1fr_auto] items-center gap-x-3 gap-y-1 py-3.5 sm:grid-cols-[1fr_9rem_8rem] sm:gap-4" role="row">
+                    <div class="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-3 gap-y-1 py-3.5 sm:grid-cols-[minmax(0,1fr)_9rem_8rem] sm:gap-4" role="row">
                         <div class="flex items-center gap-3" role="cell">
                             <i class="fa-regular fa-file-lines text-lg text-(--texto-suave)" aria-hidden="true"></i>
                             <div class="min-w-0">
@@ -322,11 +322,95 @@
             </div>
         </section>
 
-        <section id="proveedores" class="hidden mx-auto max-w-5xl rounded-2xl border border-(--borde) bg-(--superficie) px-6 py-14 text-center" aria-labelledby="titulo-proveedores">
-            <span class="mx-auto flex size-14 items-center justify-center rounded-full bg-(--fondo) text-xl text-(--acento-hover)"><i class="fa-solid fa-truck"></i></span>
-            <h2 id="titulo-proveedores" class="mt-4 text-xl font-bold text-(--texto)">Proveedores</h2>
-            <p class="mx-auto mt-2 max-w-md text-sm text-(--texto-suave)">Datos de contacto de tus proveedores y las compras realizadas a cada uno.</p>
-            <span class="mt-5 inline-block rounded-full bg-(--fondo) px-3 py-1 text-xs font-semibold text-(--texto-suave)">Próximamente</span>
+        <section id="proveedores" class="hidden mx-auto max-w-5xl bg-(--superficie) border border-(--borde) rounded-2xl shadow-[0_8px_24px_rgba(59,42,32,0.06)]" aria-labelledby="titulo-proveedores">
+            <div class="flex flex-wrap items-start justify-between gap-3 px-5 pt-5 sm:px-6">
+                <div>
+                    <div class="flex flex-wrap items-center gap-2">
+                        <h2 id="titulo-proveedores" class="text-xl font-bold text-(--texto)">Proveedores</h2>
+                        <span class="rounded-full bg-(--stock-bajo)/20 px-2.5 py-0.5 text-xs font-semibold text-[#8a5a0c]">Vista previa</span>
+                    </div>
+                    <p class="mt-0.5 text-sm text-(--texto-suave)">3 proveedores registrados</p>
+                </div>
+                <button class="inline-flex items-center gap-2 rounded-full bg-(--acento-hover) px-5 py-2.5 text-sm font-semibold text-white cursor-pointer transition hover:bg-(--texto) focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--acento-hover)" type="button" data-proximamente>
+                    <i class="fa-solid fa-plus text-xs"></i> Nuevo proveedor
+                </button>
+            </div>
+
+            <p id="prov-aviso" class="mx-5 mt-4 hidden rounded-lg border border-(--stock-bajo)/40 bg-(--stock-bajo)/15 px-4 py-2.5 text-sm text-[#8a5a0c] sm:mx-6" role="status">Esta función todavía no está disponible. Estamos trabajando en ella.</p>
+
+            <dl class="grid grid-cols-3 gap-2 px-5 pt-4 sm:gap-4 sm:px-6">
+                <div class="rounded-xl border border-(--borde) bg-(--fondo) p-2.5 sm:p-4">
+                    <dt class="flex items-center gap-2 text-xs font-medium text-(--texto-suave) sm:text-sm"><i class="fa-regular fa-building text-(--acento)" aria-hidden="true"></i> Total</dt>
+                    <dd class="mt-1.5 text-2xl font-bold text-(--texto) sm:text-3xl">3</dd>
+                </div>
+                <div class="rounded-xl border border-(--borde) bg-(--fondo) p-2.5 sm:p-4">
+                    <dt class="flex items-center gap-2 text-xs font-medium text-(--texto-suave) sm:text-sm"><i class="fa-regular fa-circle-check text-(--stock-ok)" aria-hidden="true"></i> Activos</dt>
+                    <dd class="mt-1.5 text-2xl font-bold text-(--texto) sm:text-3xl">2</dd>
+                </div>
+                <div class="rounded-xl border border-(--borde) bg-(--fondo) p-2.5 sm:p-4">
+                    <dt class="flex items-center gap-2 text-xs font-medium text-(--texto-suave) sm:text-sm"><i class="fa-regular fa-circle-pause text-(--texto-suave)" aria-hidden="true"></i> Inactivos</dt>
+                    <dd class="mt-1.5 text-2xl font-bold text-(--texto) sm:text-3xl">1</dd>
+                </div>
+            </dl>
+
+            <div class="px-5 pt-4 sm:px-6">
+                <form class="relative" role="search" onsubmit="return false">
+                    <i class="fa-solid fa-magnifying-glass pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-sm text-(--texto-suave)"></i>
+                    <input id="prov-buscar" class="w-full rounded-full border border-(--borde) bg-(--fondo) py-3 pl-11 pr-4 text-sm text-(--texto) placeholder:text-(--texto-suave)/60 focus:outline-none focus:border-(--acento) focus:ring-2 focus:ring-(--acento)/30" type="search" placeholder="Buscar por nombre, contacto o rubro…" aria-label="Buscar proveedor" data-proximamente>
+                </form>
+            </div>
+
+            <div class="px-5 pb-5 pt-4 sm:px-6">
+                <div role="table" aria-label="Proveedores">
+                    <div class="hidden border-b border-(--borde) pb-3 text-xs font-semibold uppercase tracking-wider text-(--texto-suave) sm:grid sm:grid-cols-[minmax(0,1fr)_10rem_7rem_5.5rem] sm:gap-4" role="row">
+                        <span role="columnheader">Proveedor</span>
+                        <span role="columnheader">Contacto</span>
+                        <span role="columnheader">Estado</span>
+                        <span class="text-right" role="columnheader">Acciones</span>
+                    </div>
+
+                    <div class="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-3 gap-y-2 border-b border-(--borde) py-3.5 sm:grid-cols-[minmax(0,1fr)_10rem_7rem_5.5rem] sm:gap-4" role="row">
+                        <div class="min-w-0" role="cell">
+                            <p class="truncate text-sm font-semibold text-(--texto)">Distribuidora Tech</p>
+                            <p class="text-xs text-(--texto-suave)">Tecnología</p>
+                        </div>
+                        <span class="col-start-2 row-start-1 flex justify-self-end gap-1 sm:col-start-4 sm:row-start-1" role="cell">
+                            <button class="flex size-10 items-center justify-center rounded-full text-(--texto-suave) cursor-pointer transition hover:bg-(--fondo) hover:text-(--acento-hover) sm:size-8" type="button" aria-label="Ver Distribuidora Tech" data-proximamente><i class="fa-regular fa-eye text-sm"></i></button>
+                            <button class="flex size-10 items-center justify-center rounded-full text-(--texto-suave) cursor-pointer transition hover:bg-(--fondo) hover:text-(--acento-hover) sm:size-8" type="button" aria-label="Editar Distribuidora Tech" data-proximamente><i class="fa-regular fa-pen-to-square text-sm"></i></button>
+                        </span>
+                        <span class="col-start-1 row-start-2 text-sm text-(--texto-suave) sm:col-start-2 sm:row-start-1 sm:text-(--texto)" role="cell">Carlos Gómez</span>
+                        <span class="col-start-2 row-start-2 justify-self-end sm:col-start-3 sm:row-start-1 sm:justify-self-start" role="cell"><span class="inline-block rounded-full bg-(--stock-ok)/15 px-3 py-1 text-xs font-semibold text-[#3f6b34]">Activo</span></span>
+                    </div>
+
+                    <div class="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-3 gap-y-2 border-b border-(--borde) py-3.5 sm:grid-cols-[minmax(0,1fr)_10rem_7rem_5.5rem] sm:gap-4" role="row">
+                        <div class="min-w-0" role="cell">
+                            <p class="truncate text-sm font-semibold text-(--texto)">Insumos del Sur</p>
+                            <p class="text-xs text-(--texto-suave)">Insumos</p>
+                        </div>
+                        <span class="col-start-2 row-start-1 flex justify-self-end gap-1 sm:col-start-4 sm:row-start-1" role="cell">
+                            <button class="flex size-10 items-center justify-center rounded-full text-(--texto-suave) cursor-pointer transition hover:bg-(--fondo) hover:text-(--acento-hover) sm:size-8" type="button" aria-label="Ver Insumos del Sur" data-proximamente><i class="fa-regular fa-eye text-sm"></i></button>
+                            <button class="flex size-10 items-center justify-center rounded-full text-(--texto-suave) cursor-pointer transition hover:bg-(--fondo) hover:text-(--acento-hover) sm:size-8" type="button" aria-label="Editar Insumos del Sur" data-proximamente><i class="fa-regular fa-pen-to-square text-sm"></i></button>
+                        </span>
+                        <span class="col-start-1 row-start-2 text-sm text-(--texto-suave) sm:col-start-2 sm:row-start-1 sm:text-(--texto)" role="cell">María López</span>
+                        <span class="col-start-2 row-start-2 justify-self-end sm:col-start-3 sm:row-start-1 sm:justify-self-start" role="cell"><span class="inline-block rounded-full bg-(--stock-ok)/15 px-3 py-1 text-xs font-semibold text-[#3f6b34]">Activo</span></span>
+                    </div>
+
+                    <div class="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-3 gap-y-2 py-3.5 sm:grid-cols-[minmax(0,1fr)_10rem_7rem_5.5rem] sm:gap-4" role="row">
+                        <div class="min-w-0" role="cell">
+                            <p class="truncate text-sm font-semibold text-(--texto)">Mayorista Central</p>
+                            <p class="text-xs text-(--texto-suave)">General</p>
+                        </div>
+                        <span class="col-start-2 row-start-1 flex justify-self-end gap-1 sm:col-start-4 sm:row-start-1" role="cell">
+                            <button class="flex size-10 items-center justify-center rounded-full text-(--texto-suave) cursor-pointer transition hover:bg-(--fondo) hover:text-(--acento-hover) sm:size-8" type="button" aria-label="Ver Mayorista Central" data-proximamente><i class="fa-regular fa-eye text-sm"></i></button>
+                            <button class="flex size-10 items-center justify-center rounded-full text-(--texto-suave) cursor-pointer transition hover:bg-(--fondo) hover:text-(--acento-hover) sm:size-8" type="button" aria-label="Editar Mayorista Central" data-proximamente><i class="fa-regular fa-pen-to-square text-sm"></i></button>
+                        </span>
+                        <span class="col-start-1 row-start-2 text-sm text-(--texto-suave) sm:col-start-2 sm:row-start-1 sm:text-(--texto)" role="cell">Juan Pérez</span>
+                        <span class="col-start-2 row-start-2 justify-self-end sm:col-start-3 sm:row-start-1 sm:justify-self-start" role="cell"><span class="inline-block rounded-full bg-(--fondo) px-3 py-1 text-xs font-semibold text-(--texto-suave) ring-1 ring-(--borde)">Inactivo</span></span>
+                    </div>
+                </div>
+
+                <p class="mt-4 text-xs text-(--texto-suave)">Datos ficticios para demostración. Todavía no se pueden crear, ver ni editar proveedores.</p>
+            </div>
         </section>
 
         <section id="ventas" class="hidden mx-auto max-w-5xl rounded-2xl border border-(--borde) bg-(--superficie) px-6 py-14 text-center" aria-labelledby="titulo-ventas">
@@ -376,5 +460,6 @@
     <script src="./javascript/dashboard.js"></script>
     <script src="./javascript/productos.js"></script>
     <script src="./javascript/movimientos.js"></script>
+    <script src="./javascript/proveedores.js"></script>
 </body>
 </html>
