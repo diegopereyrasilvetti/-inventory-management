@@ -234,11 +234,92 @@
             </dialog>
         </section>
 
-        <section id="movimientos" class="hidden mx-auto max-w-5xl rounded-2xl border border-(--borde) bg-(--superficie) px-6 py-14 text-center" aria-labelledby="titulo-movimientos">
-            <span class="mx-auto flex size-14 items-center justify-center rounded-full bg-(--fondo) text-xl text-(--acento-hover)"><i class="fa-solid fa-arrow-right-arrow-left"></i></span>
-            <h2 id="titulo-movimientos" class="mt-4 text-xl font-bold text-(--texto)">Movimientos</h2>
-            <p class="mx-auto mt-2 max-w-md text-sm text-(--texto-suave)">Registro de entradas y salidas de mercadería, con fecha y motivo.</p>
-            <span class="mt-5 inline-block rounded-full bg-(--fondo) px-3 py-1 text-xs font-semibold text-(--texto-suave)">Próximamente</span>
+        <section id="movimientos" class="hidden mx-auto max-w-5xl bg-(--superficie) border border-(--borde) rounded-2xl shadow-[0_8px_24px_rgba(59,42,32,0.06)]" aria-labelledby="titulo-movimientos">
+            <div class="flex flex-wrap items-start justify-between gap-3 px-5 pt-5 sm:px-6">
+                <div>
+                    <div class="flex flex-wrap items-center gap-2">
+                        <h2 id="titulo-movimientos" class="text-xl font-bold text-(--texto)">Movimientos</h2>
+                        <span class="rounded-full bg-(--stock-bajo)/20 px-2.5 py-0.5 text-xs font-semibold text-[#8a5a0c]">Vista previa</span>
+                    </div>
+                    <p class="mt-0.5 text-sm text-(--texto-suave)">Documentos y comprobantes</p>
+                </div>
+                <button class="inline-flex items-center gap-2 rounded-full bg-(--acento-hover) px-5 py-2.5 text-sm font-semibold text-white cursor-pointer transition hover:bg-(--texto) focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--acento-hover)" type="button" data-proximamente>
+                    <i class="fa-solid fa-arrow-up-from-bracket text-xs"></i> Subir archivo
+                </button>
+            </div>
+
+            <p id="mov-aviso" class="mx-5 mt-4 hidden rounded-lg border border-(--stock-bajo)/40 bg-(--stock-bajo)/15 px-4 py-2.5 text-sm text-[#8a5a0c] sm:mx-6" role="status">Esta función todavía no está disponible. Estamos trabajando en ella.</p>
+
+            <div class="px-5 pt-4 sm:px-6">
+                <div class="flex flex-col items-center gap-1.5 rounded-xl border-2 border-dashed border-(--acento)/40 bg-(--fondo) px-4 py-8 text-center">
+                    <i class="fa-solid fa-cloud-arrow-up text-3xl text-(--acento)" aria-hidden="true"></i>
+                    <h3 class="mt-2 text-base font-semibold text-(--texto)">Cargá tus facturas y remitos</h3>
+                    <p class="text-sm text-(--texto-suave)">PDF, JPG, PNG o archivos Excel</p>
+                    <button class="mt-3 inline-flex items-center rounded-full border border-(--borde) bg-(--superficie) px-5 py-2 text-sm font-medium text-(--texto) cursor-pointer transition hover:text-(--acento-hover) hover:border-(--acento)" type="button" data-proximamente>Preparar carga</button>
+                </div>
+            </div>
+
+            <div class="px-5 pb-5 pt-6 sm:px-6">
+                <div class="flex flex-wrap items-center justify-between gap-3">
+                    <h3 class="text-lg font-bold text-(--texto)">Documentos recientes</h3>
+                    <div class="relative">
+                        <label class="sr-only" for="mov-filtro">Filtrar documentos</label>
+                        <select id="mov-filtro" class="cursor-pointer appearance-none rounded-lg border border-(--borde) bg-(--superficie) py-2 pl-3 pr-9 text-sm text-(--texto) focus:outline-none focus:border-(--acento) focus:ring-2 focus:ring-(--acento)/30" data-proximamente>
+                            <option>Todos</option>
+                            <option>Facturas</option>
+                            <option>Remitos</option>
+                            <option>Notas de crédito</option>
+                        </select>
+                        <i class="fa-solid fa-chevron-down pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-xs text-(--texto-suave)"></i>
+                    </div>
+                </div>
+
+                <div class="mt-4" role="table" aria-label="Documentos recientes">
+                    <div class="hidden border-b border-(--borde) pb-3 text-xs font-semibold uppercase tracking-wider text-(--texto-suave) sm:grid sm:grid-cols-[1fr_9rem_8rem] sm:gap-4" role="row">
+                        <span role="columnheader">Archivo</span>
+                        <span role="columnheader">Tipo</span>
+                        <span role="columnheader">Estado</span>
+                    </div>
+
+                    <div class="grid grid-cols-[1fr_auto] items-center gap-x-3 gap-y-1 border-b border-(--borde) py-3.5 sm:grid-cols-[1fr_9rem_8rem] sm:gap-4" role="row">
+                        <div class="flex items-center gap-3" role="cell">
+                            <i class="fa-regular fa-file-lines text-lg text-(--texto-suave)" aria-hidden="true"></i>
+                            <div class="min-w-0">
+                                <p class="truncate text-sm font-semibold text-(--texto)">Factura_compra_001.pdf</p>
+                                <p class="text-xs text-(--texto-suave)">12/10/2026 · 245 KB</p>
+                            </div>
+                        </div>
+                        <span class="col-start-2 row-start-1 justify-self-end sm:col-start-3 sm:justify-self-start" role="cell"><span class="inline-block rounded-full bg-(--stock-bajo)/20 px-3 py-1 text-xs font-semibold text-[#8a5a0c]">Pendiente</span></span>
+                        <span class="col-start-1 pl-8 text-sm text-(--texto-suave) sm:col-start-2 sm:row-start-1 sm:pl-0 sm:text-(--texto)" role="cell">Factura</span>
+                    </div>
+
+                    <div class="grid grid-cols-[1fr_auto] items-center gap-x-3 gap-y-1 border-b border-(--borde) py-3.5 sm:grid-cols-[1fr_9rem_8rem] sm:gap-4" role="row">
+                        <div class="flex items-center gap-3" role="cell">
+                            <i class="fa-regular fa-file-lines text-lg text-(--texto-suave)" aria-hidden="true"></i>
+                            <div class="min-w-0">
+                                <p class="truncate text-sm font-semibold text-(--texto)">Remito_008.pdf</p>
+                                <p class="text-xs text-(--texto-suave)">11/10/2026 · 180 KB</p>
+                            </div>
+                        </div>
+                        <span class="col-start-2 row-start-1 justify-self-end sm:col-start-3 sm:justify-self-start" role="cell"><span class="inline-block rounded-full bg-(--stock-ok)/15 px-3 py-1 text-xs font-semibold text-[#3f6b34]">Procesado</span></span>
+                        <span class="col-start-1 pl-8 text-sm text-(--texto-suave) sm:col-start-2 sm:row-start-1 sm:pl-0 sm:text-(--texto)" role="cell">Remito</span>
+                    </div>
+
+                    <div class="grid grid-cols-[1fr_auto] items-center gap-x-3 gap-y-1 py-3.5 sm:grid-cols-[1fr_9rem_8rem] sm:gap-4" role="row">
+                        <div class="flex items-center gap-3" role="cell">
+                            <i class="fa-regular fa-file-lines text-lg text-(--texto-suave)" aria-hidden="true"></i>
+                            <div class="min-w-0">
+                                <p class="truncate text-sm font-semibold text-(--texto)">Nota_credito_003.pdf</p>
+                                <p class="text-xs text-(--texto-suave)">10/10/2026 · 124 KB</p>
+                            </div>
+                        </div>
+                        <span class="col-start-2 row-start-1 justify-self-end sm:col-start-3 sm:justify-self-start" role="cell"><span class="inline-block rounded-full bg-(--stock-ok)/15 px-3 py-1 text-xs font-semibold text-[#3f6b34]">Procesado</span></span>
+                        <span class="col-start-1 pl-8 text-sm text-(--texto-suave) sm:col-start-2 sm:row-start-1 sm:pl-0 sm:text-(--texto)" role="cell">Nota de crédito</span>
+                    </div>
+                </div>
+
+                <p class="mt-4 text-xs text-(--texto-suave)">Los documentos de esta lista son un ejemplo. Todavía no se pueden subir archivos.</p>
+            </div>
         </section>
 
         <section id="proveedores" class="hidden mx-auto max-w-5xl rounded-2xl border border-(--borde) bg-(--superficie) px-6 py-14 text-center" aria-labelledby="titulo-proveedores">
@@ -294,5 +375,6 @@
 
     <script src="./javascript/dashboard.js"></script>
     <script src="./javascript/productos.js"></script>
+    <script src="./javascript/movimientos.js"></script>
 </body>
 </html>
