@@ -88,19 +88,19 @@
             <h2 id="titulo-resumen" class="mb-3 text-xl font-bold text-(--texto)">Resumen</h2>
             <dl class="grid grid-cols-2 gap-3 lg:grid-cols-4 lg:gap-4">
                 <div class="rounded-2xl border border-(--borde) bg-(--superficie) p-4 sm:p-5">
-                    <dt class="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-(--texto-suave)"><i class="fa-solid fa-tag text-(--acento)"></i> Productos</dt>
+                    <dt class="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-(--texto-suave)"><i class="fa-solid fa-tag text-(--viz-violeta)"></i> Productos</dt>
                     <dd id="res-total" class="mt-2 text-2xl font-bold text-(--texto) sm:text-3xl">0</dd>
                 </div>
                 <div class="rounded-2xl border border-(--borde) bg-(--superficie) p-4 sm:p-5">
-                    <dt class="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-(--texto-suave)"><i class="fa-solid fa-boxes-stacked text-(--stock-ok)"></i> Unidades</dt>
+                    <dt class="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-(--texto-suave)"><i class="fa-solid fa-boxes-stacked text-(--viz-verde)"></i> Unidades</dt>
                     <dd id="res-unidades" class="mt-2 text-2xl font-bold text-(--texto) sm:text-3xl">0</dd>
                 </div>
                 <div class="rounded-2xl border border-(--borde) bg-(--superficie) p-4 sm:p-5">
-                    <dt class="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-(--texto-suave)"><i class="fa-solid fa-triangle-exclamation text-(--stock-bajo)"></i> Stock bajo</dt>
+                    <dt class="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-(--texto-suave)"><i class="fa-solid fa-triangle-exclamation text-(--viz-naranja)"></i> Stock bajo</dt>
                     <dd id="res-bajo" class="mt-2 text-2xl font-bold text-(--texto) sm:text-3xl">0</dd>
                 </div>
                 <div class="rounded-2xl border border-(--borde) bg-(--superficie) p-4 sm:p-5">
-                    <dt class="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-(--texto-suave)"><i class="fa-solid fa-circle-xmark text-(--stock-agotado)"></i> Agotados</dt>
+                    <dt class="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-(--texto-suave)"><i class="fa-solid fa-circle-xmark text-(--viz-gris)"></i> Agotados</dt>
                     <dd id="res-agotado" class="mt-2 text-2xl font-bold text-(--texto) sm:text-3xl">0</dd>
                 </div>
             </dl>
@@ -111,14 +111,14 @@
                     <a class="text-sm font-medium text-(--acento-hover) hover:underline" href="#inventario">Ir al inventario <i class="fa-solid fa-arrow-right text-xs"></i></a>
                 </div>
                 <ul id="res-alertas" class="mt-3 flex flex-col gap-2"></ul>
-                <p id="res-alertas-ok" class="mt-3 hidden items-center gap-2 text-sm text-[#3f6b34]"><i class="fa-regular fa-circle-check"></i> Todo en orden: no hay productos con stock bajo ni agotados.</p>
+                <p id="res-alertas-ok" class="mt-3 hidden items-center gap-2 text-sm text-(--viz-verde-texto)"><i class="fa-regular fa-circle-check"></i> Todo en orden: no hay productos con stock bajo ni agotados.</p>
             </div>
         </section>
 
         <section id="inventario" class="hidden mx-auto max-w-5xl bg-(--superficie) border border-(--borde) rounded-2xl shadow-[0_8px_24px_rgba(59,42,32,0.06)]">
             <div class="flex flex-wrap items-center justify-between gap-3 px-5 pt-5 sm:px-6">
                 <h1 class="text-xl font-bold text-(--texto)">Inventario de productos</h1>
-                <span id="total-productos" class="rounded-full bg-(--stock-ok)/15 px-3 py-1 text-xs font-semibold text-[#3f6b34]"></span>
+                <span id="total-productos" class="rounded-full bg-(--viz-verde-fondo) px-3 py-1 text-xs font-semibold text-(--viz-verde-texto)"></span>
             </div>
 
             <div class="mt-2 px-4 sm:mt-4 sm:overflow-x-auto sm:px-6">
@@ -153,7 +153,7 @@
                     <h2 id="titulo-productos" class="text-xl font-bold text-(--texto)">Productos</h2>
                     <p class="mt-0.5 text-sm text-(--texto-suave)">Creá, editá y eliminá los datos de cada producto.</p>
                 </div>
-                <span id="prod-total" class="rounded-full bg-(--stock-ok)/15 px-3 py-1 text-xs font-semibold text-[#3f6b34]"></span>
+                <span id="prod-total" class="rounded-full bg-(--viz-verde-fondo) px-3 py-1 text-xs font-semibold text-(--viz-verde-texto)"></span>
             </div>
 
             <div class="flex flex-wrap items-center justify-between gap-3 px-5 pt-4 sm:px-6">
@@ -248,7 +248,7 @@
                 <div>
                     <div class="flex flex-wrap items-center gap-2">
                         <h2 id="titulo-documentacion" class="text-xl font-bold text-(--texto)">Documentación</h2>
-                        <span class="rounded-full bg-(--stock-bajo)/20 px-2.5 py-0.5 text-xs font-semibold text-[#8a5a0c]">Vista previa</span>
+                        <span class="rounded-full bg-(--viz-naranja-fondo) px-2.5 py-0.5 text-xs font-semibold text-(--viz-naranja-texto)">Vista previa</span>
                     </div>
                     <p class="mt-0.5 text-sm text-(--texto-suave)">Documentos y comprobantes</p>
                 </div>
@@ -257,7 +257,7 @@
                 </button>
             </div>
 
-            <p id="mov-aviso" class="mx-5 mt-4 hidden rounded-lg border border-(--stock-bajo)/40 bg-(--stock-bajo)/15 px-4 py-2.5 text-sm text-[#8a5a0c] sm:mx-6" role="status">Esta función todavía no está disponible. Estamos trabajando en ella.</p>
+            <p id="mov-aviso" class="mx-5 mt-4 hidden rounded-lg border border-(--viz-naranja)/40 bg-(--viz-naranja-fondo) px-4 py-2.5 text-sm text-(--viz-naranja-texto) sm:mx-6" role="status">Esta función todavía no está disponible. Estamos trabajando en ella.</p>
 
             <div class="px-5 pt-4 sm:px-6">
                 <div class="flex flex-col items-center gap-1.5 rounded-xl border-2 border-dashed border-(--acento)/40 bg-(--fondo) px-4 py-8 text-center">
@@ -298,7 +298,7 @@
                                 <p class="text-xs text-(--texto-suave)">12/10/2026 · 245 KB</p>
                             </div>
                         </div>
-                        <span class="col-start-2 row-start-1 justify-self-end sm:col-start-3 sm:justify-self-start" role="cell"><span class="inline-block rounded-full bg-(--stock-bajo)/20 px-3 py-1 text-xs font-semibold text-[#8a5a0c]">Pendiente</span></span>
+                        <span class="col-start-2 row-start-1 justify-self-end sm:col-start-3 sm:justify-self-start" role="cell"><span class="inline-block rounded-full bg-(--viz-naranja-fondo) px-3 py-1 text-xs font-semibold text-(--viz-naranja-texto)">Pendiente</span></span>
                         <span class="col-start-1 pl-8 text-sm text-(--texto-suave) sm:col-start-2 sm:row-start-1 sm:pl-0 sm:text-(--texto)" role="cell">Factura</span>
                     </div>
 
@@ -310,7 +310,7 @@
                                 <p class="text-xs text-(--texto-suave)">11/10/2026 · 180 KB</p>
                             </div>
                         </div>
-                        <span class="col-start-2 row-start-1 justify-self-end sm:col-start-3 sm:justify-self-start" role="cell"><span class="inline-block rounded-full bg-(--stock-ok)/15 px-3 py-1 text-xs font-semibold text-[#3f6b34]">Procesado</span></span>
+                        <span class="col-start-2 row-start-1 justify-self-end sm:col-start-3 sm:justify-self-start" role="cell"><span class="inline-block rounded-full bg-(--viz-verde-fondo) px-3 py-1 text-xs font-semibold text-(--viz-verde-texto)">Procesado</span></span>
                         <span class="col-start-1 pl-8 text-sm text-(--texto-suave) sm:col-start-2 sm:row-start-1 sm:pl-0 sm:text-(--texto)" role="cell">Remito</span>
                     </div>
 
@@ -322,7 +322,7 @@
                                 <p class="text-xs text-(--texto-suave)">10/10/2026 · 124 KB</p>
                             </div>
                         </div>
-                        <span class="col-start-2 row-start-1 justify-self-end sm:col-start-3 sm:justify-self-start" role="cell"><span class="inline-block rounded-full bg-(--stock-ok)/15 px-3 py-1 text-xs font-semibold text-[#3f6b34]">Procesado</span></span>
+                        <span class="col-start-2 row-start-1 justify-self-end sm:col-start-3 sm:justify-self-start" role="cell"><span class="inline-block rounded-full bg-(--viz-verde-fondo) px-3 py-1 text-xs font-semibold text-(--viz-verde-texto)">Procesado</span></span>
                         <span class="col-start-1 pl-8 text-sm text-(--texto-suave) sm:col-start-2 sm:row-start-1 sm:pl-0 sm:text-(--texto)" role="cell">Nota de crédito</span>
                     </div>
                 </div>
@@ -344,15 +344,15 @@
 
             <dl class="grid grid-cols-3 gap-2 px-5 pt-4 sm:gap-4 sm:px-6">
                 <div class="rounded-xl border border-(--borde) bg-(--fondo) p-2.5 sm:p-4">
-                    <dt class="flex items-center gap-2 text-xs font-medium text-(--texto-suave) sm:text-sm"><i class="fa-regular fa-building text-(--acento)" aria-hidden="true"></i> Total</dt>
+                    <dt class="flex items-center gap-2 text-xs font-medium text-(--texto-suave) sm:text-sm"><i class="fa-regular fa-building text-(--viz-violeta)" aria-hidden="true"></i> Total</dt>
                     <dd id="prv-total" class="mt-1.5 text-2xl font-bold text-(--texto) sm:text-3xl">0</dd>
                 </div>
                 <div class="rounded-xl border border-(--borde) bg-(--fondo) p-2.5 sm:p-4">
-                    <dt class="flex items-center gap-2 text-xs font-medium text-(--texto-suave) sm:text-sm"><i class="fa-regular fa-circle-check text-(--stock-ok)" aria-hidden="true"></i> Activos</dt>
+                    <dt class="flex items-center gap-2 text-xs font-medium text-(--texto-suave) sm:text-sm"><i class="fa-regular fa-circle-check text-(--viz-verde)" aria-hidden="true"></i> Activos</dt>
                     <dd id="prv-activos" class="mt-1.5 text-2xl font-bold text-(--texto) sm:text-3xl">0</dd>
                 </div>
                 <div class="rounded-xl border border-(--borde) bg-(--fondo) p-2.5 sm:p-4">
-                    <dt class="flex items-center gap-2 text-xs font-medium text-(--texto-suave) sm:text-sm"><i class="fa-regular fa-circle-pause text-(--texto-suave)" aria-hidden="true"></i> Inactivos</dt>
+                    <dt class="flex items-center gap-2 text-xs font-medium text-(--texto-suave) sm:text-sm"><i class="fa-regular fa-circle-pause text-(--viz-gris)" aria-hidden="true"></i> Inactivos</dt>
                     <dd id="prv-inactivos" class="mt-1.5 text-2xl font-bold text-(--texto) sm:text-3xl">0</dd>
                 </div>
             </dl>
@@ -450,7 +450,7 @@
                 <div>
                     <div class="flex flex-wrap items-center gap-2">
                         <h2 id="titulo-ventas" class="text-xl font-bold text-(--texto)">Ventas</h2>
-                        <span class="rounded-full bg-(--stock-ok)/15 px-2.5 py-0.5 text-xs font-semibold text-[#3f6b34]">Demo interactiva</span>
+                        <span class="rounded-full bg-(--viz-verde-fondo) px-2.5 py-0.5 text-xs font-semibold text-(--viz-verde-texto)">Demo interactiva</span>
                     </div>
                     <p class="mt-0.5 text-sm text-(--texto-suave)">Registro y control de operaciones</p>
                 </div>
@@ -462,23 +462,23 @@
 
             <dl class="grid grid-cols-2 gap-2 px-5 pt-4 sm:grid-cols-3 sm:gap-4 sm:px-6 lg:grid-cols-5">
                 <div class="rounded-xl border border-(--borde) bg-(--fondo) p-3 sm:p-4">
-                    <dt class="flex items-center gap-2 text-xs font-medium text-(--texto-suave)"><i class="fa-solid fa-wallet text-(--acento)" aria-hidden="true"></i> Ingresos del día</dt>
+                    <dt class="flex items-center gap-2 text-xs font-medium text-(--texto-suave)"><i class="fa-solid fa-wallet text-(--viz-violeta)" aria-hidden="true"></i> Ingresos del día</dt>
                     <dd id="vta-ingresos" class="mt-1.5 text-xl font-bold text-(--texto) sm:text-2xl">$ 0</dd>
                 </div>
                 <div class="rounded-xl border border-(--borde) bg-(--fondo) p-3 sm:p-4">
-                    <dt class="flex items-center gap-2 text-xs font-medium text-(--texto-suave)"><i class="fa-solid fa-bag-shopping text-(--acento)" aria-hidden="true"></i> Ventas</dt>
+                    <dt class="flex items-center gap-2 text-xs font-medium text-(--texto-suave)"><i class="fa-solid fa-bag-shopping text-(--viz-verde)" aria-hidden="true"></i> Ventas</dt>
                     <dd id="vta-cantidad" class="mt-1.5 text-xl font-bold text-(--texto) sm:text-2xl">0</dd>
                 </div>
                 <div class="rounded-xl border border-(--borde) bg-(--fondo) p-3 sm:p-4">
-                    <dt class="flex items-center gap-2 text-xs font-medium text-(--texto-suave)"><i class="fa-solid fa-receipt text-(--acento)" aria-hidden="true"></i> Ticket promedio</dt>
+                    <dt class="flex items-center gap-2 text-xs font-medium text-(--texto-suave)"><i class="fa-solid fa-receipt text-(--viz-violeta)" aria-hidden="true"></i> Ticket promedio</dt>
                     <dd id="vta-ticket" class="mt-1.5 text-xl font-bold text-(--texto) sm:text-2xl">$ 0</dd>
                 </div>
                 <div class="rounded-xl border border-(--borde) bg-(--fondo) p-3 sm:p-4">
-                    <dt class="flex items-center gap-2 text-xs font-medium text-(--texto-suave)"><i class="fa-solid fa-money-bill-trend-up fa-flip-vertical text-(--stock-agotado)" aria-hidden="true"></i> Gastos del día</dt>
+                    <dt class="flex items-center gap-2 text-xs font-medium text-(--texto-suave)"><i class="fa-solid fa-money-bill-trend-up fa-flip-vertical text-(--viz-naranja)" aria-hidden="true"></i> Gastos del día</dt>
                     <dd id="vta-gastos" class="mt-1.5 text-xl font-bold text-(--texto) sm:text-2xl">$ 0</dd>
                 </div>
                 <div class="col-span-2 rounded-xl border border-(--borde) bg-(--fondo) p-3 sm:col-span-1 sm:p-4">
-                    <dt class="flex items-center gap-2 text-xs font-medium text-(--texto-suave)"><i class="fa-solid fa-scale-balanced text-(--acento)" aria-hidden="true"></i> Balance del día</dt>
+                    <dt class="flex items-center gap-2 text-xs font-medium text-(--texto-suave)"><i class="fa-solid fa-scale-balanced text-(--viz-verde)" aria-hidden="true"></i> Balance del día</dt>
                     <dd id="vta-balance" class="mt-1.5 text-xl font-bold text-(--texto) sm:text-2xl">$ 0</dd>
                 </div>
             </dl>
@@ -607,26 +607,26 @@
                 </div>
             </div>
 
-            <div id="bal-aviso" class="mx-5 mt-4 flex flex-wrap items-center justify-between gap-2 rounded-lg border border-(--stock-bajo)/40 bg-(--stock-bajo)/15 px-4 py-2.5 text-sm text-[#8a5a0c] sm:mx-6">
+            <div id="bal-aviso" class="mx-5 mt-4 flex flex-wrap items-center justify-between gap-2 rounded-lg border border-(--viz-naranja)/40 bg-(--viz-naranja-fondo) px-4 py-2.5 text-sm text-(--viz-naranja-texto) sm:mx-6">
                 <p id="bal-aviso-texto"></p>
-                <button id="bal-modo" class="rounded-full border border-(--stock-bajo)/60 px-3.5 py-1 text-xs font-semibold cursor-pointer transition hover:bg-(--stock-bajo)/20" type="button"></button>
+                <button id="bal-modo" class="rounded-full border border-(--viz-naranja)/60 px-3.5 py-1 text-xs font-semibold cursor-pointer transition hover:bg-(--viz-naranja-fondo)" type="button"></button>
             </div>
 
             <dl class="grid grid-cols-2 gap-2 px-5 pt-4 sm:gap-4 sm:px-6 lg:grid-cols-4">
                 <div class="rounded-xl border border-(--borde) bg-(--fondo) p-3 sm:p-4">
-                    <dt class="flex items-center gap-2 text-xs font-medium text-(--texto-suave) sm:text-sm"><i class="fa-solid fa-arrow-trend-up text-(--acento)" aria-hidden="true"></i> Ingresos</dt>
+                    <dt class="flex items-center gap-2 text-xs font-medium text-(--texto-suave) sm:text-sm"><i class="fa-solid fa-arrow-trend-up text-(--viz-violeta)" aria-hidden="true"></i> Ingresos</dt>
                     <dd id="bal-ingresos" class="mt-1.5 text-xl font-bold text-(--texto) sm:text-2xl">$ 0</dd>
                 </div>
                 <div class="rounded-xl border border-(--borde) bg-(--fondo) p-3 sm:p-4">
-                    <dt class="flex items-center gap-2 text-xs font-medium text-(--texto-suave) sm:text-sm"><i class="fa-solid fa-cube text-(--acento)" aria-hidden="true"></i> Costo de ventas</dt>
+                    <dt class="flex items-center gap-2 text-xs font-medium text-(--texto-suave) sm:text-sm"><i class="fa-solid fa-cube text-(--viz-naranja)" aria-hidden="true"></i> Costo de ventas</dt>
                     <dd id="bal-costo" class="mt-1.5 text-xl font-bold text-(--texto) sm:text-2xl">$ 0</dd>
                 </div>
                 <div class="rounded-xl border border-(--borde) bg-(--fondo) p-3 sm:p-4">
-                    <dt class="flex items-center gap-2 text-xs font-medium text-(--texto-suave) sm:text-sm"><i class="fa-solid fa-wallet text-(--stock-agotado)" aria-hidden="true"></i> Otros gastos</dt>
+                    <dt class="flex items-center gap-2 text-xs font-medium text-(--texto-suave) sm:text-sm"><i class="fa-solid fa-wallet text-(--viz-naranja)" aria-hidden="true"></i> Otros gastos</dt>
                     <dd id="bal-otros" class="mt-1.5 text-xl font-bold text-(--texto) sm:text-2xl">$ 0</dd>
                 </div>
                 <div class="rounded-xl border border-(--borde) bg-(--fondo) p-3 sm:p-4">
-                    <dt class="flex items-center gap-2 text-xs font-medium text-(--texto-suave) sm:text-sm"><i class="fa-solid fa-chart-simple text-(--stock-ok)" aria-hidden="true"></i> Ganancia estimada</dt>
+                    <dt class="flex items-center gap-2 text-xs font-medium text-(--texto-suave) sm:text-sm"><i class="fa-solid fa-chart-simple text-(--viz-verde)" aria-hidden="true"></i> Ganancia estimada</dt>
                     <dd id="bal-ganancia" class="mt-1.5 text-xl font-bold text-(--texto) sm:text-2xl">$ 0</dd>
                 </div>
             </dl>
@@ -638,8 +638,8 @@
                 </div>
                 <div id="bal-etiquetas" class="ml-12 mr-1 mt-2 grid gap-1 sm:ml-14"></div>
                 <div class="mt-4 flex flex-wrap items-center justify-center gap-x-5 gap-y-1 text-sm text-(--texto)">
-                    <span class="inline-flex items-center gap-2"><span class="size-3 rounded-full bg-[#1a7bff]"></span> Ingresos</span>
-                    <span class="inline-flex items-center gap-2"><span class="size-3 rounded-full bg-(--acento)"></span> Costos y gastos</span>
+                    <span class="inline-flex items-center gap-2"><span class="size-3 rounded-full bg-(--viz-violeta)"></span> Ingresos</span>
+                    <span class="inline-flex items-center gap-2"><span class="size-3 rounded-full bg-(--viz-naranja)"></span> Costos y gastos</span>
                 </div>
                 <p class="mt-3 text-xs text-(--texto-suave)">Valores expresados en pesos argentinos.</p>
             </div>
@@ -650,7 +650,7 @@
                     <span id="bal-margen" class="text-xl font-bold text-(--texto)">—</span>
                 </div>
                 <div class="mt-3 h-2.5 w-full overflow-hidden rounded-full bg-(--fondo) ring-1 ring-(--borde)" role="progressbar" aria-label="Margen de ganancia" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="bal-barra">
-                    <div id="bal-barra-relleno" class="h-full rounded-full bg-(--stock-ok) transition-[width] duration-500" style="width: 0%"></div>
+                    <div id="bal-barra-relleno" class="h-full rounded-full bg-(--viz-verde) transition-[width] duration-500" style="width: 0%"></div>
                 </div>
             </div>
 

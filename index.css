@@ -9,6 +9,19 @@
     --stock-ok: #6b8f5e;
     --stock-bajo: #d49a3a;
     --stock-agotado: #b5503c;
+
+    /* Paleta de datos: gráficos, valores, estados y alertas */
+    --viz-violeta: #6d5df0;
+    --viz-azul: #5b7cfa;
+    --viz-verde: #3fc380;
+    --viz-verde-fondo: #e2f6ec;
+    --viz-verde-texto: #1c7a4b;
+    --viz-naranja: #ff8a4c;
+    --viz-naranja-fondo: #ffeadf;
+    --viz-naranja-texto: #a5430c;
+    --viz-gris: #7e80a8;
+    --viz-gris-fondo: #e9eaf8;
+    --viz-gris-texto: #4a4c78;
 }
 
 html {

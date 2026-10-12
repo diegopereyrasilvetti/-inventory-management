@@ -38,9 +38,9 @@ const PRODUCTOS_INICIALES = [
 ];
 
 const ESTADOS = {
-    disponible: { texto: 'Disponible', clases: 'bg-(--stock-ok)/15 text-[#3f6b34]' },
-    bajo: { texto: 'Bajo', clases: 'bg-(--stock-bajo)/20 text-[#8a5a0c]' },
-    agotado: { texto: 'Agotado', clases: 'bg-(--stock-agotado)/15 text-[#9a3a28]' }
+    disponible: { texto: 'Disponible', clases: 'bg-(--viz-verde-fondo) text-(--viz-verde-texto)' },
+    bajo: { texto: 'Bajo', clases: 'bg-(--viz-naranja-fondo) text-(--viz-naranja-texto)' },
+    agotado: { texto: 'Agotado', clases: 'bg-(--viz-gris-fondo) text-(--viz-gris-texto)' }
 };
 
 const tablaBody = document.getElementById('tabla-body');
@@ -171,7 +171,7 @@ function actualizarAlertasResumen() {
 
     lista.replaceChildren(...items.map(function (it) {
         const agotado = it.tipo === 'agotado';
-        const li = crear('li', 'flex items-start gap-3 rounded-lg px-3 py-2.5 text-sm ' + (agotado ? 'bg-(--stock-agotado)/10 text-[#9a3a28]' : 'bg-(--stock-bajo)/15 text-[#8a5a0c]'));
+        const li = crear('li', 'flex items-start gap-3 rounded-lg px-3 py-2.5 text-sm ' + (agotado ? 'bg-(--viz-gris-fondo) text-(--viz-gris-texto)' : 'bg-(--viz-naranja-fondo) text-(--viz-naranja-texto)'));
         li.appendChild(crear('i', 'mt-0.5 shrink-0 ' + (agotado ? 'fa-solid fa-circle-xmark' : 'fa-solid fa-triangle-exclamation')));
         const texto = crear('p', 'min-w-0 break-words');
         texto.appendChild(crear('strong', 'font-semibold', it.p.nombre));

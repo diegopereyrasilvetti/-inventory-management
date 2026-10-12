@@ -3,8 +3,9 @@
     const CATEGORIA_COSTO = 'Mercadería y proveedores';
     const MESES = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
     const DIAS = ['dom', 'lun', 'mar', 'mié', 'jue', 'vie', 'sáb'];
-    const COLOR_INGRESOS = 'bg-[#1a7bff]';
-    const COLOR_EGRESOS = 'bg-(--acento)';
+    const COLOR_INGRESOS = 'bg-(--viz-violeta)';
+    const COLOR_PICO = 'bg-(--viz-azul)';
+    const COLOR_EGRESOS = 'bg-(--viz-naranja)';
 
     const selectPeriodo = document.getElementById('bal-periodo');
     const grafico = document.getElementById('bal-grafico');
@@ -71,7 +72,14 @@
             const r1 = Math.abs(Math.sin(atras * 12.9898) * 43758.5453) % 1;
             const r2 = Math.abs(Math.sin(atras * 78.233) * 12345.6789) % 1;
             const r3 = Math.abs(Math.sin(atras * 39.346) * 98765.4321) % 1;
-            const ing = Math.round((18000 * crecimiento * (0.7 + 0.6 * r1)) / 1000) * 1000;
+            // Picos de ejemplo: dos meses de temporada alta y un par de días con ventas muy altas
+            const mesesAtras = (hoy.getFullYear() * 12 + hoy.getMonth()) - (fecha.getFullYear() * 12 + fecha.getMonth());
+            let pico = 1;
+            if (mesesAtras === 3) pico = 2.1;
+            else if (mesesAtras === 1) pico = 1.8;
+            if (atras === 2) pico = Math.max(pico, 2.6);
+            else if (atras === 9) pico = Math.max(pico, 2.2);
+            const ing = Math.round((18000 * crecimiento * pico * (0.7 + 0.6 * r1)) / 1000) * 1000;
             mapa[iso(fecha)] = {
                 ing: ing,
                 costo: Math.round(ing * (0.53 + 0.06 * r2) / 100) * 100,
@@ -144,40 +152,44 @@
 
     /* ---------- Dibujo ---------- */
     function colorGanancia(valor) {
-        return valor > 0 ? 'text-[#3f6b34]' : (valor < 0 ? 'text-[#9a3a28]' : 'text-(--texto)');
+        return valor > 0 ? 'text-(--viz-verde-texto)' : (valor < 0 ? 'text-(--viz-naranja-texto)' : 'text-(--texto)');
     }
 
-    function topeEscala(max) {
-        if (max <= 0) return 1;
+    function escala(max) {
+        if (max <= 0) return { tope: 1, pasos: 4 };
         const exp = Math.pow(10, Math.floor(Math.log10(max)));
         const f = max / exp;
         const nf = f <= 1 ? 1 : (f <= 2 ? 2 : (f <= 2.5 ? 2.5 : (f <= 5 ? 5 : 10)));
-        return nf * exp;
+        // pasos que dan valores redondos en el eje ($500 k, $1 M, $1,5 M…)
+        return { tope: nf * exp, pasos: (nf === 1 || nf === 2) ? 4 : 5 };
     }
 
     function dibujarGrafico(lista) {
         const max = lista.reduce(function (m, p) { return Math.max(m, p.ing, p.egr); }, 0);
-        const tope = topeEscala(max);
+        const esc = escala(max);
+        const tope = esc.tope;
         const columnas = 'repeat(' + lista.length + ', minmax(0, 1fr))';
         const angostas = lista.length > 8;
         const nodos = [];
 
-        for (let t = 0; t <= 4; t++) {
+        for (let t = 0; t <= esc.pasos; t++) {
+            const altura = (t / esc.pasos) * 100;
             const linea = el('div', 'absolute inset-x-0 border-t ' + (t === 0 ? 'border-(--texto-suave)/40' : 'border-dashed border-(--borde)'));
-            linea.style.bottom = (t * 25) + '%';
+            linea.style.bottom = altura + '%';
             nodos.push(linea);
-            const rotulo = el('span', 'absolute right-full mr-2 whitespace-nowrap text-[11px] text-(--texto-suave)', compacto(tope * t / 4));
-            rotulo.style.bottom = (t * 25) + '%';
+            const rotulo = el('span', 'absolute right-full mr-2 whitespace-nowrap text-[11px] text-(--texto-suave)', compacto(tope * t / esc.pasos));
+            rotulo.style.bottom = altura + '%';
             rotulo.style.transform = 'translateY(50%)';
             nodos.push(rotulo);
         }
 
         const barras = el('div', 'absolute inset-0 grid items-end');
         barras.style.gridTemplateColumns = columnas;
-        lista.forEach(function (p) {
+        const iPico = max > 0 ? lista.reduce(function (im, p, i) { return p.ing > lista[im].ing ? i : im; }, 0) : -1;
+        lista.forEach(function (p, i) {
             const col = el('div', 'flex h-full items-end justify-center gap-0.5 sm:gap-1');
             col.title = p.titulo + ': ingresos ' + MONEDA.format(p.ing) + ', egresos ' + MONEDA.format(p.egr);
-            [[p.ing, COLOR_INGRESOS], [p.egr, COLOR_EGRESOS]].forEach(function (par) {
+            [[p.ing, i === iPico && p.ing > 0 ? COLOR_PICO : COLOR_INGRESOS], [p.egr, COLOR_EGRESOS]].forEach(function (par) {
                 const barra = el('div', (angostas ? 'w-1.5 sm:w-3 ' : 'w-2.5 sm:w-4 ') + 'rounded-t ' + par[1]);
                 barra.style.height = par[0] > 0 ? 'max(' + (par[0] / tope * 100) + '%, 2px)' : '0';
                 col.appendChild(barra);
@@ -239,7 +251,7 @@
         const margen = totales.ing > 0 ? totales.gan / totales.ing * 100 : null;
         const textoMargen = document.getElementById('bal-margen');
         textoMargen.textContent = margen === null ? '—' : margen.toFixed(1).replace('.', ',') + '%';
-        textoMargen.className = 'text-xl font-bold ' + (margen !== null && margen < 0 ? 'text-[#9a3a28]' : 'text-(--texto)');
+        textoMargen.className = 'text-xl font-bold ' + (margen !== null && margen < 0 ? 'text-(--viz-naranja-texto)' : 'text-(--texto)');
         const ancho = margen === null ? 0 : Math.max(0, Math.min(100, margen));
         document.getElementById('bal-barra-relleno').style.width = ancho + '%';
         document.getElementById('bal-barra').setAttribute('aria-valuenow', String(Math.round(ancho)));
@@ -248,7 +260,7 @@
         dibujarTabla(lista, totales);
 
         if (ejemplo) {
-            aviso.className = 'mx-5 mt-4 flex flex-wrap items-center justify-between gap-2 rounded-lg border border-(--stock-bajo)/40 bg-(--stock-bajo)/15 px-4 py-2.5 text-sm text-[#8a5a0c] sm:mx-6';
+            aviso.className = 'mx-5 mt-4 flex flex-wrap items-center justify-between gap-2 rounded-lg border border-(--viz-naranja)/40 bg-(--viz-naranja-fondo) px-4 py-2.5 text-sm text-(--viz-naranja-texto) sm:mx-6';
             avisoTexto.textContent = 'Estás viendo datos de ejemplo. Registrá ventas y gastos para ver tus propios números.';
             btnModo.textContent = 'Ver mis datos';
         } else {
@@ -291,7 +303,7 @@
             render();
         }
         mensaje.textContent = texto;
-        mensaje.className = 'text-sm ' + (bien ? 'text-[#3f6b34]' : 'text-(--stock-agotado)');
+        mensaje.className = 'text-sm ' + (bien ? 'text-(--viz-verde-texto)' : 'text-(--stock-agotado)');
         clearTimeout(mensaje._t);
         mensaje._t = setTimeout(function () { mensaje.classList.add('hidden'); }, 3500);
     });

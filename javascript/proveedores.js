@@ -48,7 +48,7 @@
 
     function badgeEstado(activo) {
         return el('span', 'inline-block rounded-full px-3 py-1 text-xs font-semibold ' +
-            (activo ? 'bg-(--stock-ok)/15 text-[#3f6b34]' : 'bg-(--fondo) text-(--texto-suave) ring-1 ring-(--borde)'),
+            (activo ? 'bg-(--viz-verde-fondo) text-(--viz-verde-texto)' : 'bg-(--viz-gris-fondo) text-(--viz-gris-texto)'),
             activo ? 'Activo' : 'Inactivo');
     }
 

@@ -60,7 +60,7 @@
 
     function avisar(nodo, texto, ok) {
         nodo.textContent = texto;
-        nodo.className = 'text-sm ' + (ok ? 'text-[#3f6b34]' : 'text-(--stock-agotado)');
+        nodo.className = 'text-sm ' + (ok ? 'text-(--viz-verde-texto)' : 'text-(--stock-agotado)');
         clearTimeout(nodo._t);
         nodo._t = setTimeout(function () { nodo.classList.add('hidden'); }, 3500);
     }
@@ -211,7 +211,7 @@
         document.getElementById('vta-gastos').textContent = MONEDA.format(totalGastos);
         const nodoBalance = document.getElementById('vta-balance');
         nodoBalance.textContent = MONEDA.format(balance);
-        nodoBalance.className = 'mt-1.5 text-xl font-bold sm:text-2xl ' + (balance > 0 ? 'text-[#3f6b34]' : (balance < 0 ? 'text-[#9a3a28]' : 'text-(--texto)'));
+        nodoBalance.className = 'mt-1.5 text-xl font-bold sm:text-2xl ' + (balance > 0 ? 'text-(--viz-verde-texto)' : (balance < 0 ? 'text-(--viz-naranja-texto)' : 'text-(--texto)'));
 
         listaVentas.replaceChildren(...deDia.slice().reverse().map(function (v) {
             const li = el('li', 'flex items-start gap-3 py-3');
@@ -235,7 +235,7 @@
             info.appendChild(el('p', 'text-sm font-medium text-(--texto)', g.categoria));
             if (g.detalle) info.appendChild(el('p', 'mt-0.5 text-xs text-(--texto-suave)', g.detalle));
             li.appendChild(info);
-            li.appendChild(el('span', 'text-sm font-semibold text-[#9a3a28]', '− ' + MONEDA.format(g.monto)));
+            li.appendChild(el('span', 'text-sm font-semibold text-(--viz-naranja-texto)', '− ' + MONEDA.format(g.monto)));
             li.appendChild(botonQuitar('Eliminar gasto ' + g.categoria, 'borrar-gasto', g.id));
             return li;
         }));
