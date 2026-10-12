@@ -5,15 +5,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inventory helper</title>
     <meta name="robots" content="index, follow">
-    <meta name="theme-color" content="#050608">
+    <meta name="theme-color" content="#faf6ef">
     <meta name="description" content="Organizá el inventario de tu emprendimiento de forma fácil y rápida. Controlá tus productos, gestioná tu stock y mantené todo bajo control desde un solo lugar.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./index.css">
+    <script src="https://kit.fontawesome.com/0609dfb132.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 
 </head>
 <body>
-    
+    <header class="relative bg-(--superficie) border-b border-(--borde)">
+        <nav class="flex justify-between items-center px-6 py-4">
+            <div class="absolute left-1/2 -translate-x-1/2 flex items-center gap-2.5">
+                <img class="block h-8 w-auto" src="./images/c0867a9a-c574-4d23-9943-410cc741d8ca.png" alt="Logo de Gestión De Stock">
+                <h1 class="text-xl font-semibold tracking-[0.02em] text-(--texto)"><span class="text-[#1a7bff]">G</span>estion</h1>
+            </div>
+            <label class="ml-auto text-2xl text-(--texto) cursor-pointer px-2 py-1 rounded-lg hover:bg-(--fondo)" for="menu" aria-label="Abrir menú"><i class="fa-solid fa-bars"></i></label>
+            <input type="checkbox" name="menu" id="menu" class="peer hidden">
+            <ul class="hidden peer-checked:block absolute top-full right-4 min-w-48 bg-(--superficie) border border-(--borde) rounded-xl shadow-[0_8px_24px_rgba(59,42,32,0.12)] p-2 z-10">
+                <li><a class="block px-4 py-3 rounded-lg text-(--texto) hover:bg-(--fondo) hover:text-(--acento-hover)" href="#iniciar-sesion">Iniciar Sesión</a></li>
+                <li><a class="block px-4 py-3 rounded-lg text-(--texto) hover:bg-(--fondo) hover:text-(--acento-hover)" href="#nosotros">Nosotros</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main class="max-w-2xl mx-auto px-6 py-12">
+        <p class="text-[1.05rem] leading-[1.8] text-(--texto-suave) text-center text-balance">Mantené tu inventario siempre organizado y actualizado. Registrá, agregá, editá, eliminá y buscá productos fácilmente, controlá el stock disponible y recibí alertas cuando las existencias sean bajas. ¡Optimizá la gestión de tu emprendimiento en un solo lugar!</p>
+        <img src="./images/Panel de inventario minimalista con gráficos.png" alt="">
+    </main>
+    <footer>
+
+    </footer>
 </body>
 </html>

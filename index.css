@@ -1,5 +1,24 @@
-* {
-    padding: 0;
-    margin: 0;
-    box-sizing: border-box;
+:root {
+    --fondo: #faf6ef;
+    --superficie: #ffffff;
+    --borde: #e8dcc8;
+    --acento: #b07a4a;
+    --acento-hover: #8f5f35;
+    --texto: #3b2a20;
+    --texto-suave: #7a6655;
+    --stock-ok: #6b8f5e;
+    --stock-bajo: #d49a3a;
+    --stock-agotado: #b5503c;
+}
+
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 110px;
+}
+
+body {
+    background-color: var(--fondo);
+    color: var(--texto);
+    font-family: "Noto Sans", sans-serif;
+    line-height: 1.6;
 }
