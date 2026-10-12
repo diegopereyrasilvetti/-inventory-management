@@ -90,9 +90,9 @@
                 <span id="total-productos" class="rounded-full bg-(--stock-ok)/15 px-3 py-1 text-xs font-semibold text-[#3f6b34]"></span>
             </div>
 
-            <div class="mt-4 overflow-x-auto px-5 sm:px-6">
-                <table class="w-full min-w-[34rem] border-collapse text-left">
-                    <thead>
+            <div class="mt-2 px-4 sm:mt-4 sm:overflow-x-auto sm:px-6">
+                <table class="block w-full border-collapse text-left sm:table">
+                    <thead class="hidden sm:table-header-group">
                         <tr class="border-b border-(--borde) text-xs font-semibold uppercase tracking-wider text-(--texto-suave)">
                             <th class="py-3 pr-4" scope="col">Producto</th>
                             <th class="py-3 pr-4" scope="col">Código</th>
@@ -101,7 +101,7 @@
                             <th class="py-3 w-10" scope="col"><span class="sr-only">Acciones</span></th>
                         </tr>
                     </thead>
-                    <tbody id="tabla-body"></tbody>
+                    <tbody id="tabla-body" class="block sm:table-row-group"></tbody>
                 </table>
                 <p id="tabla-vacia" class="hidden py-10 text-center text-sm text-(--texto-suave)">Todavía no cargaste productos. Tocá <strong>Agregar producto</strong> para empezar.</p>
             </div>

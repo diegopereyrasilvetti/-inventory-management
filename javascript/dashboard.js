@@ -67,7 +67,7 @@ const errorAgregar = document.getElementById('error-agregar');
 const btnCsv = document.getElementById('btn-csv');
 const btnCsvTexto = document.getElementById('btn-csv-texto');
 
-const CLASE_BOTON_STOCK = 'flex size-8 items-center justify-center rounded-full border border-(--borde) text-(--texto) cursor-pointer transition hover:bg-(--fondo) hover:text-(--acento-hover) focus-visible:outline-2 focus-visible:outline-(--acento-hover)';
+const CLASE_BOTON_STOCK = 'flex size-10 sm:size-8 items-center justify-center rounded-full border border-(--borde) text-(--texto) cursor-pointer transition hover:bg-(--fondo) hover:text-(--acento-hover) focus-visible:outline-2 focus-visible:outline-(--acento-hover)';
 
 function cargarProductos() {
     try {
@@ -109,33 +109,37 @@ function botonStock(id, accion, icono, etiqueta) {
 }
 
 function crearFila(p) {
-    const tr = crear('tr', 'border-b border-(--borde) last:border-0 hover:bg-(--fondo)/60');
+    const tr = crear('tr', 'grid grid-cols-[1fr_auto] items-center gap-x-3 gap-y-2 border-b border-(--borde) py-4 last:border-0 hover:bg-(--fondo)/60 sm:table-row sm:py-0');
 
-    tr.appendChild(crear('td', 'py-3.5 pr-4 font-medium text-(--texto)', p.nombre));
-    tr.appendChild(crear('td', 'py-3.5 pr-4 font-mono text-sm text-(--texto-suave)', p.codigo));
+    tr.appendChild(crear('td', 'col-start-1 row-start-1 font-semibold text-(--texto) sm:py-3.5 sm:pr-4 sm:font-medium', p.nombre));
+    tr.appendChild(crear('td', 'col-start-1 row-start-2 font-mono text-sm text-(--texto-suave) sm:py-3.5 sm:pr-4', p.codigo));
 
-    const tdStock = crear('td', 'py-3.5 pr-4');
+    const tdStock = crear('td', 'col-span-2 row-start-3 sm:py-3.5 sm:pr-4');
+    const fila = crear('div', 'flex items-center justify-between gap-3 sm:justify-start');
+    fila.appendChild(crear('span', 'text-xs font-semibold uppercase tracking-wider text-(--texto-suave) sm:hidden', 'Stock'));
     const grupo = crear('div', 'flex items-center gap-1.5');
-    const input = crear('input', 'w-16 rounded-lg border border-transparent bg-transparent py-1 text-center text-base font-semibold text-(--texto) hover:border-(--borde) focus:border-(--acento) focus:bg-(--superficie) focus:outline-none focus:ring-2 focus:ring-(--acento)/30');
+    const input = crear('input', 'w-20 rounded-lg border border-transparent bg-transparent py-1 text-center text-lg font-semibold text-(--texto) hover:border-(--borde) focus:border-(--acento) focus:bg-(--superficie) focus:outline-none focus:ring-2 focus:ring-(--acento)/30 sm:w-16 sm:text-base');
     input.type = 'number';
     input.min = '0';
     input.step = '1';
+    input.inputMode = 'numeric';
     input.value = p.stock;
     input.dataset.id = p.id;
     input.setAttribute('aria-label', 'Stock de ' + p.nombre);
     grupo.appendChild(botonStock(p.id, 'menos', 'fa-minus', 'Restar una unidad de ' + p.nombre));
     grupo.appendChild(input);
     grupo.appendChild(botonStock(p.id, 'mas', 'fa-plus', 'Sumar una unidad a ' + p.nombre));
-    tdStock.appendChild(grupo);
+    fila.appendChild(grupo);
+    tdStock.appendChild(fila);
     tr.appendChild(tdStock);
 
     const estado = ESTADOS[estadoDe(p)];
-    const tdEstado = crear('td', 'py-3.5 pr-4');
+    const tdEstado = crear('td', 'col-start-2 row-start-2 justify-self-end sm:py-3.5 sm:pr-4');
     tdEstado.appendChild(crear('span', 'inline-block rounded-full px-3 py-1 text-xs font-semibold ' + estado.clases, estado.texto));
     tr.appendChild(tdEstado);
 
-    const tdAcciones = crear('td', 'py-3.5 text-right');
-    const borrar = crear('button', 'flex size-8 items-center justify-center rounded-full text-(--texto-suave) cursor-pointer transition hover:bg-(--stock-agotado)/10 hover:text-(--stock-agotado)');
+    const tdAcciones = crear('td', 'col-start-2 row-start-1 justify-self-end sm:py-3.5 sm:text-right');
+    const borrar = crear('button', 'flex size-10 items-center justify-center rounded-full text-(--texto-suave) cursor-pointer transition hover:bg-(--stock-agotado)/10 hover:text-(--stock-agotado) sm:size-8');
     borrar.type = 'button';
     borrar.dataset.id = p.id;
     borrar.dataset.accion = 'borrar';
