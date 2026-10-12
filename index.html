@@ -16,7 +16,7 @@
 
 </head>
 <body>
-    <header class="relative bg-(--superficie) border-b border-(--borde)">
+    <header id="inicio" class="relative bg-(--superficie) border-b border-(--borde)">
         <nav class="flex justify-between items-center px-4 py-3 sm:px-6 sm:py-4 lg:px-10">
             <div class="absolute left-1/2 -translate-x-1/2 flex items-center gap-2.5">
                 <img class="block h-7 sm:h-8 lg:h-10 w-auto" src="./images/c0867a9a-c574-4d23-9943-410cc741d8ca.png" alt="Logo de Gestión De Stock">
@@ -24,7 +24,7 @@
             </div>
             <label class="ml-auto text-2xl text-(--texto) cursor-pointer px-2 py-1 rounded-lg hover:bg-(--fondo)" for="menu" aria-label="Abrir menú"><i class="fa-solid fa-bars"></i></label>
             <input type="checkbox" name="menu" id="menu" class="peer hidden">
-            <ul class="hidden peer-checked:block absolute top-full left-4 right-4 sm:left-auto sm:right-6 lg:right-10 sm:min-w-56bg-(--superficie) border border-(--borde) rounded-xl shadow-[0_8px_24px_rgba(59,42,32,0.12)] p-2 z-10">
+            <ul class="hidden peer-checked:block absolute top-full right-4 sm:right-6 lg:right-10 w-44 sm:w-48 bg-(--superficie) border border-(--borde) rounded-xl shadow-[0_8px_24px_rgba(59,42,32,0.12)] p-2 z-10">
                 <li><a class="block px-4 py-3 rounded-lg text-(--texto) hover:bg-(--fondo) hover:text-(--acento-hover)" href="#iniciar-sesion">Iniciar Sesión</a></li>
                 <li><a class="block px-4 py-3 rounded-lg text-(--texto) hover:bg-(--fondo) hover:text-(--acento-hover)" href="#nosotros">Nosotros</a></li>
             </ul>
@@ -33,9 +33,27 @@
     <main class="max-w-2xl md:max-w-3xl lg:max-w-5xl mx-auto px-4 py-8 sm:px-6 sm:py-12 lg:py-16">
         <p class="max-w-2xl mx-auto text-base sm:text-[1.05rem] lg:text-lg leading-[1.8] text-(--texto-suave) text-center text-balance">Mantené tu inventario siempre organizado y actualizado. Registrá, agregá, editá, eliminá y buscá productos fácilmente, controlá el stock disponible y recibí alertas cuando las existencias sean bajas. ¡Optimizá la gestión de tu emprendimiento en un solo lugar!</p>
         <img class="w-full h-auto mt-8 lg:mt-12 rounded-xl border border-(--borde)" src="./images/Panel de inventario minimalista con gráficos.png" alt="Vista previa del panel de inventario con gráficos de stock">
+        <p>Organizá tus productos de forma simple y rápida. Agregá artículos a tu inventario, identificá cada uno con su código y cantidad disponible, y visualizá fácilmente cuáles aumentan o disminuyen sus ventas mediante indicadores claros y gráficos intuitivos.
+        <img src="./images/inventario.png" alt="">
+        </p>
     </main>
-    <footer>
-
+    <footer class="bg-(--superficie) border-t border-(--borde) text-(--texto-suave)">
+        <div class="max-w-5xl mx-auto px-4 py-8 sm:px-6 flex flex-col items-center gap-6">
+            <ul class="flex items-center gap-3 text-xl">
+                <li><a class="flex size-10 items-center justify-center rounded-full text-(--texto) hover:bg-(--fondo) hover:text-(--acento-hover)" href="mailto:contacto@ejemplo.com" aria-label="Enviar un mail"><i class="fa-solid fa-envelope"></i></a></li>
+                <li><a class="flex size-10 items-center justify-center rounded-full text-(--texto) hover:bg-(--fondo) hover:text-(--acento-hover)" href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a></li>
+                <li><a class="flex size-10 items-center justify-center rounded-full text-(--texto) hover:bg-(--fondo) hover:text-(--acento-hover)" href="#" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a></li>
+                <li><a class="flex size-10 items-center justify-center rounded-full text-(--texto) hover:bg-(--fondo) hover:text-(--acento-hover)" href="#" aria-label="X (Twitter)"><i class="fa-brands fa-x-twitter"></i></a></li>
+                <li><a class="flex size-10 items-center justify-center rounded-full text-(--texto) hover:bg-(--fondo) hover:text-(--acento-hover)" href="#" aria-label="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a></li>
+            </ul>
+            <ul class="flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm">
+                <li><a class="hover:text-(--acento-hover) hover:underline" href="#politica-de-privacidad">Política de privacidad</a></li>
+                <li><a class="hover:text-(--acento-hover) hover:underline" href="#terminos-y-condiciones">Términos y condiciones</a></li>
+                <li><a class="hover:text-(--acento-hover) hover:underline" href="#politica-de-cookies">Política de cookies</a></li>
+            </ul>
+            <p class="text-sm text-center">© 2026 Gestión de Stock. Todos los derechos reservados.</p>
+            <a class="inline-flex items-center gap-2 text-sm px-4 py-2 rounded-full border border-(--borde) text-(--texto) hover:bg-(--fondo) hover:text-(--acento-hover)" href="#inicio"><i class="fa-solid fa-arrow-up"></i> Volver arriba</a>
+        </div>
     </footer>
 </body>
 </html>

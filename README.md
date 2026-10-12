@@ -2,6 +2,8 @@
 
 Página web para ayudar a emprendedores a organizar el stock de sus productos.
 
+🔗 **Demo:** https://inventory-management-sigma-henna.vercel.app/
+
 ## Estado
 
 En desarrollo. Por ahora incluye encabezado con logo, menú hamburguesa (Iniciar Sesión, Nosotros) y texto de presentación.
@@ -23,7 +25,7 @@ En desarrollo. Por ahora incluye encabezado con logo, menú hamburguesa (Iniciar
 
 ## Uso
 
-Abrir `index.html` en el navegador. Requiere conexión a internet para cargar Tailwind, fuentes e íconos.
+Entrar a la demo, o abrir `index.html` en el navegador. Requiere conexión a internet para cargar Tailwind, fuentes e íconos.
 
 ## Diseño
 
