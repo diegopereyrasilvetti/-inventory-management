@@ -52,7 +52,7 @@
     }
 
     function boton(id, accion, icono, etiqueta, clasesExtra) {
-        const b = el('button', 'flex size-10 items-center justify-center rounded-full text-(--texto-suave) cursor-pointer transition sm:size-8 ' + clasesExtra);
+        const b = el('button', 'flex size-10 items-center justify-center rounded-full text-(--texto-suave) cursor-pointer transition xl:size-8 ' + clasesExtra);
         b.type = 'button';
         b.dataset.id = id;
         b.dataset.accion = accion;
@@ -62,23 +62,23 @@
     }
 
     function crearFila(p) {
-        const tr = el('tr', 'grid grid-cols-[1fr_auto] items-center gap-x-3 gap-y-1.5 border-b border-(--borde) py-4 last:border-0 hover:bg-(--fondo)/60 sm:table-row sm:py-0');
+        const tr = el('tr', 'grid grid-cols-[1fr_auto] items-center gap-x-3 gap-y-1.5 border-b border-(--borde) py-4 last:border-0 hover:bg-(--fondo)/60 xl:table-row xl:py-0');
 
-        tr.appendChild(el('td', 'col-start-1 row-start-1 font-semibold text-(--texto) sm:py-3.5 sm:pr-4 sm:font-medium', p.nombre));
-        tr.appendChild(el('td', 'col-span-2 row-start-2 font-mono text-sm text-(--texto-suave) sm:py-3.5 sm:pr-4', p.sku));
+        tr.appendChild(el('td', 'col-start-1 row-start-1 font-semibold text-(--texto) xl:py-3.5 xl:pr-4 xl:font-medium', p.nombre));
+        tr.appendChild(el('td', 'col-span-2 row-start-2 font-mono text-sm text-(--texto-suave) xl:py-3.5 xl:pr-4 xl:whitespace-nowrap', p.sku));
 
         DETALLES.forEach(function (d, i) {
-            const td = el('td', 'col-span-2 row-start-' + (i + 3) + ' flex items-baseline justify-between gap-3 text-sm text-(--texto) sm:table-cell sm:py-3.5 sm:pr-4');
-            td.appendChild(el('span', 'text-xs font-semibold uppercase tracking-wider text-(--texto-suave) sm:hidden', d.etiqueta));
+            const td = el('td', 'col-span-2 row-start-' + (i + 3) + ' flex items-baseline justify-between gap-3 text-sm text-(--texto) xl:table-cell xl:py-3.5 xl:pr-4' + (d.clave === 'serial' || d.clave === 'precio' ? ' xl:whitespace-nowrap' : ''));
+            td.appendChild(el('span', 'text-xs font-semibold uppercase tracking-wider text-(--texto-suave) xl:hidden', d.etiqueta));
             let valor = p[d.clave];
             if (d.clave === 'precio') valor = typeof valor === 'number' ? MONEDA.format(valor) : '';
             td.appendChild(el('span', d.clave === 'serial' ? 'font-mono' : (d.clave === 'precio' ? 'font-semibold' : ''), valor || '—'));
             tr.appendChild(td);
         });
 
-        const acciones = el('td', 'col-start-2 row-start-1 flex justify-self-end gap-1 sm:table-cell sm:py-3.5 sm:text-right sm:whitespace-nowrap');
-        acciones.appendChild(boton(p.id, 'editar', 'fa-regular fa-pen-to-square', 'Editar ' + p.nombre, 'hover:bg-(--fondo) hover:text-(--acento-hover) sm:inline-flex'));
-        acciones.appendChild(boton(p.id, 'borrar', 'fa-regular fa-trash-can', 'Eliminar ' + p.nombre, 'hover:bg-(--stock-agotado)/10 hover:text-(--stock-agotado) sm:inline-flex'));
+        const acciones = el('td', 'col-start-2 row-start-1 flex justify-self-end gap-1 xl:table-cell xl:py-3.5 xl:text-right xl:whitespace-nowrap');
+        acciones.appendChild(boton(p.id, 'editar', 'fa-regular fa-pen-to-square', 'Editar ' + p.nombre, 'hover:bg-(--fondo) hover:text-(--acento-hover) xl:inline-flex'));
+        acciones.appendChild(boton(p.id, 'borrar', 'fa-regular fa-trash-can', 'Eliminar ' + p.nombre, 'hover:bg-(--stock-agotado)/10 hover:text-(--stock-agotado) xl:inline-flex'));
         tr.appendChild(acciones);
 
         return tr;

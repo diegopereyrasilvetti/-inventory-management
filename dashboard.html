@@ -50,7 +50,7 @@
                             <span class="block text-sm font-semibold text-(--texto)">Mi empresa</span>
                             <span class="block text-xs text-(--texto-suave)">Administrador</span>
                         </span>
-                        <i class="fa-solid fa-chevron-down hidden md:block text-xs text-(--texto-suave)"></i>
+                        <span class="hidden md:block"><i class="fa-solid fa-chevron-down text-xs text-(--texto-suave)"></i></span>
                     </button>
                     <ul id="menu-usuario" class="hidden absolute right-0 top-full mt-2 w-56 bg-(--superficie) border border-(--borde) rounded-xl shadow-[0_8px_24px_rgba(59,42,32,0.12)] p-2" role="menu">
                         <li role="none"><a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-(--texto) hover:bg-(--fondo) hover:text-(--acento-hover)" href="#perfil" role="menuitem"><i class="fa-solid fa-user w-4 text-center"></i> Mi perfil</a></li>
@@ -157,9 +157,9 @@
                 </button>
             </div>
 
-            <div class="mt-2 px-4 pb-3 sm:mt-3 sm:overflow-x-auto sm:px-6">
-                <table class="block w-full border-collapse text-left sm:table sm:min-w-[62rem]">
-                    <thead class="hidden sm:table-header-group">
+            <div class="mt-2 px-4 pb-3 sm:mt-3 sm:px-6 xl:overflow-x-auto">
+                <table class="block w-full border-collapse text-left xl:table xl:min-w-[58rem]">
+                    <thead class="hidden xl:table-header-group">
                         <tr class="border-b border-(--borde) text-xs font-semibold uppercase tracking-wider text-(--texto-suave)">
                             <th class="py-3 pr-4" scope="col">Producto</th>
                             <th class="py-3 pr-4" scope="col">SKU</th>
@@ -173,7 +173,7 @@
                             <th class="py-3 w-20" scope="col"><span class="sr-only">Acciones</span></th>
                         </tr>
                     </thead>
-                    <tbody id="prod-body" class="block sm:table-row-group"></tbody>
+                    <tbody id="prod-body" class="block md:grid md:grid-cols-2 md:gap-x-8 xl:table-row-group"></tbody>
                 </table>
                 <p id="prod-vacia" class="hidden py-10 text-center text-sm text-(--texto-suave)"></p>
             </div>

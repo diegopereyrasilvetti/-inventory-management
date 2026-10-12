@@ -270,7 +270,8 @@ const SECCION_INICIAL = 'resumen';
 const secciones = document.querySelectorAll('#contenido > section');
 
 function mostrarSeccion(id) {
-    if (!document.querySelector('#contenido > section#' + id)) return false;
+    const existe = Array.prototype.some.call(secciones, function (s) { return s.id === id; });
+    if (!id || !existe) return false;
     secciones.forEach(function (s) {
         s.classList.toggle('hidden', s.id !== id);
     });
