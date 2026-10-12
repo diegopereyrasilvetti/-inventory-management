@@ -325,92 +325,115 @@
         <section id="proveedores" class="hidden mx-auto max-w-5xl bg-(--superficie) border border-(--borde) rounded-2xl shadow-[0_8px_24px_rgba(59,42,32,0.06)]" aria-labelledby="titulo-proveedores">
             <div class="flex flex-wrap items-start justify-between gap-3 px-5 pt-5 sm:px-6">
                 <div>
-                    <div class="flex flex-wrap items-center gap-2">
-                        <h2 id="titulo-proveedores" class="text-xl font-bold text-(--texto)">Proveedores</h2>
-                        <span class="rounded-full bg-(--stock-bajo)/20 px-2.5 py-0.5 text-xs font-semibold text-[#8a5a0c]">Vista previa</span>
-                    </div>
-                    <p class="mt-0.5 text-sm text-(--texto-suave)">3 proveedores registrados</p>
+                    <h2 id="titulo-proveedores" class="text-xl font-bold text-(--texto)">Proveedores</h2>
+                    <p id="prv-subtitulo" class="mt-0.5 text-sm text-(--texto-suave)"></p>
                 </div>
-                <button class="inline-flex items-center gap-2 rounded-full bg-(--acento-hover) px-5 py-2.5 text-sm font-semibold text-white cursor-pointer transition hover:bg-(--texto) focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--acento-hover)" type="button" data-proximamente>
+                <button id="prv-nuevo" class="inline-flex items-center gap-2 rounded-full bg-(--acento-hover) px-5 py-2.5 text-sm font-semibold text-white cursor-pointer transition hover:bg-(--texto) focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--acento-hover)" type="button">
                     <i class="fa-solid fa-plus text-xs"></i> Nuevo proveedor
                 </button>
             </div>
 
-            <p id="prov-aviso" class="mx-5 mt-4 hidden rounded-lg border border-(--stock-bajo)/40 bg-(--stock-bajo)/15 px-4 py-2.5 text-sm text-[#8a5a0c] sm:mx-6" role="status">Esta función todavía no está disponible. Estamos trabajando en ella.</p>
-
             <dl class="grid grid-cols-3 gap-2 px-5 pt-4 sm:gap-4 sm:px-6">
                 <div class="rounded-xl border border-(--borde) bg-(--fondo) p-2.5 sm:p-4">
                     <dt class="flex items-center gap-2 text-xs font-medium text-(--texto-suave) sm:text-sm"><i class="fa-regular fa-building text-(--acento)" aria-hidden="true"></i> Total</dt>
-                    <dd class="mt-1.5 text-2xl font-bold text-(--texto) sm:text-3xl">3</dd>
+                    <dd id="prv-total" class="mt-1.5 text-2xl font-bold text-(--texto) sm:text-3xl">0</dd>
                 </div>
                 <div class="rounded-xl border border-(--borde) bg-(--fondo) p-2.5 sm:p-4">
                     <dt class="flex items-center gap-2 text-xs font-medium text-(--texto-suave) sm:text-sm"><i class="fa-regular fa-circle-check text-(--stock-ok)" aria-hidden="true"></i> Activos</dt>
-                    <dd class="mt-1.5 text-2xl font-bold text-(--texto) sm:text-3xl">2</dd>
+                    <dd id="prv-activos" class="mt-1.5 text-2xl font-bold text-(--texto) sm:text-3xl">0</dd>
                 </div>
                 <div class="rounded-xl border border-(--borde) bg-(--fondo) p-2.5 sm:p-4">
                     <dt class="flex items-center gap-2 text-xs font-medium text-(--texto-suave) sm:text-sm"><i class="fa-regular fa-circle-pause text-(--texto-suave)" aria-hidden="true"></i> Inactivos</dt>
-                    <dd class="mt-1.5 text-2xl font-bold text-(--texto) sm:text-3xl">1</dd>
+                    <dd id="prv-inactivos" class="mt-1.5 text-2xl font-bold text-(--texto) sm:text-3xl">0</dd>
                 </div>
             </dl>
 
             <div class="px-5 pt-4 sm:px-6">
                 <form class="relative" role="search" onsubmit="return false">
                     <i class="fa-solid fa-magnifying-glass pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-sm text-(--texto-suave)"></i>
-                    <input id="prov-buscar" class="w-full rounded-full border border-(--borde) bg-(--fondo) py-3 pl-11 pr-4 text-sm text-(--texto) placeholder:text-(--texto-suave)/60 focus:outline-none focus:border-(--acento) focus:ring-2 focus:ring-(--acento)/30" type="search" placeholder="Buscar por nombre, contacto o rubro…" aria-label="Buscar proveedor" data-proximamente>
+                    <input id="prv-buscar" class="w-full rounded-full border border-(--borde) bg-(--fondo) py-3 pl-11 pr-4 text-sm text-(--texto) placeholder:text-(--texto-suave)/60 focus:outline-none focus:border-(--acento) focus:ring-2 focus:ring-(--acento)/30" type="search" placeholder="Buscar por nombre, contacto, rubro o teléfono…" aria-label="Buscar proveedor">
                 </form>
             </div>
 
             <div class="px-5 pb-5 pt-4 sm:px-6">
                 <div role="table" aria-label="Proveedores">
-                    <div class="hidden border-b border-(--borde) pb-3 text-xs font-semibold uppercase tracking-wider text-(--texto-suave) sm:grid sm:grid-cols-[minmax(0,1fr)_10rem_7rem_5.5rem] sm:gap-4" role="row">
+                    <div class="hidden border-b border-(--borde) pb-3 text-xs font-semibold uppercase tracking-wider text-(--texto-suave) sm:grid sm:grid-cols-[minmax(0,1fr)_13rem_7rem_5.5rem] sm:gap-4" role="row">
                         <span role="columnheader">Proveedor</span>
                         <span role="columnheader">Contacto</span>
                         <span role="columnheader">Estado</span>
                         <span class="text-right" role="columnheader">Acciones</span>
                     </div>
+                    <div id="prv-lista" role="rowgroup"></div>
+                </div>
+                <p id="prv-vacia" class="hidden py-8 text-center text-sm text-(--texto-suave)"></p>
+            </div>
 
-                    <div class="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-3 gap-y-2 border-b border-(--borde) py-3.5 sm:grid-cols-[minmax(0,1fr)_10rem_7rem_5.5rem] sm:gap-4" role="row">
-                        <div class="min-w-0" role="cell">
-                            <p class="truncate text-sm font-semibold text-(--texto)">Distribuidora Tech</p>
-                            <p class="text-xs text-(--texto-suave)">Tecnología</p>
-                        </div>
-                        <span class="col-start-2 row-start-1 flex justify-self-end gap-1 sm:col-start-4 sm:row-start-1" role="cell">
-                            <button class="flex size-10 items-center justify-center rounded-full text-(--texto-suave) cursor-pointer transition hover:bg-(--fondo) hover:text-(--acento-hover) sm:size-8" type="button" aria-label="Ver Distribuidora Tech" data-proximamente><i class="fa-regular fa-eye text-sm"></i></button>
-                            <button class="flex size-10 items-center justify-center rounded-full text-(--texto-suave) cursor-pointer transition hover:bg-(--fondo) hover:text-(--acento-hover) sm:size-8" type="button" aria-label="Editar Distribuidora Tech" data-proximamente><i class="fa-regular fa-pen-to-square text-sm"></i></button>
-                        </span>
-                        <span class="col-start-1 row-start-2 text-sm text-(--texto-suave) sm:col-start-2 sm:row-start-1 sm:text-(--texto)" role="cell">Carlos Gómez</span>
-                        <span class="col-start-2 row-start-2 justify-self-end sm:col-start-3 sm:row-start-1 sm:justify-self-start" role="cell"><span class="inline-block rounded-full bg-(--stock-ok)/15 px-3 py-1 text-xs font-semibold text-[#3f6b34]">Activo</span></span>
+            <!-- Crear / editar -->
+            <dialog id="prv-dialogo" class="m-auto w-[min(94vw,30rem)] max-h-[92vh] rounded-xl border border-(--borde) bg-(--superficie) p-0 text-(--texto) backdrop:bg-black/50">
+                <form id="prv-form" class="flex flex-col gap-4 p-6" novalidate>
+                    <h3 id="prv-dialogo-titulo" class="text-lg font-bold">Nuevo proveedor</h3>
+                    <input id="prv-id" type="hidden">
+
+                    <div class="flex flex-col gap-1.5">
+                        <label class="text-sm font-medium" for="prv-nombre">Nombre *</label>
+                        <input class="w-full rounded-lg border border-(--borde) bg-(--fondo) px-3 py-2.5 text-sm focus:outline-none focus:border-(--acento) focus:ring-2 focus:ring-(--acento)/30" id="prv-nombre" type="text" maxlength="60" placeholder="Ej: Distribuidora Tech" required>
                     </div>
 
-                    <div class="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-3 gap-y-2 border-b border-(--borde) py-3.5 sm:grid-cols-[minmax(0,1fr)_10rem_7rem_5.5rem] sm:gap-4" role="row">
-                        <div class="min-w-0" role="cell">
-                            <p class="truncate text-sm font-semibold text-(--texto)">Insumos del Sur</p>
-                            <p class="text-xs text-(--texto-suave)">Insumos</p>
+                    <div class="grid gap-4 sm:grid-cols-2">
+                        <div class="flex flex-col gap-1.5">
+                            <label class="text-sm font-medium" for="prv-rubro">Rubro</label>
+                            <input class="w-full rounded-lg border border-(--borde) bg-(--fondo) px-3 py-2.5 text-sm focus:outline-none focus:border-(--acento) focus:ring-2 focus:ring-(--acento)/30" id="prv-rubro" type="text" maxlength="40" placeholder="Ej: Tecnología">
                         </div>
-                        <span class="col-start-2 row-start-1 flex justify-self-end gap-1 sm:col-start-4 sm:row-start-1" role="cell">
-                            <button class="flex size-10 items-center justify-center rounded-full text-(--texto-suave) cursor-pointer transition hover:bg-(--fondo) hover:text-(--acento-hover) sm:size-8" type="button" aria-label="Ver Insumos del Sur" data-proximamente><i class="fa-regular fa-eye text-sm"></i></button>
-                            <button class="flex size-10 items-center justify-center rounded-full text-(--texto-suave) cursor-pointer transition hover:bg-(--fondo) hover:text-(--acento-hover) sm:size-8" type="button" aria-label="Editar Insumos del Sur" data-proximamente><i class="fa-regular fa-pen-to-square text-sm"></i></button>
-                        </span>
-                        <span class="col-start-1 row-start-2 text-sm text-(--texto-suave) sm:col-start-2 sm:row-start-1 sm:text-(--texto)" role="cell">María López</span>
-                        <span class="col-start-2 row-start-2 justify-self-end sm:col-start-3 sm:row-start-1 sm:justify-self-start" role="cell"><span class="inline-block rounded-full bg-(--stock-ok)/15 px-3 py-1 text-xs font-semibold text-[#3f6b34]">Activo</span></span>
+                        <div class="flex flex-col gap-1.5">
+                            <label class="text-sm font-medium" for="prv-contacto">Persona de contacto</label>
+                            <input class="w-full rounded-lg border border-(--borde) bg-(--fondo) px-3 py-2.5 text-sm focus:outline-none focus:border-(--acento) focus:ring-2 focus:ring-(--acento)/30" id="prv-contacto" type="text" maxlength="60" placeholder="Ej: Carlos Gómez" autocomplete="off">
+                        </div>
+                        <div class="flex flex-col gap-1.5">
+                            <label class="text-sm font-medium" for="prv-telefono">Teléfono</label>
+                            <input class="w-full rounded-lg border border-(--borde) bg-(--fondo) px-3 py-2.5 text-sm focus:outline-none focus:border-(--acento) focus:ring-2 focus:ring-(--acento)/30" id="prv-telefono" type="tel" maxlength="25" placeholder="Ej: +54 11 5555-0101" autocomplete="off">
+                        </div>
+                        <div class="flex flex-col gap-1.5">
+                            <label class="text-sm font-medium" for="prv-email">Email</label>
+                            <input class="w-full rounded-lg border border-(--borde) bg-(--fondo) px-3 py-2.5 text-sm focus:outline-none focus:border-(--acento) focus:ring-2 focus:ring-(--acento)/30" id="prv-email" type="email" maxlength="80" placeholder="ventas@proveedor.com" autocomplete="off">
+                        </div>
                     </div>
 
-                    <div class="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-3 gap-y-2 py-3.5 sm:grid-cols-[minmax(0,1fr)_10rem_7rem_5.5rem] sm:gap-4" role="row">
-                        <div class="min-w-0" role="cell">
-                            <p class="truncate text-sm font-semibold text-(--texto)">Mayorista Central</p>
-                            <p class="text-xs text-(--texto-suave)">General</p>
+                    <div class="flex flex-col gap-1.5">
+                        <label class="text-sm font-medium" for="prv-estado">Estado</label>
+                        <select id="prv-estado" class="w-full cursor-pointer rounded-lg border border-(--borde) bg-(--fondo) px-3 py-2.5 text-sm focus:outline-none focus:border-(--acento) focus:ring-2 focus:ring-(--acento)/30">
+                            <option value="activo">Activo</option>
+                            <option value="inactivo">Inactivo</option>
+                        </select>
+                    </div>
+
+                    <p id="prv-error" class="hidden text-sm text-(--stock-agotado)" role="alert"></p>
+                    <div class="flex flex-wrap items-center justify-between gap-2">
+                        <button id="prv-eliminar" class="hidden rounded-full px-4 py-2 text-sm font-medium text-(--stock-agotado) cursor-pointer hover:bg-(--stock-agotado)/10" type="button">Eliminar</button>
+                        <div class="ml-auto flex gap-2">
+                            <button id="prv-cancelar" class="rounded-full border border-(--borde) px-5 py-2 text-sm font-medium cursor-pointer hover:bg-(--fondo)" type="button">Cancelar</button>
+                            <button class="rounded-full bg-(--acento-hover) px-5 py-2 text-sm font-semibold text-white cursor-pointer hover:bg-(--texto)" type="submit">Guardar</button>
                         </div>
-                        <span class="col-start-2 row-start-1 flex justify-self-end gap-1 sm:col-start-4 sm:row-start-1" role="cell">
-                            <button class="flex size-10 items-center justify-center rounded-full text-(--texto-suave) cursor-pointer transition hover:bg-(--fondo) hover:text-(--acento-hover) sm:size-8" type="button" aria-label="Ver Mayorista Central" data-proximamente><i class="fa-regular fa-eye text-sm"></i></button>
-                            <button class="flex size-10 items-center justify-center rounded-full text-(--texto-suave) cursor-pointer transition hover:bg-(--fondo) hover:text-(--acento-hover) sm:size-8" type="button" aria-label="Editar Mayorista Central" data-proximamente><i class="fa-regular fa-pen-to-square text-sm"></i></button>
-                        </span>
-                        <span class="col-start-1 row-start-2 text-sm text-(--texto-suave) sm:col-start-2 sm:row-start-1 sm:text-(--texto)" role="cell">Juan Pérez</span>
-                        <span class="col-start-2 row-start-2 justify-self-end sm:col-start-3 sm:row-start-1 sm:justify-self-start" role="cell"><span class="inline-block rounded-full bg-(--fondo) px-3 py-1 text-xs font-semibold text-(--texto-suave) ring-1 ring-(--borde)">Inactivo</span></span>
+                    </div>
+                </form>
+            </dialog>
+
+            <!-- Ver contacto -->
+            <dialog id="prv-ver" class="m-auto w-[min(94vw,26rem)] max-h-[92vh] rounded-xl border border-(--borde) bg-(--superficie) p-0 text-(--texto) backdrop:bg-black/50">
+                <div class="flex flex-col gap-4 p-6">
+                    <div class="flex items-start justify-between gap-3">
+                        <div class="min-w-0">
+                            <h3 id="prv-ver-nombre" class="text-lg font-bold"></h3>
+                            <p id="prv-ver-rubro" class="text-sm text-(--texto-suave)"></p>
+                        </div>
+                        <span id="prv-ver-estado"></span>
+                    </div>
+                    <dl id="prv-ver-datos" class="flex flex-col gap-3"></dl>
+                    <div class="flex justify-end gap-2 pt-1">
+                        <button id="prv-ver-cerrar" class="rounded-full border border-(--borde) px-5 py-2 text-sm font-medium cursor-pointer hover:bg-(--fondo)" type="button">Cerrar</button>
+                        <button id="prv-ver-editar" class="rounded-full bg-(--acento-hover) px-5 py-2 text-sm font-semibold text-white cursor-pointer hover:bg-(--texto)" type="button">Editar</button>
                     </div>
                 </div>
-
-                <p class="mt-4 text-xs text-(--texto-suave)">Datos ficticios para demostración. Todavía no se pueden crear, ver ni editar proveedores.</p>
-            </div>
+            </dialog>
         </section>
 
         <section id="ventas" class="hidden mx-auto max-w-5xl bg-(--superficie) border border-(--borde) rounded-2xl shadow-[0_8px_24px_rgba(59,42,32,0.06)]" aria-labelledby="titulo-ventas">
@@ -557,11 +580,137 @@
             </div>
         </section>
 
-        <section id="balances" class="hidden mx-auto max-w-5xl rounded-2xl border border-(--borde) bg-(--superficie) px-6 py-14 text-center" aria-labelledby="titulo-balances">
-            <span class="mx-auto flex size-14 items-center justify-center rounded-full bg-(--fondo) text-xl text-(--acento-hover)"><i class="fa-solid fa-scale-balanced"></i></span>
-            <h2 id="titulo-balances" class="mt-4 text-xl font-bold text-(--texto)">Balances</h2>
-            <p class="mx-auto mt-2 max-w-md text-sm text-(--texto-suave)">Valor del inventario, costos y ganancias para ver cómo viene tu negocio.</p>
-            <span class="mt-5 inline-block rounded-full bg-(--fondo) px-3 py-1 text-xs font-semibold text-(--texto-suave)">Próximamente</span>
+        <section id="balances" class="hidden mx-auto max-w-5xl bg-(--superficie) border border-(--borde) rounded-2xl shadow-[0_8px_24px_rgba(59,42,32,0.06)]" aria-labelledby="titulo-balances">
+            <div class="flex flex-wrap items-start justify-between gap-3 px-5 pt-5 sm:px-6">
+                <div>
+                    <h2 id="titulo-balances" class="text-xl font-bold text-(--texto)">Balances</h2>
+                    <p class="mt-0.5 text-sm text-(--texto-suave)">Resumen financiero del negocio</p>
+                </div>
+                <div class="relative">
+                    <label class="sr-only" for="bal-periodo">Período</label>
+                    <select id="bal-periodo" class="cursor-pointer appearance-none rounded-full border border-(--borde) bg-(--superficie) py-2.5 pl-4 pr-10 text-sm font-medium text-(--texto) focus:outline-none focus:border-(--acento) focus:ring-2 focus:ring-(--acento)/30">
+                        <option value="semana">Semana (7 días)</option>
+                        <option value="mes">Este mes</option>
+                        <option value="6m" selected>6 meses</option>
+                        <option value="anio">Año (12 meses)</option>
+                    </select>
+                    <i class="fa-solid fa-chevron-down pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-xs text-(--texto-suave)"></i>
+                </div>
+            </div>
+
+            <div id="bal-aviso" class="mx-5 mt-4 flex flex-wrap items-center justify-between gap-2 rounded-lg border border-(--stock-bajo)/40 bg-(--stock-bajo)/15 px-4 py-2.5 text-sm text-[#8a5a0c] sm:mx-6">
+                <p id="bal-aviso-texto"></p>
+                <button id="bal-modo" class="rounded-full border border-(--stock-bajo)/60 px-3.5 py-1 text-xs font-semibold cursor-pointer transition hover:bg-(--stock-bajo)/20" type="button"></button>
+            </div>
+
+            <dl class="grid grid-cols-2 gap-2 px-5 pt-4 sm:gap-4 sm:px-6 lg:grid-cols-4">
+                <div class="rounded-xl border border-(--borde) bg-(--fondo) p-3 sm:p-4">
+                    <dt class="flex items-center gap-2 text-xs font-medium text-(--texto-suave) sm:text-sm"><i class="fa-solid fa-arrow-trend-up text-(--acento)" aria-hidden="true"></i> Ingresos</dt>
+                    <dd id="bal-ingresos" class="mt-1.5 text-xl font-bold text-(--texto) sm:text-2xl">$ 0</dd>
+                </div>
+                <div class="rounded-xl border border-(--borde) bg-(--fondo) p-3 sm:p-4">
+                    <dt class="flex items-center gap-2 text-xs font-medium text-(--texto-suave) sm:text-sm"><i class="fa-solid fa-cube text-(--acento)" aria-hidden="true"></i> Costo de ventas</dt>
+                    <dd id="bal-costo" class="mt-1.5 text-xl font-bold text-(--texto) sm:text-2xl">$ 0</dd>
+                </div>
+                <div class="rounded-xl border border-(--borde) bg-(--fondo) p-3 sm:p-4">
+                    <dt class="flex items-center gap-2 text-xs font-medium text-(--texto-suave) sm:text-sm"><i class="fa-solid fa-wallet text-(--stock-agotado)" aria-hidden="true"></i> Otros gastos</dt>
+                    <dd id="bal-otros" class="mt-1.5 text-xl font-bold text-(--texto) sm:text-2xl">$ 0</dd>
+                </div>
+                <div class="rounded-xl border border-(--borde) bg-(--fondo) p-3 sm:p-4">
+                    <dt class="flex items-center gap-2 text-xs font-medium text-(--texto-suave) sm:text-sm"><i class="fa-solid fa-chart-simple text-(--stock-ok)" aria-hidden="true"></i> Ganancia estimada</dt>
+                    <dd id="bal-ganancia" class="mt-1.5 text-xl font-bold text-(--texto) sm:text-2xl">$ 0</dd>
+                </div>
+            </dl>
+
+            <div class="px-5 pt-6 sm:px-6">
+                <h3 class="text-lg font-bold text-(--texto)">Evolución de ingresos y gastos</h3>
+                <div class="mt-4 flex gap-2">
+                    <div id="bal-grafico" class="relative ml-12 mr-1 h-56 min-w-0 flex-1 sm:ml-14" role="img" aria-label="Gráfico de barras de ingresos y gastos por período"></div>
+                </div>
+                <div id="bal-etiquetas" class="ml-12 mr-1 mt-2 grid gap-1 sm:ml-14"></div>
+                <div class="mt-4 flex flex-wrap items-center justify-center gap-x-5 gap-y-1 text-sm text-(--texto)">
+                    <span class="inline-flex items-center gap-2"><span class="size-3 rounded-full bg-[#1a7bff]"></span> Ingresos</span>
+                    <span class="inline-flex items-center gap-2"><span class="size-3 rounded-full bg-(--acento)"></span> Costos y gastos</span>
+                </div>
+                <p class="mt-3 text-xs text-(--texto-suave)">Valores expresados en pesos argentinos.</p>
+            </div>
+
+            <div class="px-5 pt-6 sm:px-6">
+                <div class="flex items-center justify-between gap-3">
+                    <h3 class="text-base font-bold text-(--texto)">Margen de ganancia estimado</h3>
+                    <span id="bal-margen" class="text-xl font-bold text-(--texto)">—</span>
+                </div>
+                <div class="mt-3 h-2.5 w-full overflow-hidden rounded-full bg-(--fondo) ring-1 ring-(--borde)" role="progressbar" aria-label="Margen de ganancia" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="bal-barra">
+                    <div id="bal-barra-relleno" class="h-full rounded-full bg-(--stock-ok) transition-[width] duration-500" style="width: 0%"></div>
+                </div>
+            </div>
+
+            <div class="px-5 pt-6 sm:px-6">
+                <h3 class="text-lg font-bold text-(--texto)">Detalle de ingresos y egresos</h3>
+                <div class="mt-3 overflow-x-auto">
+                    <table class="w-full border-collapse text-left text-xs sm:text-sm">
+                        <thead>
+                            <tr class="border-b border-(--borde) text-[11px] font-semibold uppercase tracking-wider text-(--texto-suave) sm:text-xs">
+                                <th class="py-2.5 pr-3" scope="col">Período</th>
+                                <th class="py-2.5 pr-3 text-right" scope="col">Ingresos</th>
+                                <th class="py-2.5 pr-3 text-right" scope="col">Egresos</th>
+                                <th class="py-2.5 text-right" scope="col">Ganancia</th>
+                            </tr>
+                        </thead>
+                        <tbody id="bal-tabla"></tbody>
+                        <tfoot>
+                            <tr class="border-t-2 border-(--borde) font-bold text-(--texto)">
+                                <th class="py-3 pr-3" scope="row">Total</th>
+                                <td id="bal-t-ing" class="py-3 pr-3 text-right"></td>
+                                <td id="bal-t-egr" class="py-3 pr-3 text-right"></td>
+                                <td id="bal-t-gan" class="py-3 text-right"></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+
+            <div class="mt-6 border-t border-(--borde) px-5 pb-6 pt-5 sm:px-6">
+                <h3 class="text-lg font-bold text-(--texto)">Registrar gasto adicional</h3>
+                <form id="bal-form" class="mt-3 grid gap-4 sm:grid-cols-2" novalidate>
+                    <div class="flex flex-col gap-1.5">
+                        <label class="text-sm font-medium text-(--texto)" for="bal-tipo">Tipo de gasto</label>
+                        <div class="relative">
+                            <select id="bal-tipo" class="w-full cursor-pointer appearance-none rounded-lg border border-(--borde) bg-(--fondo) py-2.5 pl-3 pr-9 text-sm text-(--texto) focus:outline-none focus:border-(--acento) focus:ring-2 focus:ring-(--acento)/30">
+                                <option>Mercadería y proveedores</option>
+                                <option>Alquiler</option>
+                                <option>Servicios (luz, agua, internet)</option>
+                                <option>Sueldos y personal</option>
+                                <option>Transporte y envíos</option>
+                                <option>Impuestos y tasas</option>
+                                <option>Mantenimiento</option>
+                                <option>Packaging e insumos</option>
+                                <option>Publicidad</option>
+                                <option selected>Otros</option>
+                            </select>
+                            <i class="fa-solid fa-chevron-down pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-xs text-(--texto-suave)"></i>
+                        </div>
+                    </div>
+                    <div class="flex flex-col gap-1.5">
+                        <label class="text-sm font-medium text-(--texto)" for="bal-detalle">Detalle <span class="font-normal text-(--texto-suave)">(opcional)</span></label>
+                        <input id="bal-detalle" class="w-full rounded-lg border border-(--borde) bg-(--fondo) px-3 py-2.5 text-sm text-(--texto) placeholder:text-(--texto-suave)/60 focus:outline-none focus:border-(--acento) focus:ring-2 focus:ring-(--acento)/30" type="text" maxlength="60" placeholder="Ej: Reparación de heladera">
+                    </div>
+                    <div class="flex flex-col gap-1.5">
+                        <label class="text-sm font-medium text-(--texto)" for="bal-monto">Monto ($)</label>
+                        <input id="bal-monto" class="w-full rounded-lg border border-(--borde) bg-(--fondo) px-3 py-2.5 text-sm text-(--texto) placeholder:text-(--texto-suave)/60 focus:outline-none focus:border-(--acento) focus:ring-2 focus:ring-(--acento)/30" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0,00">
+                    </div>
+                    <div class="flex flex-col gap-1.5">
+                        <label class="text-sm font-medium text-(--texto)" for="bal-fecha">Fecha</label>
+                        <input id="bal-fecha" class="w-full rounded-lg border border-(--borde) bg-(--fondo) px-3 py-2.5 text-sm text-(--texto) focus:outline-none focus:border-(--acento) focus:ring-2 focus:ring-(--acento)/30" type="date">
+                    </div>
+                    <div class="flex flex-wrap items-center gap-3 sm:col-span-2">
+                        <button class="inline-flex items-center gap-2 rounded-full bg-(--acento-hover) px-6 py-2.5 text-sm font-semibold text-white cursor-pointer transition hover:bg-(--texto) focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--acento-hover)" type="submit">
+                            <i class="fa-solid fa-plus text-xs"></i> Registrar gasto
+                        </button>
+                        <p id="bal-mensaje" class="hidden text-sm" role="status"></p>
+                    </div>
+                </form>
+            </div>
         </section>
 
         <dialog id="dialogo-agregar" class="m-auto w-[min(92vw,24rem)] rounded-xl border border-(--borde) bg-(--superficie) p-0 text-(--texto) backdrop:bg-black/50">
@@ -599,5 +748,6 @@
     <script src="./javascript/movimientos.js"></script>
     <script src="./javascript/proveedores.js"></script>
     <script src="./javascript/ventas.js"></script>
+    <script src="./javascript/balances.js"></script>
 </body>
 </html>

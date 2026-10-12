@@ -240,6 +240,7 @@
             return li;
         }));
         listaGastosVacia.classList.toggle('hidden', gastosDia.length > 0);
+        document.dispatchEvent(new CustomEvent('finanzas:cambio'));
     }
 
     listaVentas.addEventListener('click', function (e) {
@@ -266,6 +267,17 @@
     window.addEventListener('hashchange', function () {
         if (location.hash === '#ventas') refrescarProductos();
     });
+
+    /* Datos compartidos con la sección Balances */
+    window.finanzas = {
+        ventas: function () { return ventas.map(function (v) { return Object.assign({}, v); }); },
+        gastos: function () { return gastos.map(function (g) { return Object.assign({}, g); }); },
+        agregarGasto: function (g) {
+            gastos.push(Object.assign({ id: siguienteId(gastos) }, g));
+            guardar(CLAVE_GASTOS, gastos);
+            renderDia();
+        }
+    };
 
     campoFecha.value = hoy();
     refrescarProductos();
