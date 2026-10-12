@@ -19,8 +19,8 @@
     <header id="inicio" class="relative bg-(--superficie) border-b border-(--borde)">
         <nav class="flex justify-between items-center px-4 py-3 sm:px-6 sm:py-4 lg:px-10">
             <div class="absolute left-1/2 -translate-x-1/2 flex items-center gap-2.5">
-                <img class="block h-7 sm:h-8 lg:h-10 w-auto" src="./images/c0867a9a-c574-4d23-9943-410cc741d8ca.png" alt="Logo de Gestión De Stock">
-                <h1 class="text-lg sm:text-xl lg:text-2xl font-semibold tracking-[0.02em] text-(--texto)"><span class="text-[#1a7bff]">G</span>estion</h1>
+                <img class="block h-12 sm:h-16 lg:h-[4.5rem] w-auto" src="./images/c0867a9a-c574-4d23-9943-410cc741d8ca.png" alt="Logo de Gestión De Stock">
+                <h1 class="text-2xl sm:text-5xl lg:text-6xl font-extrabold tracking-[0.02em] text-(--texto)"><span class="text-[#1a7bff]">G</span>estion</h1>
             </div>
             <label class="ml-auto text-2xl text-(--texto) cursor-pointer px-2 py-1 rounded-lg hover:bg-(--fondo)" for="menu" aria-label="Abrir menú"><i class="fa-solid fa-bars"></i></label>
             <input type="checkbox" name="menu" id="menu" class="peer hidden">
@@ -31,16 +31,44 @@
         </nav>
     </header>
     <main class="max-w-2xl md:max-w-3xl lg:max-w-5xl mx-auto px-4 py-8 sm:px-6 sm:py-12 lg:py-16">
+        <h2 class="mb-4 sm:mb-5 text-[clamp(1rem,4.4vw,1.75rem)] font-bold leading-tight tracking-tight text-(--texto) text-center whitespace-nowrap">
+            Controlá tu stock
+            sin complicaciones
+        </h2>
         <p class="max-w-2xl mx-auto text-base sm:text-[1.05rem] lg:text-lg leading-[1.8] text-(--texto-suave) text-center text-balance">Mantené tu inventario siempre organizado y actualizado. Registrá, agregá, editá, eliminá y buscá productos fácilmente, controlá el stock disponible y recibí alertas cuando las existencias sean bajas. ¡Optimizá la gestión de tu emprendimiento en un solo lugar!</p>
         <div class="mt-8 flex justify-center">
             <a class="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-(--acento-hover) text-white text-base sm:text-lg font-semibold shadow-[0_8px_20px_rgba(143,95,53,0.3)] transition hover:bg-(--texto) hover:-translate-y-0.5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--acento-hover)" href="#iniciar-sesion">
                 Empezá a gestionar tu stock <i class="fa-solid fa-arrow-right text-sm"></i>
             </a>
         </div>
-        <img class="w-full h-auto mt-8 lg:mt-12 rounded-xl border border-(--borde)" src="./images/Panel de inventario minimalista con gráficos.png" alt="Vista previa del panel de inventario con gráficos de stock">
+        <img class="zoomable w-full h-auto mt-8 lg:mt-12 rounded-xl border border-(--borde) lg:cursor-zoom-in" src="./images/Panel de inventario minimalista con gráficos.png" alt="Vista previa del panel de inventario con gráficos de stock">
         <p class="max-w-2xl mx-auto mt-8 lg:mt-12 text-base sm:text-[1.05rem] lg:text-lg leading-[1.8] text-(--texto-suave) text-center text-balance">Organizá tus productos de forma simple y rápida. Agregá artículos a tu inventario, identificá cada uno con su código y cantidad disponible, y visualizá fácilmente cuáles aumentan o disminuyen sus ventas mediante indicadores claros y gráficos intuitivos.</p>
-        <img class="w-full h-auto mt-8 lg:mt-12 rounded-xl border border-(--borde)" src="./images/inventario.png" alt="Listado de productos con código y cantidad disponible">
+        <img class="zoomable w-full h-auto mt-8 lg:mt-12 rounded-xl border border-(--borde) lg:cursor-zoom-in" src="./images/inventario.png" alt="Listado de productos con código y cantidad disponible">
     </main>
+    <section id="contacto" class="max-w-xs mx-auto px-4 pb-6 sm:px-6 sm:pb-8 lg:pb-10">
+        <div class="bg-(--superficie) border border-(--borde) rounded-lg p-3.5 sm:p-4 shadow-[0_8px_24px_rgba(59,42,32,0.06)]">
+            <h2 class="text-base font-semibold text-(--texto) text-center">Contactanos</h2>
+            <p class="mt-0.5 text-xs text-(--texto-suave) text-center">¿Tenés dudas o querés más información? Escribinos y te respondemos a la brevedad.</p>
+
+            <form class="mt-3 flex flex-col gap-2.5" action="mailto:contacto@ejemplo.com" method="post" enctype="text/plain">
+                <div class="flex flex-col gap-1">
+                    <label class="text-xs font-medium text-(--texto)" for="nombre">Nombre</label>
+                    <input class="w-full px-2.5 py-1.5 text-xs rounded-md bg-(--fondo) border border-(--borde) text-(--texto) placeholder:text-(--texto-suave)/60 focus:outline-none focus:border-(--acento) focus:ring-2 focus:ring-(--acento)/30" type="text" id="nombre" name="nombre" placeholder="Tu nombre" autocomplete="name" required>
+                </div>
+                <div class="flex flex-col gap-1">
+                    <label class="text-xs font-medium text-(--texto)" for="email">Email</label>
+                    <input class="w-full px-2.5 py-1.5 text-xs rounded-md bg-(--fondo) border border-(--borde) text-(--texto) placeholder:text-(--texto-suave)/60 focus:outline-none focus:border-(--acento) focus:ring-2 focus:ring-(--acento)/30" type="email" id="email" name="email" placeholder="tu@email.com" autocomplete="email" required>
+                </div>
+                <div class="flex flex-col gap-1">
+                    <label class="text-xs font-medium text-(--texto)" for="mensaje">Mensaje</label>
+                    <textarea class="w-full px-2.5 py-1.5 text-xs rounded-md bg-(--fondo) border border-(--borde) text-(--texto) placeholder:text-(--texto-suave)/60 focus:outline-none focus:border-(--acento) focus:ring-2 focus:ring-(--acento)/30 resize-y" id="mensaje" name="mensaje" rows="2" placeholder="Contanos en qué te podemos ayudar" required></textarea>
+                </div>
+                <button class="mt-0.5 inline-flex items-center justify-center gap-2 px-4 py-1.5 text-xs rounded-full bg-(--acento-hover) text-white font-semibold cursor-pointer transition hover:bg-(--texto) focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--acento-hover)" type="submit">
+                    Enviar mensaje <i class="fa-solid fa-paper-plane text-sm"></i>
+                </button>
+            </form>
+        </div>
+    </section>
     <footer class="bg-(--texto) text-[#e8dcc8]">
         <div class="max-w-5xl mx-auto px-4 sm:px-6 pt-8 pb-5 grid gap-6 text-center md:grid-cols-3 md:text-left">
             <div class="flex flex-col items-center gap-2 md:items-start">
@@ -53,7 +81,7 @@
 
             <nav aria-label="Información legal">
                 <h2 class="text-xs font-semibold uppercase tracking-widest text-(--acento) mb-2.5">Legal</h2>
-                <ul class="flex flex-col gap-1.5 text-sm">
+                <ul class="flex flex-col gap-1 text-sm">
                     <li><a class="text-[#e8dcc8]/80 hover:text-white transition-colors" href="#politica-de-privacidad">Política de privacidad</a></li>
                     <li><a class="text-[#e8dcc8]/80 hover:text-white transition-colors" href="#terminos-y-condiciones">Términos y condiciones</a></li>
                     <li><a class="text-[#e8dcc8]/80 hover:text-white transition-colors" href="#politica-de-cookies">Política de cookies</a></li>
@@ -79,5 +107,21 @@
             </div>
         </div>
     </footer>
+    <dialog id="lightbox" class="m-auto bg-transparent p-4 max-w-none max-h-none outline-none backdrop:bg-black/80 cursor-zoom-out">
+        <img id="lightbox-img" class="max-w-[92vw] max-h-[88vh] w-auto h-auto rounded-xl shadow-2xl" src="" alt="">
+    </dialog>
+    <script>
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightbox-img');
+        document.querySelectorAll('img.zoomable').forEach(function (img) {
+            img.addEventListener('click', function () {
+                if (!window.matchMedia('(min-width: 1024px)').matches) return;
+                lightboxImg.src = img.src;
+                lightboxImg.alt = img.alt;
+                lightbox.showModal();
+            });
+        });
+        lightbox.addEventListener('click', function () { lightbox.close(); });
+    </script>
 </body>
 </html>
