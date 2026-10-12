@@ -98,8 +98,8 @@ function botonStock(id, accion, icono, etiqueta) {
 function crearFila(p) {
     const tr = crear('tr', 'grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-3 gap-y-2 border-b border-(--borde) py-4 last:border-0 hover:bg-(--fondo)/60 sm:table-row sm:py-0');
 
-    tr.appendChild(crear('td', 'col-start-1 row-start-1 font-semibold text-(--texto) sm:py-3.5 sm:pr-4 sm:font-medium', p.nombre));
-    tr.appendChild(crear('td', 'col-start-1 row-start-2 font-mono text-sm text-(--texto-suave) sm:py-3.5 sm:pr-4', p.codigo));
+    tr.appendChild(crear('td', 'col-start-1 row-start-1 min-w-0 font-semibold text-(--texto) [overflow-wrap:anywhere] sm:py-3.5 sm:pr-4 sm:font-medium', p.nombre));
+    tr.appendChild(crear('td', 'col-start-1 row-start-2 min-w-0 font-mono text-sm text-(--texto-suave) [overflow-wrap:anywhere] sm:py-3.5 sm:pr-4', p.codigo));
 
     const tdStock = crear('td', 'col-span-2 row-start-3 sm:py-3.5 sm:pr-4');
     const fila = crear('div', 'flex items-center justify-between gap-3 sm:justify-start');

@@ -64,15 +64,15 @@
     function crearFila(p) {
         const tr = el('tr', 'grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-3 gap-y-1.5 border-b border-(--borde) py-4 last:border-0 hover:bg-(--fondo)/60 xl:table-row xl:py-0');
 
-        tr.appendChild(el('td', 'col-start-1 row-start-1 font-semibold text-(--texto) xl:py-3.5 xl:pr-4 xl:font-medium', p.nombre));
-        tr.appendChild(el('td', 'col-span-2 row-start-2 font-mono text-sm text-(--texto-suave) xl:py-3.5 xl:pr-4 xl:whitespace-nowrap', p.sku));
+        tr.appendChild(el('td', 'col-start-1 row-start-1 min-w-0 font-semibold text-(--texto) [overflow-wrap:anywhere] xl:py-3.5 xl:pr-4 xl:font-medium', p.nombre));
+        tr.appendChild(el('td', 'col-span-2 row-start-2 min-w-0 font-mono text-sm text-(--texto-suave) [overflow-wrap:anywhere] xl:py-3.5 xl:pr-4 xl:whitespace-nowrap', p.sku));
 
         DETALLES.forEach(function (d, i) {
             const td = el('td', 'col-span-2 row-start-' + (i + 3) + ' flex items-baseline justify-between gap-3 text-sm text-(--texto) xl:table-cell xl:py-3.5 xl:pr-4' + (d.clave === 'serial' || d.clave === 'precio' ? ' xl:whitespace-nowrap' : ''));
             td.appendChild(el('span', 'text-xs font-semibold uppercase tracking-wider text-(--texto-suave) xl:hidden', d.etiqueta));
             let valor = p[d.clave];
             if (d.clave === 'precio') valor = typeof valor === 'number' ? MONEDA.format(valor) : '';
-            td.appendChild(el('span', d.clave === 'serial' ? 'font-mono' : (d.clave === 'precio' ? 'font-semibold' : ''), valor || '—'));
+            td.appendChild(el('span', 'min-w-0 [overflow-wrap:anywhere] ' + (d.clave === 'serial' ? 'font-mono' : (d.clave === 'precio' ? 'font-semibold' : '')), valor || '—'));
             tr.appendChild(td);
         });
 
