@@ -150,6 +150,38 @@ function actualizarResumen() {
     document.getElementById('res-unidades').textContent = productos.reduce(function (suma, p) { return suma + p.stock; }, 0);
     document.getElementById('res-bajo').textContent = productos.filter(function (p) { return estadoDe(p) === 'bajo'; }).length;
     document.getElementById('res-agotado').textContent = productos.filter(function (p) { return estadoDe(p) === 'agotado'; }).length;
+    actualizarAlertasResumen();
+}
+
+function unidades(n) {
+    return n + (n === 1 ? ' unidad' : ' unidades');
+}
+
+function actualizarAlertasResumen() {
+    const lista = document.getElementById('res-alertas');
+    const ok = document.getElementById('res-alertas-ok');
+    const agotados = productos.filter(function (p) { return estadoDe(p) === 'agotado'; });
+    const bajos = productos.filter(function (p) { return estadoDe(p) === 'bajo'; });
+
+    const items = agotados.map(function (p) {
+        return { p: p, tipo: 'agotado', texto: ' está agotado: no queda stock (mínimo ' + p.minimo + ').' };
+    }).concat(bajos.map(function (p) {
+        return { p: p, tipo: 'bajo', texto: ' está bajo de stock: ' + (p.stock === 1 ? 'queda ' : 'quedan ') + unidades(p.stock) + ' (mínimo ' + p.minimo + ').' };
+    }));
+
+    lista.replaceChildren(...items.map(function (it) {
+        const agotado = it.tipo === 'agotado';
+        const li = crear('li', 'flex items-start gap-3 rounded-lg px-3 py-2.5 text-sm ' + (agotado ? 'bg-(--stock-agotado)/10 text-[#9a3a28]' : 'bg-(--stock-bajo)/15 text-[#8a5a0c]'));
+        li.appendChild(crear('i', 'mt-0.5 shrink-0 ' + (agotado ? 'fa-solid fa-circle-xmark' : 'fa-solid fa-triangle-exclamation')));
+        const texto = crear('p', 'min-w-0 break-words');
+        texto.appendChild(crear('strong', 'font-semibold', it.p.nombre));
+        texto.appendChild(document.createTextNode(it.texto));
+        li.appendChild(texto);
+        return li;
+    }));
+    lista.classList.toggle('hidden', items.length === 0);
+    ok.classList.toggle('hidden', items.length > 0);
+    ok.classList.toggle('flex', items.length === 0);
 }
 
 function render() {
