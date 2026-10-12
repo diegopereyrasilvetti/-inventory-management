@@ -28,19 +28,6 @@ document.addEventListener('keydown', function (e) {
     if (e.key === 'Escape') alternar(btnUsuario, menuUsuario, false);
 });
 
-document.querySelectorAll('nav a[href^="#"]').forEach(function (enlace) {
-    enlace.addEventListener('click', function () {
-        const destino = enlace.getAttribute('href');
-        document.querySelectorAll('nav a[href^="#"]').forEach(function (a) {
-            if (a.getAttribute('href') === destino) {
-                a.setAttribute('aria-current', 'page');
-            } else {
-                a.removeAttribute('aria-current');
-            }
-        });
-    });
-});
-
 /* ---------- Inventario de productos ---------- */
 
 const CLAVE_STORAGE = 'gestion-stock-productos';
@@ -158,11 +145,19 @@ function actualizarAlertas() {
     enlaceAlertas.setAttribute('aria-label', 'Alertas de stock bajo (' + n + ')');
 }
 
+function actualizarResumen() {
+    document.getElementById('res-total').textContent = productos.length;
+    document.getElementById('res-unidades').textContent = productos.reduce(function (suma, p) { return suma + p.stock; }, 0);
+    document.getElementById('res-bajo').textContent = productos.filter(function (p) { return estadoDe(p) === 'bajo'; }).length;
+    document.getElementById('res-agotado').textContent = productos.filter(function (p) { return estadoDe(p) === 'agotado'; }).length;
+}
+
 function render() {
     tablaBody.replaceChildren(...productos.map(crearFila));
     tablaVacia.classList.toggle('hidden', productos.length > 0);
     totalProductos.textContent = productos.length + (productos.length === 1 ? ' producto' : ' productos');
     actualizarAlertas();
+    actualizarResumen();
 }
 
 function cambiarStock(id, nuevo, selectorFoco) {
@@ -268,3 +263,39 @@ btnCsv.addEventListener('click', function () {
 });
 
 render();
+
+/* ---------- Una sección a la vez ---------- */
+
+const SECCION_INICIAL = 'resumen';
+const secciones = document.querySelectorAll('#contenido > section');
+
+function mostrarSeccion(id) {
+    if (!document.querySelector('#contenido > section#' + id)) return false;
+    secciones.forEach(function (s) {
+        s.classList.toggle('hidden', s.id !== id);
+    });
+    document.querySelectorAll('nav a[href^="#"]').forEach(function (a) {
+        if (a.getAttribute('href') === '#' + id) {
+            a.setAttribute('aria-current', 'page');
+        } else {
+            a.removeAttribute('aria-current');
+        }
+    });
+    window.scrollTo(0, 0);
+    return true;
+}
+
+window.addEventListener('hashchange', function () {
+    mostrarSeccion(location.hash.slice(1));
+});
+
+document.querySelectorAll('nav a[href^="#"], #enlace-alertas').forEach(function (enlace) {
+    enlace.addEventListener('click', function () {
+        alternar(btnMenu, menuMovil, false);
+        btnMenu.setAttribute('aria-label', 'Abrir menú');
+        btnMenu.firstElementChild.className = 'fa-solid fa-bars';
+        if (location.hash === enlace.getAttribute('href')) mostrarSeccion(location.hash.slice(1));
+    });
+});
+
+if (!mostrarSeccion(location.hash.slice(1))) mostrarSeccion(SECCION_INICIAL);
