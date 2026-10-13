@@ -54,7 +54,7 @@ const errorAgregar = document.getElementById('error-agregar');
 const btnCsv = document.getElementById('btn-csv');
 const btnCsvTexto = document.getElementById('btn-csv-texto');
 
-const CLASE_BOTON_STOCK = 'flex size-10 sm:size-8 items-center justify-center rounded-full border border-(--borde) text-(--texto) cursor-pointer transition hover:bg-(--fondo) hover:text-(--acento-hover) focus-visible:outline-2 focus-visible:outline-(--acento-hover)';
+const CLASE_BOTON_STOCK = 'flex size-10 lg:size-8 items-center justify-center rounded-full border border-(--borde) text-(--texto) cursor-pointer transition hover:bg-(--fondo) hover:text-(--acento-hover) focus-visible:outline-2 focus-visible:outline-(--acento-hover)';
 
 function cargarProductos() {
     try {
@@ -126,7 +126,7 @@ function crearFila(p) {
     tr.appendChild(tdEstado);
 
     const tdAcciones = crear('td', 'col-start-2 row-start-1 justify-self-end sm:py-3.5 sm:text-right');
-    const borrar = crear('button', 'flex size-10 items-center justify-center rounded-full text-(--texto-suave) cursor-pointer transition hover:bg-(--stock-agotado)/10 hover:text-(--stock-agotado) sm:size-8');
+    const borrar = crear('button', 'flex size-10 items-center justify-center rounded-full text-(--texto-suave) cursor-pointer transition hover:bg-(--stock-agotado)/10 hover:text-(--stock-agotado) lg:size-8');
     borrar.type = 'button';
     borrar.dataset.id = p.id;
     borrar.dataset.accion = 'borrar';
@@ -146,10 +146,6 @@ function actualizarAlertas() {
 }
 
 function actualizarResumen() {
-    document.getElementById('res-total').textContent = productos.length;
-    document.getElementById('res-unidades').textContent = productos.reduce(function (suma, p) { return suma + p.stock; }, 0);
-    document.getElementById('res-bajo').textContent = productos.filter(function (p) { return estadoDe(p) === 'bajo'; }).length;
-    document.getElementById('res-agotado').textContent = productos.filter(function (p) { return estadoDe(p) === 'agotado'; }).length;
     actualizarAlertasResumen();
 }
 
@@ -164,9 +160,9 @@ function actualizarAlertasResumen() {
     const bajos = productos.filter(function (p) { return estadoDe(p) === 'bajo'; });
 
     const items = agotados.map(function (p) {
-        return { p: p, tipo: 'agotado', texto: ' está agotado: no queda stock (mínimo ' + p.minimo + ').' };
+        return { p: p, tipo: 'agotado', texto: ' no hay stock y se necesitan mínimo ' + unidades(p.minimo) + '.' };
     }).concat(bajos.map(function (p) {
-        return { p: p, tipo: 'bajo', texto: ' está bajo de stock: ' + (p.stock === 1 ? 'queda ' : 'quedan ') + unidades(p.stock) + ' (mínimo ' + p.minimo + ').' };
+        return { p: p, tipo: 'bajo', texto: ' ' + (p.stock === 1 ? 'queda solo 1 unidad' : 'hay pocos (' + unidades(p.stock) + ')') + ' y se necesitan mínimo ' + unidades(p.minimo) + '.' };
     }));
 
     lista.replaceChildren(...items.map(function (it) {
@@ -174,7 +170,7 @@ function actualizarAlertasResumen() {
         const li = crear('li', 'flex items-start gap-3 rounded-lg px-3 py-2.5 text-sm ' + (agotado ? 'bg-(--viz-gris-fondo) text-(--viz-gris-texto)' : 'bg-(--viz-naranja-fondo) text-(--viz-naranja-texto)'));
         li.appendChild(crear('i', 'mt-0.5 shrink-0 ' + (agotado ? 'fa-solid fa-circle-xmark' : 'fa-solid fa-triangle-exclamation')));
         const texto = crear('p', 'min-w-0 break-words');
-        texto.appendChild(crear('strong', 'font-semibold', it.p.nombre));
+        texto.appendChild(crear('strong', 'font-semibold', 'Alerta de ' + it.p.nombre + ':'));
         texto.appendChild(document.createTextNode(it.texto));
         li.appendChild(texto);
         return li;
@@ -190,6 +186,7 @@ function render() {
     totalProductos.textContent = productos.length + (productos.length === 1 ? ' producto' : ' productos');
     actualizarAlertas();
     actualizarResumen();
+    document.dispatchEvent(new CustomEvent('inventario:cambio'));
 }
 
 function cambiarStock(id, nuevo, selectorFoco) {

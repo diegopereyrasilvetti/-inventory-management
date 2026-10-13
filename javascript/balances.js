@@ -268,7 +268,7 @@
             avisoTexto.textContent = 'Estás viendo tus ventas y gastos registrados.';
             btnModo.textContent = 'Ver datos de ejemplo';
         }
-        btnModo.className = 'rounded-full border border-current/40 px-3.5 py-1 text-xs font-semibold cursor-pointer transition hover:bg-black/5';
+        btnModo.className = 'rounded-full border border-current/40 px-4 py-2 text-xs font-semibold cursor-pointer transition hover:bg-black/5';
     }
 
     /* ---------- Eventos ---------- */

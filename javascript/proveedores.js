@@ -53,7 +53,7 @@
     }
 
     function botonIcono(id, accion, icono, etiqueta) {
-        const b = el('button', 'flex size-10 items-center justify-center rounded-full text-(--texto-suave) cursor-pointer transition hover:bg-(--fondo) hover:text-(--acento-hover) sm:size-8');
+        const b = el('button', 'flex size-10 items-center justify-center rounded-full text-(--texto-suave) cursor-pointer transition hover:bg-(--fondo) hover:text-(--acento-hover) lg:size-8');
         b.type = 'button';
         b.dataset.id = id;
         b.dataset.accion = accion;
@@ -67,8 +67,8 @@
         fila.setAttribute('role', 'row');
 
         const celdaNombre = el('div', 'min-w-0');
-        celdaNombre.appendChild(el('p', 'truncate text-sm font-semibold text-(--texto)', p.nombre));
-        celdaNombre.appendChild(el('p', 'truncate text-xs text-(--texto-suave)', p.rubro || 'Sin rubro'));
+        celdaNombre.appendChild(el('p', 'break-words text-sm font-semibold text-(--texto)', p.nombre));
+        celdaNombre.appendChild(el('p', 'break-words text-xs text-(--texto-suave)', p.rubro || 'Sin rubro'));
         fila.appendChild(celdaNombre);
 
         const acciones = el('span', 'col-start-2 row-start-1 flex justify-self-end gap-1 sm:col-start-4');
@@ -77,7 +77,7 @@
         fila.appendChild(acciones);
 
         const contacto = el('div', 'col-start-1 row-start-2 min-w-0 sm:col-start-2 sm:row-start-1');
-        contacto.appendChild(el('p', 'truncate text-sm text-(--texto)', p.contacto || '—'));
+        contacto.appendChild(el('p', 'break-words text-sm text-(--texto)', p.contacto || '—'));
         if (p.telefono) {
             const enlace = el('a', 'inline-flex items-center gap-1.5 text-xs font-medium text-(--acento-hover) hover:underline', p.telefono);
             enlace.href = hrefTelefono(p.telefono);
@@ -242,4 +242,9 @@
     });
 
     render();
+
+    /* Lista actual de proveedores, para que otras secciones (Alertas) muestren el contacto */
+    window.obtenerProveedores = function () {
+        return proveedores.map(function (p) { return Object.assign({}, p); });
+    };
 })();
