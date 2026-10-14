@@ -1,0 +1,30 @@
+{
+  "name": "gestion",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Página web para ayudar a emprendedores a organizar el stock de sus productos.",
+  "main": "tailwind.config.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/diegopereyrasilvetti/-inventory-management.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/diegopereyrasilvetti/-inventory-management/issues"
+  },
+  "homepage": "https://github.com/diegopereyrasilvetti/-inventory-management#readme",
+  "dependencies": {
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1"
+  },
+  "devDependencies": {
+    "vite": "^8.3.4"
+  }
+}
