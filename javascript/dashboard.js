@@ -328,4 +328,12 @@ document.querySelectorAll('nav a[href^="#"], #enlace-alertas').forEach(function 
     });
 });
 
+enlaceAlertas.addEventListener('click', function (e) {
+    if (location.hash === '#alertas') {
+        e.preventDefault();
+        history.pushState(null, '', '#' + SECCION_INICIAL);
+        mostrarSeccion(SECCION_INICIAL);
+    }
+});
+
 if (!mostrarSeccion(location.hash.slice(1))) mostrarSeccion(SECCION_INICIAL);
