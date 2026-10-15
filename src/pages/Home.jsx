@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { LOGO, Marca } from "../components/Logo.jsx";
-import useTitulo from "../useTitulo.js";
+import useTitulo from "../hooks/useTitulo.js";
 
 const CLASE_INPUT =
   "w-full px-4 py-3 text-sm rounded-lg sm:text-base bg-(--fondo) border border-(--borde) text-(--texto) placeholder:text-(--texto-suave)/60 focus:outline-none focus:border-(--acento) focus:ring-2 focus:ring-(--acento)/30";
@@ -173,7 +173,9 @@ export default function Home() {
         className="m-auto bg-transparent p-4 max-w-none max-h-none outline-none backdrop:bg-black/80 cursor-zoom-out"
         onClick={() => lightbox.current.close()}
       >
-        <img className="max-w-[92vw] max-h-[88vh] w-auto h-auto rounded-xl shadow-2xl" src={zoom.src} alt={zoom.alt} />
+        {zoom.src && (
+          <img className="max-w-[92vw] max-h-[88vh] w-auto h-auto rounded-xl shadow-2xl" src={zoom.src} alt={zoom.alt} />
+        )}
       </dialog>
     </>
   );

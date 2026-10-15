@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { LOGO, Marca } from "../components/Logo.jsx";
-import useTitulo from "../useTitulo.js";
+import useTitulo from "../hooks/useTitulo.js";
 
 const CLASE_INPUT =
   "w-full px-3.5 py-2.5 text-sm rounded-lg bg-(--fondo) border border-(--borde) text-(--texto) placeholder:text-(--texto-suave)/60 focus:outline-none focus:border-(--acento) focus:ring-2 focus:ring-(--acento)/30";

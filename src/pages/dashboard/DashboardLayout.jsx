@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { Link, NavLink, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { LOGO, Marca } from "../../components/Logo.jsx";
 import { estadoDe, useInventario } from "../../store/inventario.js";
-import useTitulo from "../../useTitulo.js";
+import useTitulo from "../../hooks/useTitulo.js";
 
 const SECCIONES = [
   { ruta: "/dashboard", texto: "Resumen", icono: "fa-gauge", fin: true },

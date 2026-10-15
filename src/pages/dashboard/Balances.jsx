@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import SeccionDashboard from "../../components/SeccionDashboard.jsx";
 import { useFinanzas, MONEDA, CATEGORIAS_GASTO, iso } from "../../store/finanzas.js";
-import useAviso from "./useAviso.js";
+import useAviso from "../../hooks/useAviso.js";
 
 const CATEGORIA_COSTO = "Mercadería y proveedores";
 const MESES = ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"];
