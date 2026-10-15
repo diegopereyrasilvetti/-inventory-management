@@ -6,26 +6,37 @@ Página web para ayudar a emprendedores a organizar el stock de sus productos.
 
 ## Estado
 
-En desarrollo. Por ahora incluye encabezado con logo, menú hamburguesa (Iniciar Sesión, Nosotros) y texto de presentación.
+En desarrollo. Incluye página de inicio, login y un panel con resumen, alertas, inventario, productos, documentación, proveedores, ventas y balances. Los datos se guardan en el navegador (localStorage).
 
 ## Tecnologías
 
-- HTML5
-- Tailwind CSS 4 (CDN)
-- CSS (variables de color)
+- React 19 + React Router
+- Vite
+- Tailwind CSS 4
 - Font Awesome y Google Fonts (Noto Sans)
 
 ## Estructura
 
 ```
-├── index.html   # Página principal
-├── index.css    # Paleta de colores y estilos base
-└── images/      # Logo e imágenes
+├── index.html          # Único HTML (monta la app de React)
+├── vercel.json         # Redirige todas las rutas a index.html
+├── public/images/      # Logo e imágenes
+└── src/
+    ├── main.jsx        # Punto de entrada
+    ├── App.jsx         # Rutas: /, /login, /dashboard/*
+    ├── index.css       # Tailwind y paleta de colores
+    ├── store/          # Datos compartidos (localStorage)
+    ├── components/     # Componentes reutilizables
+    └── pages/          # Home, Login y secciones del dashboard
 ```
 
 ## Uso
 
-Entrar a la demo, o abrir `index.html` en el navegador. Requiere conexión a internet para cargar Tailwind, fuentes e íconos.
+```
+npm install
+npm run dev      # desarrollo
+npm run build    # genera dist/
+```
 
 ## Diseño
 
