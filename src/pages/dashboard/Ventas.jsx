@@ -2,7 +2,7 @@ import { useMemo, useState } from "react";
 import SeccionDashboard from "../../components/SeccionDashboard.jsx";
 import { useCatalogo } from "../../store/catalogo.js";
 import { useFinanzas, MONEDA, CATEGORIAS_GASTO, iso } from "../../store/finanzas.js";
-import useAviso from "./useAviso.js";
+import useAviso from "../../hooks/useAviso.js";
 
 const CLASES_QUITAR =
   "flex size-9 shrink-0 items-center justify-center rounded-full text-(--texto-suave) cursor-pointer transition hover:bg-(--stock-agotado)/10 hover:text-(--stock-agotado)";
