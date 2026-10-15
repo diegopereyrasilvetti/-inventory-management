@@ -1,9 +1,13 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
-import Saludo from "./components/Saludo.jsx";
+import { BrowserRouter } from "react-router-dom";
+import App from "./App.jsx";
+import "./index.css";
 
-const contenedor = document.getElementById("react-root");
-
-if (contenedor) {
-  createRoot(contenedor).render(<Saludo />);
-}
+createRoot(document.getElementById("root")).render(
+  <React.StrictMode>
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
+  </React.StrictMode>,
+);

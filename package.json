@@ -21,8 +21,12 @@
   },
   "homepage": "https://github.com/diegopereyrasilvetti/-inventory-management#readme",
   "dependencies": {
+    "@tailwindcss/vite": "^4.3.3",
+    "@vitejs/plugin-react": "^6.1.2",
     "react": "^19.3.1",
-    "react-dom": "^19.3.1"
+    "react-dom": "^19.3.1",
+    "react-router-dom": "^7.18.4",
+    "tailwindcss": "^4.3.3"
   },
   "devDependencies": {
     "vite": "^8.3.4"
