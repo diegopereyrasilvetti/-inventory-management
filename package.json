@@ -2,6 +2,9 @@
   "name": "gestion",
   "version": "1.0.0",
   "type": "module",
+  "workspaces": [
+    "server"
+  ],
   "description": "Página web para ayudar a emprendedores a organizar el stock de sus productos.",
   "main": "tailwind.config.js",
   "scripts": {
