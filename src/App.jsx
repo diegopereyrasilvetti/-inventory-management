@@ -14,11 +14,13 @@ import Proveedores from "./pages/dashboard/Proveedores.jsx";
 import Ventas from "./pages/dashboard/Ventas.jsx";
 import Balances from "./pages/dashboard/Balances.jsx";
 import AvisoConfiguracion from "./components/AvisoConfiguracion.jsx";
+import AvisoErrores from "./components/AvisoErrores.jsx";
 
 export default function App() {
   return (
     <>
       <AvisoConfiguracion />
+      <AvisoErrores />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Acceso key="login" modo="login" />} />

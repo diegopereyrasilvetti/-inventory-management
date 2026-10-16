@@ -48,9 +48,11 @@ function Fila({ p, onStock, onBorrar }) {
               defaultValue={p.stock}
               key={p.stock}
               aria-label={"Stock de " + p.nombre}
-              onBlur={(e) => {
+              onBlur={async (e) => {
                 const n = parseInt(e.target.value, 10);
-                if (n !== p.stock) onStock(p.id, n);
+                if (n === p.stock) return;
+                const exito = await onStock(p.id, n);
+                if (!exito) e.target.value = p.stock;
               }}
               onKeyDown={(e) => {
                 if (e.key === "Enter") e.currentTarget.blur();
@@ -87,7 +89,7 @@ function Fila({ p, onStock, onBorrar }) {
 }
 
 export default function Inventario() {
-  const { productos, cambiarStock, agregar, eliminar } = useInventario();
+  const { productos, cargando, cambiarStock, agregar, eliminar } = useInventario();
   const dialogo = useRef(null);
   const [form, setForm] = useState(FORM_VACIO);
   const [error, setError] = useState("");
@@ -106,7 +108,7 @@ export default function Inventario() {
     setForm((f) => ({ ...f, [e.target.name]: e.target.value }));
   }
 
-  function guardar(e) {
+  async function guardar(e) {
     e.preventDefault();
     const nombre = form.nombre.trim();
     const codigo = form.codigo.trim().toUpperCase();
@@ -126,8 +128,7 @@ export default function Inventario() {
       return;
     }
 
-    agregar({ nombre, codigo, stock, minimo });
-    dialogo.current.close();
+    if (await agregar({ nombre, codigo, stock, minimo })) dialogo.current.close();
   }
 
   function borrar(p) {
@@ -171,7 +172,7 @@ export default function Inventario() {
             ))}
           </tbody>
         </table>
-        {productos.length === 0 && (
+        {!cargando && productos.length === 0 && (
           <p className="py-10 text-center text-sm text-(--texto-suave)">
             Todavía no cargaste productos. Tocá <strong>Agregar producto</strong> para empezar.
           </p>

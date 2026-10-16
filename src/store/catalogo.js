@@ -1,33 +1,78 @@
-import { useCallback } from "react";
-import { useStored } from "./useStored.js";
-import { CLAVE_CATALOGO } from "./claves.js";
+import { useMemo } from "react";
+import { db, guardar, nulo, ok } from "./db.js";
+import { invalidar } from "./consultas.js";
+import { avisarError } from "./avisos.js";
+import { CLAVE_PRODUCTOS, useProductosDB } from "./productos.js";
+import { useProveedores } from "./proveedores.js";
 
-const EJEMPLOS = [
-  { id: 1, nombre: "Camiseta básica", sku: "CAM-001", categoria: "Indumentaria", marca: "Marca Uno", modelo: "Clásica", color: "Blanco", serial: "MU-2024-0001", proveedor: "Distribuidora Central", precio: 45000 },
-  { id: 2, nombre: "Taza de cerámica", sku: "TAZ-002", categoria: "Hogar", marca: "Marca Dos", modelo: "Línea 350 ml", color: "Azul", serial: "MD-2024-0002", proveedor: "Insumos del Sur", precio: 68000 },
-  { id: 3, nombre: "Cuaderno A5", sku: "CUA-003", categoria: "Papelería", marca: "Marca Tres", modelo: "Tapa dura", color: "Negro", serial: "MT-2024-0003", proveedor: "Importadora Norte", precio: 32000 },
-];
-
-/** Catálogo de productos: { catalogo, agregar(datos), actualizar(id, datos), eliminar(id) } */
+/**
+ * Catálogo (datos descriptivos y precio de cada producto), sobre la misma tabla productos que el inventario.
+ * { catalogo, cargando, agregar(datos), actualizar(id, datos), eliminar(id) }
+ * El proveedor se escribe por nombre y se vincula con la tabla proveedores.
+ */
 export function useCatalogo() {
-  const [catalogo, setCatalogo] = useStored(CLAVE_CATALOGO, EJEMPLOS);
+  const { datos, cargando } = useProductosDB();
+  const { proveedores } = useProveedores();
 
-  const agregar = useCallback(
-    (datos) =>
-      setCatalogo((lista) => {
-        const id = lista.reduce((max, p) => Math.max(max, p.id), 0) + 1;
-        return [...lista, { id, ...datos }];
-      }),
-    [setCatalogo],
-  );
-  const actualizar = useCallback(
-    (id, datos) => setCatalogo((lista) => lista.map((p) => (p.id === id ? { ...p, ...datos } : p))),
-    [setCatalogo],
-  );
-  const eliminar = useCallback(
-    (id) => setCatalogo((lista) => lista.filter((p) => p.id !== id)),
-    [setCatalogo],
+  const catalogo = useMemo(
+    () =>
+      datos.map((r) => ({
+        id: r.id,
+        nombre: r.nombre,
+        sku: r.sku,
+        categoria: r.categoria || "",
+        marca: r.marca || "",
+        modelo: r.modelo || "",
+        color: r.color || "",
+        serial: r.serial || "",
+        proveedor: r.proveedores?.nombre || "",
+        precio: r.precio === null || r.precio === undefined ? null : Number(r.precio),
+      })),
+    [datos],
   );
 
-  return { catalogo, agregar, actualizar, eliminar };
+  // Devuelve { id } del proveedor (id es null si no se escribió ninguno) o null si ese nombre no existe
+  function resolverProveedor(nombre) {
+    const buscado = (nombre || "").trim().toLowerCase();
+    if (!buscado) return { id: null };
+    const p = proveedores.find((x) => x.nombre.trim().toLowerCase() === buscado);
+    return p ? { id: p.id } : null;
+  }
+
+  function aFila(d, proveedorId) {
+    return {
+      sku: d.sku,
+      nombre: d.nombre,
+      categoria: nulo(d.categoria),
+      marca: nulo(d.marca),
+      modelo: nulo(d.modelo),
+      color: nulo(d.color),
+      serial: nulo(d.serial),
+      precio: d.precio ?? null,
+      proveedor_id: proveedorId,
+    };
+  }
+
+  async function guardarProducto(d, operacion) {
+    const proveedor = resolverProveedor(d.proveedor);
+    if (!proveedor) {
+      avisarError('El proveedor "' + d.proveedor.trim() + '" no existe. Cargalo primero en la sección Proveedores.');
+      return false;
+    }
+    return guardar(async () => {
+      await operacion(aFila(d, proveedor.id));
+      invalidar(CLAVE_PRODUCTOS);
+    });
+  }
+
+  const agregar = (d) => guardarProducto(d, async (fila) => ok(await db().from("productos").insert(fila)));
+  const actualizar = (id, d) =>
+    guardarProducto(d, async (fila) => ok(await db().from("productos").update(fila).eq("id", id)));
+  const eliminar = (id) =>
+    guardar(async () => {
+      ok(await db().from("productos").delete().eq("id", id));
+      invalidar(CLAVE_PRODUCTOS);
+    });
+
+  return { catalogo, cargando, agregar, actualizar, eliminar };
 }

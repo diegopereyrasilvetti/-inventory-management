@@ -1,4 +1,5 @@
-import { createContext, useContext, useEffect, useMemo, useState } from "react";
+import { createContext, useContext, useEffect, useMemo, useRef, useState } from "react";
+import { reiniciarCache } from "../store/consultas.js";
 import { supabase } from "../lib/supabase.js";
 
 const AuthContext = createContext(null);
@@ -10,18 +11,26 @@ export function AuthProvider({ children }) {
   const [session, setSession] = useState(null);
   // Mientras Supabase revisa si ya había una sesión guardada, no sabemos si hay usuario
   const [cargando, setCargando] = useState(Boolean(supabase));
+  // Id del usuario actual: si cambia (otro login, logout), se vacían los datos cacheados de la cuenta anterior
+  const usuarioId = useRef(null);
 
   useEffect(() => {
     if (!supabase) return;
 
     // 1) Sesión que ya estaba guardada en el navegador (si la hay)
     supabase.auth.getSession().then(({ data }) => {
+      usuarioId.current = data.session?.user?.id ?? null;
       setSession(data.session);
       setCargando(false);
     });
 
     // 2) Cambios futuros: login, logout, token renovado, etc.
     const { data } = supabase.auth.onAuthStateChange((_evento, nuevaSession) => {
+      const id = nuevaSession?.user?.id ?? null;
+      if (id !== usuarioId.current) {
+        usuarioId.current = id;
+        reiniciarCache(Boolean(id));
+      }
       setSession(nuevaSession);
     });
     return () => data.subscription.unsubscribe();

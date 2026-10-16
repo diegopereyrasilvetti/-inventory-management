@@ -75,7 +75,7 @@ export default function Ventas() {
     setCantidad("1");
   }
 
-  function registrarVenta(e) {
+  async function registrarVenta(e) {
     e.preventDefault();
     if (carrito.length === 0) return;
     const venta = {
@@ -85,19 +85,19 @@ export default function Ventas() {
       metodo,
       total: totalCarrito,
     };
-    agregarVenta(venta);
+    if (!(await agregarVenta(venta))) return; // si falló, el cartel de error ya avisó y el carrito se conserva
     setCarrito([]);
     avisarVenta("Venta registrada: " + MONEDA.format(venta.total) + " (" + metodo + ").", true);
   }
 
-  function registrarGasto(e) {
+  async function registrarGasto(e) {
     e.preventDefault();
     const valor = parseFloat(monto);
     if (!(valor > 0)) {
       avisarGasto("Ingresá un monto mayor a 0.", false);
       return;
     }
-    agregarGasto({ fecha: fecha || iso(), categoria, detalle: detalle.trim(), monto: valor });
+    if (!(await agregarGasto({ fecha: fecha || iso(), categoria, detalle: detalle.trim(), monto: valor }))) return;
     setCategoria(CATEGORIAS_GASTO[0]);
     setDetalle("");
     setMonto("");
