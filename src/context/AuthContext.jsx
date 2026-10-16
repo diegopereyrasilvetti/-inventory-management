@@ -1,6 +1,6 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
 import { reiniciarCache } from "../store/consultas.js";
-import { supabase } from "../lib/supabase.js";
+import { crearClienteTemporal, supabase } from "../lib/supabase.js";
 
 const AuthContext = createContext(null);
 
@@ -82,6 +82,16 @@ export function AuthProvider({ children }) {
       reintentarPerfil,
       iniciarSesion: auth ? (email, password) => auth.signInWithPassword({ email, password }) : sinConfigurar,
       cerrarSesion: auth ? () => auth.signOut() : sinConfigurar,
+      // Cambia la contraseña de alguien que sabe la actual, sin dejarle la sesión abierta
+      cambiarPasswordConActual: async (email, actual, nueva) => {
+        const temporal = crearClienteTemporal();
+        if (!temporal) return SIN_CONFIGURAR;
+        const { error: errorLogin } = await temporal.auth.signInWithPassword({ email, password: actual });
+        if (errorLogin) return { data: null, error: errorLogin };
+        const resultado = await temporal.auth.updateUser({ password: nueva });
+        await temporal.auth.signOut({ scope: "local" }); // la sesión temporal se descarta
+        return resultado;
+      },
       recuperarPassword: auth
         ? (email) => auth.resetPasswordForEmail(email, { redirectTo: window.location.origin + "/nueva-password" })
         : sinConfigurar,
