@@ -88,7 +88,7 @@ function Saludo() {
   );
 }
 
-function AlertasResumen({ productos }) {
+function AlertasResumen({ productos, cargando }) {
   const items = [
     ...productos.filter((p) => estadoDe(p) === "agotado").map((p) => ({
       p,
@@ -134,7 +134,7 @@ function AlertasResumen({ productos }) {
             );
           })}
         </ul>
-      ) : (
+      ) : !cargando && (
         <p className="mt-3 flex items-center gap-2 text-sm text-(--viz-verde-texto)">
           <i className="fa-regular fa-circle-check"></i> Todo en orden: no hay productos con stock bajo ni agotados.
         </p>
@@ -144,7 +144,7 @@ function AlertasResumen({ productos }) {
 }
 
 export default function Resumen() {
-  const { productos } = useInventario();
+  const { productos, cargando } = useInventario();
 
   return (
     <section id="resumen" className="mx-auto max-w-5xl" aria-labelledby="titulo-resumen">
@@ -152,7 +152,7 @@ export default function Resumen() {
 
       <h2 id="titulo-resumen" className="sr-only">Resumen</h2>
 
-      <AlertasResumen productos={productos} />
+      <AlertasResumen productos={productos} cargando={cargando} />
 
       <div className="mt-6">
         <h3 className="mb-2.5 text-base font-bold text-(--texto)">Accesos rápidos</h3>

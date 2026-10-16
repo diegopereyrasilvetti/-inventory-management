@@ -44,7 +44,7 @@ function ProveedoresDato({ etiqueta, valor, enlace, textoEnlace, icono }) {
 }
 
 export default function Proveedores() {
-  const { proveedores, agregar, actualizar, eliminar } = useProveedores();
+  const { proveedores, cargando, agregar, actualizar, eliminar } = useProveedores();
   const [busqueda, setBusqueda] = useState("");
   const [form, setForm] = useState(FORM_VACIO);
   const [idEditado, setIdEditado] = useState(null);
@@ -93,7 +93,7 @@ export default function Proveedores() {
   // Siempre mostramos los datos más recientes del proveedor que se está viendo
   const detalle = verProveedor ? proveedores.find((p) => p.id === verProveedor.id) || verProveedor : null;
 
-  function guardar(e) {
+  async function guardar(e) {
     e.preventDefault();
     const datos = {
       nombre: form.nombre.trim(),
@@ -119,16 +119,14 @@ export default function Proveedores() {
       return;
     }
 
-    if (idEditado) actualizar(idEditado, datos);
-    else agregar(datos);
-    dialogoRef.current.close();
+    const exito = idEditado ? await actualizar(idEditado, datos) : await agregar(datos);
+    if (exito) dialogoRef.current.close();
   }
 
-  function borrar() {
+  async function borrar() {
     const p = proveedores.find((x) => x.id === idEditado);
     if (p && window.confirm('¿Eliminar a "' + p.nombre + '" de tus proveedores?')) {
-      eliminar(p.id);
-      dialogoRef.current.close();
+      if (await eliminar(p.id)) dialogoRef.current.close();
     }
   }
 
@@ -246,7 +244,7 @@ export default function Proveedores() {
             ))}
           </div>
         </div>
-        {visibles.length === 0 && (
+        {!cargando && visibles.length === 0 && (
           <p className="py-8 text-center text-sm text-(--texto-suave)">
             {proveedores.length === 0
               ? 'Todavía no cargaste proveedores. Tocá "Nuevo proveedor" para empezar.'

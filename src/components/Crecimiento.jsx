@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useInventario, estadoDe } from '../store/inventario.js';
 import { useFinanzas } from '../store/finanzas.js';
+import { useAuth } from '../context/AuthContext.jsx';
 import { useStored } from '../store/useStored.js';
 import { CLAVE_HISTORIAL } from '../store/claves.js';
 
@@ -83,13 +84,15 @@ function CrecimientoAnillo({ ramas }) {
 }
 
 export default function Crecimiento() {
-  const { productos } = useInventario();
+  const { productos, cargando } = useInventario();
+  const { user } = useAuth();
   const { ventas } = useFinanzas();
-  const [historial, setHistorial] = useStored(CLAVE_HISTORIAL, HISTORIAL_INICIAL);
+  const [historial, setHistorial] = useStored(CLAVE_HISTORIAL + '-' + (user?.id || 'anonimo'), HISTORIAL_INICIAL);
   const [forzarEjemplo, setForzarEjemplo] = useState(null); // null = automático
 
   // Una "foto" por día de cuántos productos faltan y cuántos no existen en stock
   useEffect(() => {
+    if (cargando) return; // hasta que lleguen los productos no hay nada que anotar
     const hoy = diasAtras(0);
     const faltantes = productos.filter((p) => estadoDe(p) === 'bajo').length;
     const inexistentes = productos.filter((p) => estadoDe(p) === 'agotado').length;
@@ -99,7 +102,7 @@ export default function Crecimiento() {
       nuevo.sort((a, b) => (a.fecha < b.fecha ? -1 : 1));
       return nuevo.slice(-90);
     });
-  }, [productos, setHistorial]);
+  }, [productos, cargando, setHistorial]);
 
   const hoy = diasAtras(0);
   const objetivo = diasAtras(DIAS_PERIODO);

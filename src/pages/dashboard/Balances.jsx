@@ -220,7 +220,7 @@ function BalancesGrafico({ lista }) {
 }
 
 export default function Balances() {
-  const { ventas, gastos, agregarGasto } = useFinanzas();
+  const { ventas, gastos, cargando, agregarGasto } = useFinanzas();
 
   const [periodo, setPeriodo] = useState("6m");
   const [forzarEjemplo, setForzarEjemplo] = useState(null); // null = automático: ejemplo si todavía no hay datos propios
@@ -232,7 +232,7 @@ export default function Balances() {
   const [aviso, avisar] = useAviso();
 
   const real = useMemo(() => datosReales(ventas, gastos), [ventas, gastos]);
-  const ejemplo = forzarEjemplo !== null ? forzarEjemplo : Object.keys(real).length === 0;
+  const ejemplo = forzarEjemplo !== null ? forzarEjemplo : !cargando && Object.keys(real).length === 0;
 
   const { lista, totales } = useMemo(() => {
     const l = sumar(periodos(periodo), ejemplo ? datosEjemplo() : real);
@@ -253,14 +253,14 @@ export default function Balances() {
   const margen = totales.ing > 0 ? (totales.gan / totales.ing) * 100 : null;
   const ancho = margen === null ? 0 : Math.max(0, Math.min(100, margen));
 
-  function registrarGasto(e) {
+  async function registrarGasto(e) {
     e.preventDefault();
     const valor = parseFloat(monto);
     if (!(valor > 0)) {
       avisar("Ingresá un monto mayor a 0.", false);
       return;
     }
-    agregarGasto({ fecha: fecha || iso(), categoria: tipo, detalle: detalle.trim(), monto: valor });
+    if (!(await agregarGasto({ fecha: fecha || iso(), categoria: tipo, detalle: detalle.trim(), monto: valor }))) return;
     setForzarEjemplo(false);
     setTipo("Otros");
     setDetalle("");

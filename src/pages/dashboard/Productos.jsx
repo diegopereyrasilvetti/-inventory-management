@@ -1,6 +1,7 @@
 import { useRef, useState } from "react";
 import SeccionDashboard from "../../components/SeccionDashboard.jsx";
 import { useCatalogo } from "../../store/catalogo.js";
+import { useProveedores } from "../../store/proveedores.js";
 
 const CAMPOS_BUSQUEDA = ["nombre", "sku", "categoria", "marca", "modelo", "color", "serial", "proveedor"];
 const DETALLES = [
@@ -31,7 +32,8 @@ function valoresUnicos(lista, campo) {
 }
 
 export default function Productos() {
-  const { catalogo, agregar, actualizar, eliminar } = useCatalogo();
+  const { catalogo, cargando, agregar, actualizar, eliminar } = useCatalogo();
+  const { proveedores } = useProveedores();
   const [busqueda, setBusqueda] = useState("");
   const [form, setForm] = useState(FORM_VACIO);
   const [idEditado, setIdEditado] = useState(null);
@@ -74,7 +76,7 @@ export default function Productos() {
     if (window.confirm('¿Eliminar "' + p.nombre + '" del catálogo?')) eliminar(p.id);
   }
 
-  function guardar(e) {
+  async function guardar(e) {
     e.preventDefault();
     const datos = {
       nombre: form.nombre.trim(),
@@ -100,9 +102,8 @@ export default function Productos() {
       return;
     }
 
-    if (idEditado) actualizar(idEditado, datos);
-    else agregar(datos);
-    dialogoRef.current.close();
+    const exito = idEditado ? await actualizar(idEditado, datos) : await agregar(datos);
+    if (exito) dialogoRef.current.close();
   }
 
   return (
@@ -202,7 +203,7 @@ export default function Productos() {
             ))}
           </tbody>
         </table>
-        {visibles.length === 0 && (
+        {!cargando && visibles.length === 0 && (
           <p className="py-10 text-center text-sm text-(--texto-suave)">
             {catalogo.length === 0
               ? 'Todavía no cargaste productos. Tocá "Nuevo producto" para empezar.'
@@ -255,7 +256,7 @@ export default function Productos() {
               <label className="text-sm font-medium" htmlFor="prod-proveedor">Proveedor</label>
               <input className={CLASE_INPUT} id="prod-proveedor" type="text" maxLength={60} list="prod-lista-proveedores" placeholder="Ej: Distribuidora Central" value={form.proveedor} onChange={campo("proveedor")} />
               <datalist id="prod-lista-proveedores">
-                {valoresUnicos(catalogo, "proveedor").map((v) => <option key={v} value={v} />)}
+                {proveedores.map((p) => <option key={p.id} value={p.nombre} />)}
               </datalist>
             </div>
             <div className="flex flex-col gap-1.5">

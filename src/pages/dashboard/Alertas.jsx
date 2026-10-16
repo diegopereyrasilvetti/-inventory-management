@@ -125,7 +125,7 @@ function AlertasTarjeta({ p, catalogo, proveedores, onReponer }) {
 }
 
 export default function Alertas() {
-  const { productos, cambiarStock } = useInventario();
+  const { productos, cargando, cambiarStock } = useInventario();
   const { catalogo } = useCatalogo();
   const { proveedores } = useProveedores();
   const [filtro, setFiltro] = useState('todas');
@@ -149,7 +149,7 @@ export default function Alertas() {
     ? 'No tenés alertas pendientes.'
     : todas.length + (todas.length === 1 ? ' producto necesita' : ' productos necesitan') + ' atención.';
 
-  function reponer(p, cantidad) {
+  async function reponer(p, cantidad) {
     if (!(cantidad >= 1)) {
       setMensaje({ texto: 'Ingresá una cantidad de 1 o más para reponer.', error: true });
       return;
@@ -157,7 +157,7 @@ export default function Alertas() {
     const antes = estadoDe(p);
     const nuevo = p.stock + cantidad;
     const despues = estadoDe({ ...p, stock: nuevo });
-    cambiarStock(p.id, nuevo);
+    if (!(await cambiarStock(p.id, nuevo, "Reposición"))) return; // si falló, el cartel de error ya avisó
     setMensaje({
       texto: 'Se agregaron ' + unidades(cantidad) + ' a ' + p.nombre + ' (ahora ' + unidades(nuevo) + ')' +
         (despues === 'disponible' ? '. La alerta se resolvió.' : (antes === 'agotado' ? '. Ya no está sin stock, pero sigue bajo el mínimo.' : '. Sigue bajo el mínimo.')),
@@ -201,7 +201,7 @@ export default function Alertas() {
         </ul>
       )}
 
-      {visibles.length === 0 && (
+      {!cargando && visibles.length === 0 && (
         <div className="mt-4 rounded-2xl border border-(--borde) bg-(--superficie) px-6 py-12 text-center">
           <span className="mx-auto flex size-14 items-center justify-center rounded-full bg-(--viz-verde-fondo) text-xl text-(--viz-verde-texto)" aria-hidden="true"><i className="fa-regular fa-circle-check" /></span>
           <p className="mt-4 text-lg font-bold text-(--texto)">Todo en orden</p>

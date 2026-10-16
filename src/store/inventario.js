@@ -1,12 +1,7 @@
-import { useCallback } from "react";
-import { useStored } from "./useStored.js";
-import { CLAVE_INVENTARIO } from "./claves.js";
-
-export const PRODUCTOS_INICIALES = [
-  { id: 1, nombre: "Camiseta básica", codigo: "CAM-001", stock: 24, minimo: 10 },
-  { id: 2, nombre: "Taza de cerámica", codigo: "TAZ-002", stock: 8, minimo: 10 },
-  { id: 3, nombre: "Cuaderno A5", codigo: "CUA-003", stock: 0, minimo: 5 },
-];
+import { useMemo } from "react";
+import { db, guardar, ok } from "./db.js";
+import { invalidar } from "./consultas.js";
+import { CLAVE_PRODUCTOS, registrarMovimiento, useProductosDB } from "./productos.js";
 
 export const ESTADOS = {
   disponible: { texto: "Disponible", clases: "bg-(--viz-verde-fondo) text-(--viz-verde-texto)" },
@@ -24,37 +19,45 @@ export function unidades(n) {
   return n + (n === 1 ? " unidad" : " unidades");
 }
 
-/** Productos del inventario (stock y mínimo). Devuelve { productos, setProductos, cambiarStock, agregar, eliminar }. */
+/**
+ * Inventario (stock y mínimo de cada producto), sobre la tabla productos.
+ * { productos, cargando, cambiarStock(id, nuevo, motivo), agregar({nombre, codigo, stock, minimo}), eliminar(id) }
+ * Los guardados devuelven true/false y cada cambio de stock queda en movimientos_stock.
+ */
 export function useInventario() {
-  const [productos, setProductos] = useStored(CLAVE_INVENTARIO, PRODUCTOS_INICIALES);
+  const { datos, cargando } = useProductosDB();
 
-  const cambiarStock = useCallback(
-    (id, nuevo) => {
-      setProductos((lista) =>
-        lista.map((p) =>
-          p.id === id
-            ? { ...p, stock: Math.max(0, Number.isFinite(nuevo) ? Math.floor(nuevo) : p.stock) }
-            : p,
-        ),
+  const productos = useMemo(
+    () => datos.map((r) => ({ id: r.id, nombre: r.nombre, codigo: r.sku, stock: r.stock, minimo: r.stock_minimo })),
+    [datos],
+  );
+
+  const cambiarStock = (id, nuevo, motivo) =>
+    guardar(async () => {
+      const actual = datos.find((r) => r.id === id);
+      if (!actual || !Number.isFinite(nuevo)) return;
+      const stock = Math.max(0, Math.floor(nuevo));
+      const diferencia = stock - actual.stock;
+      if (diferencia === 0) return;
+      ok(await db().from("productos").update({ stock }).eq("id", id));
+      await registrarMovimiento(id, diferencia > 0 ? "entrada" : "salida", diferencia, motivo || "Ajuste manual");
+      invalidar(CLAVE_PRODUCTOS);
+    });
+
+  const agregar = ({ nombre, codigo, stock, minimo }) =>
+    guardar(async () => {
+      const creado = ok(
+        await db().from("productos").insert({ nombre, sku: codigo, stock, stock_minimo: minimo }).select("id").single(),
       );
-    },
-    [setProductos],
-  );
+      if (stock > 0) await registrarMovimiento(creado.id, "entrada", stock, "Stock inicial");
+      invalidar(CLAVE_PRODUCTOS);
+    });
 
-  const agregar = useCallback(
-    (producto) => {
-      setProductos((lista) => {
-        const id = lista.reduce((max, p) => Math.max(max, p.id), 0) + 1;
-        return [...lista, { ...producto, id }];
-      });
-    },
-    [setProductos],
-  );
+  const eliminar = (id) =>
+    guardar(async () => {
+      ok(await db().from("productos").delete().eq("id", id));
+      invalidar(CLAVE_PRODUCTOS);
+    });
 
-  const eliminar = useCallback(
-    (id) => setProductos((lista) => lista.filter((p) => p.id !== id)),
-    [setProductos],
-  );
-
-  return { productos, setProductos, cambiarStock, agregar, eliminar };
+  return { productos, cargando, cambiarStock, agregar, eliminar };
 }

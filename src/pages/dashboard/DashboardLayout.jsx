@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, NavLink, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { LOGO, Marca } from "../../components/Logo.jsx";
+import { useAuth } from "../../context/AuthContext.jsx";
+import { inicialDe, nombreDe } from "../../lib/usuario.js";
 import { estadoDe, useInventario } from "../../store/inventario.js";
 import useTitulo from "../../hooks/useTitulo.js";
 
@@ -33,6 +35,7 @@ export default function DashboardLayout() {
   useTitulo("Panel | Gestión de Stock");
   const { pathname } = useLocation();
   const navigate = useNavigate();
+  const { user, cerrarSesion } = useAuth();
   const { productos } = useInventario();
   const [menuMovil, setMenuMovil] = useState(false);
   const [menuUsuario, setMenuUsuario] = useState(false);
@@ -62,6 +65,12 @@ export default function DashboardLayout() {
       document.removeEventListener("keydown", alTecla);
     };
   }, []);
+
+  // Cierra la sesión en Supabase y vuelve a la página de inicio
+  async function salir() {
+    await cerrarSesion();
+    navigate("/", { replace: true });
+  }
 
   // La campana lleva a Alertas; si ya estás ahí, vuelve al inicio del panel
   function alTocarCampana(e) {
@@ -122,10 +131,10 @@ export default function DashboardLayout() {
                 aria-controls="menu-usuario"
                 onClick={() => setMenuUsuario((v) => !v)}
               >
-                <span className="flex size-8 items-center justify-center rounded-full bg-(--acento-hover) text-xs font-semibold text-white" aria-hidden="true">ME</span>
+                <span className="flex size-8 items-center justify-center rounded-full bg-(--acento-hover) text-xs font-semibold text-white" aria-hidden="true">{inicialDe(user)}</span>
                 <span className="hidden md:block text-left leading-tight">
-                  <span className="block text-sm font-semibold text-(--texto)">Mi empresa</span>
-                  <span className="block text-xs text-(--texto-suave)">Administrador</span>
+                  <span className="block max-w-40 truncate text-sm font-semibold text-(--texto)">{nombreDe(user)}</span>
+                  <span className="block max-w-40 truncate text-xs text-(--texto-suave)">{user?.email}</span>
                 </span>
                 <span className="hidden md:block"><i className="fa-solid fa-chevron-down text-xs text-(--texto-suave)"></i></span>
               </button>
@@ -135,9 +144,9 @@ export default function DashboardLayout() {
                   <li role="none"><a className={CLASE_ENLACE_MENU_USUARIO} href="#reportes" role="menuitem"><i className="fa-solid fa-file-lines w-4 text-center"></i> Reportes</a></li>
                   <li role="none"><a className={CLASE_ENLACE_MENU_USUARIO} href="#configuracion" role="menuitem"><i className="fa-solid fa-gear w-4 text-center"></i> Configuración</a></li>
                   <li role="none" className="mt-1 border-t border-(--borde) pt-1">
-                    <Link className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-(--stock-agotado) hover:bg-(--fondo)" to="/" role="menuitem">
+                    <button className="flex w-full items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-(--stock-agotado) hover:bg-(--fondo) cursor-pointer" type="button" role="menuitem" onClick={salir}>
                       <i className="fa-solid fa-right-from-bracket w-4 text-center"></i> Cerrar sesión
-                    </Link>
+                    </button>
                   </li>
                 </ul>
               )}

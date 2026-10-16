@@ -1,33 +1,58 @@
-import { useCallback } from "react";
-import { useStored } from "./useStored.js";
-import { CLAVE_PROVEEDORES } from "./claves.js";
+import { useMemo } from "react";
+import { db, guardar, nulo, ok } from "./db.js";
+import { invalidar, useConsulta } from "./consultas.js";
 
-const EJEMPLOS = [
-  { id: 1, nombre: "Distribuidora Central", rubro: "Mercadería general", contacto: "Carlos Gómez", telefono: "+54 11 5555-0101", email: "ventas@distribuidoracentral.example", activo: true },
-  { id: 2, nombre: "Insumos del Sur", rubro: "Insumos", contacto: "María López", telefono: "+54 11 5555-0102", email: "", activo: true },
-  { id: 3, nombre: "Importadora Norte", rubro: "Importación", contacto: "Juan Pérez", telefono: "+54 11 5555-0103", email: "", activo: false },
-];
+const CLAVE = "proveedores";
+const CAMPOS = "id,nombre,rubro,contacto,telefono,email,activo";
 
-/** Proveedores: { proveedores, agregar(datos), actualizar(id, datos), eliminar(id) } */
+async function pedir() {
+  return ok(await db().from("proveedores").select(CAMPOS).order("id"));
+}
+
+const aFila = (d) => ({
+  nombre: d.nombre,
+  rubro: nulo(d.rubro),
+  contacto: nulo(d.contacto),
+  telefono: nulo(d.telefono),
+  email: nulo(d.email),
+  activo: d.activo,
+});
+
+/** Proveedores: { proveedores, cargando, agregar(datos), actualizar(id, datos), eliminar(id) }. Los guardados devuelven true/false. */
 export function useProveedores() {
-  const [proveedores, setProveedores] = useStored(CLAVE_PROVEEDORES, EJEMPLOS);
+  const { datos, cargando } = useConsulta(CLAVE, pedir);
 
-  const agregar = useCallback(
-    (datos) =>
-      setProveedores((lista) => {
-        const id = lista.reduce((max, p) => Math.max(max, p.id), 0) + 1;
-        return [...lista, { id, ...datos }];
-      }),
-    [setProveedores],
-  );
-  const actualizar = useCallback(
-    (id, datos) => setProveedores((lista) => lista.map((p) => (p.id === id ? { ...p, ...datos } : p))),
-    [setProveedores],
-  );
-  const eliminar = useCallback(
-    (id) => setProveedores((lista) => lista.filter((p) => p.id !== id)),
-    [setProveedores],
+  const proveedores = useMemo(
+    () =>
+      datos.map((r) => ({
+        id: r.id,
+        nombre: r.nombre,
+        rubro: r.rubro || "",
+        contacto: r.contacto || "",
+        telefono: r.telefono || "",
+        email: r.email || "",
+        activo: r.activo,
+      })),
+    [datos],
   );
 
-  return { proveedores, agregar, actualizar, eliminar };
+  const agregar = (d) =>
+    guardar(async () => {
+      ok(await db().from("proveedores").insert(aFila(d)));
+      invalidar(CLAVE);
+    });
+
+  const actualizar = (id, d) =>
+    guardar(async () => {
+      ok(await db().from("proveedores").update(aFila(d)).eq("id", id));
+      invalidar(CLAVE, "productos"); // el nombre del proveedor se muestra dentro de los productos
+    });
+
+  const eliminar = (id) =>
+    guardar(async () => {
+      ok(await db().from("proveedores").delete().eq("id", id));
+      invalidar(CLAVE, "productos");
+    });
+
+  return { proveedores, cargando, agregar, actualizar, eliminar };
 }
