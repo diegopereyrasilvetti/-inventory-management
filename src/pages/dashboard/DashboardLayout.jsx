@@ -58,7 +58,10 @@ export default function DashboardLayout() {
       if (usuarioRef.current && !usuarioRef.current.contains(e.target)) setMenuUsuario(false);
     }
     function alTecla(e) {
-      if (e.key === "Escape") setMenuUsuario(false);
+      if (e.key === "Escape") {
+        setMenuUsuario(false);
+        setMenuMovil(false);
+      }
     }
     document.addEventListener("click", alClic);
     document.addEventListener("keydown", alTecla);
@@ -131,7 +134,10 @@ export default function DashboardLayout() {
                 aria-haspopup="menu"
                 aria-expanded={menuUsuario}
                 aria-controls="menu-usuario"
-                onClick={() => setMenuUsuario((v) => !v)}
+                onClick={() => {
+                  setMenuMovil(false); // abrir el menú de usuario cierra el de navegación
+                  setMenuUsuario((v) => !v);
+                }}
               >
                 <span className="flex size-8 items-center justify-center rounded-full bg-(--acento-hover) text-xs font-semibold text-white" aria-hidden="true">{nombre.charAt(0).toUpperCase() || "U"}</span>
                 <span className="hidden md:block text-left leading-tight">
@@ -160,7 +166,10 @@ export default function DashboardLayout() {
               aria-expanded={menuMovil}
               aria-controls="menu-movil"
               aria-label={menuMovil ? "Cerrar menú" : "Abrir menú"}
-              onClick={() => setMenuMovil((v) => !v)}
+              onClick={() => {
+                setMenuUsuario(false); // abrir el menú de navegación cierra el de usuario
+                setMenuMovil((v) => !v);
+              }}
             >
               <i className={menuMovil ? "fa-solid fa-xmark" : "fa-solid fa-bars"}></i>
             </button>
