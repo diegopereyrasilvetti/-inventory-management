@@ -13,6 +13,7 @@ export function traducirError(error) {
 
 /** Mensaje en español para errores de la base de datos (Postgres / Supabase). */
 export function mensajeDeError(error) {
+  if (error?.mensajeUsuario) return error.mensajeUsuario; // error de la API: ya viene en español
   const codigo = error?.code;
   const texto = (error?.message || "").toLowerCase();
   if (codigo === "23505") return "Ya existe un registro con ese código.";

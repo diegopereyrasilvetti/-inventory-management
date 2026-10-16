@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import { db, guardar, nulo, ok } from "./db.js";
 import { invalidar } from "./consultas.js";
 import { avisarError } from "./avisos.js";
-import { CLAVE_PRODUCTOS, useProductosDB } from "./productos.js";
+import { CLAVE_PRODUCTOS, registrarMovimiento, useProductosDB } from "./productos.js";
 import { useProveedores } from "./proveedores.js";
 
 /**
@@ -65,7 +65,16 @@ export function useCatalogo() {
     });
   }
 
-  const agregar = (d) => guardarProducto(d, async (fila) => ok(await db().from("productos").insert(fila)));
+  // Al crear un producto se puede cargar su stock inicial y el mínimo (con el que se disparan las alertas)
+  const agregar = (d) =>
+    guardarProducto(d, async (fila) => {
+      const stock = Number.isInteger(d.stock) ? d.stock : 0;
+      const stockMinimo = Number.isInteger(d.minimo) ? d.minimo : 0;
+      const creado = ok(
+        await db().from("productos").insert({ ...fila, stock, stock_minimo: stockMinimo }).select("id").single(),
+      );
+      if (stock > 0) await registrarMovimiento(creado.id, "entrada", stock, "Stock inicial");
+    });
   const actualizar = (id, d) =>
     guardarProducto(d, async (fila) => ok(await db().from("productos").update(fila).eq("id", id)));
   const eliminar = (id) =>

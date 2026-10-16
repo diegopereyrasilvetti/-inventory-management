@@ -1,4 +1,5 @@
 import { useMemo } from "react";
+import { api } from "../lib/api.js";
 import { db, guardar, ok } from "./db.js";
 import { invalidar } from "./consultas.js";
 import { CLAVE_PRODUCTOS, registrarMovimiento, useProductosDB } from "./productos.js";
@@ -39,8 +40,8 @@ export function useInventario() {
       const stock = Math.max(0, Math.floor(nuevo));
       const diferencia = stock - actual.stock;
       if (diferencia === 0) return;
-      ok(await db().from("productos").update({ stock }).eq("id", id));
-      await registrarMovimiento(id, diferencia > 0 ? "entrada" : "salida", diferencia, motivo || "Ajuste manual");
+      // La API suma o resta y anota el movimiento en un solo paso (todo o nada)
+      await api("POST", "/productos/" + id + "/stock", { cantidad: diferencia, motivo: motivo || "Ajuste manual" });
       invalidar(CLAVE_PRODUCTOS);
     });
 

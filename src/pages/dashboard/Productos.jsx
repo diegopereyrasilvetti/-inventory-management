@@ -16,6 +16,7 @@ const DETALLES = [
 const MONEDA = new Intl.NumberFormat("es-AR", { style: "currency", currency: "ARS" });
 const FORM_VACIO = {
   nombre: "", sku: "", categoria: "", marca: "", modelo: "", color: "", serial: "", proveedor: "", precio: "",
+  stock: "0", minimo: "10",
 };
 const BASE_INPUT =
   "w-full rounded-lg border border-(--borde) bg-(--fondo) px-3 py-2.5 focus:outline-none focus:border-(--acento) focus:ring-2 focus:ring-(--acento)/30";
@@ -65,6 +66,8 @@ export default function Productos() {
             serial: producto.serial || "",
             proveedor: producto.proveedor || "",
             precio: typeof producto.precio === "number" ? producto.precio : "",
+            stock: "0",
+            minimo: "10",
           }
         : FORM_VACIO,
     );
@@ -90,10 +93,17 @@ export default function Productos() {
       precio: parseFloat(form.precio),
     };
     if (!(datos.precio >= 0)) datos.precio = null;
+    // Stock y mínimo solo se cargan al crear; después el stock se cambia desde Inventario
+    if (!idEditado) {
+      datos.stock = parseInt(form.stock, 10);
+      datos.minimo = parseInt(form.minimo, 10);
+    }
 
     let mensaje = "";
     if (!datos.nombre || !datos.sku) {
       mensaje = "Completá el nombre y el SKU del producto.";
+    } else if (!idEditado && (!(datos.stock >= 0) || !(datos.minimo >= 0))) {
+      mensaje = "El stock y el mínimo deben ser números de 0 en adelante.";
     } else if (catalogo.some((p) => p.sku === datos.sku && p.id !== idEditado)) {
       mensaje = "Ya existe un producto con el SKU " + datos.sku + ".";
     }
@@ -263,6 +273,18 @@ export default function Productos() {
               <label className="text-sm font-medium" htmlFor="prod-precio">Precio ($)</label>
               <input className={CLASE_INPUT} id="prod-precio" type="number" min="0" step="0.01" inputMode="decimal" placeholder="0,00" value={form.precio} onChange={campo("precio")} />
             </div>
+            {!idEditado && (
+              <>
+                <div className="flex flex-col gap-1.5">
+                  <label className="text-sm font-medium" htmlFor="prod-stock">Stock inicial</label>
+                  <input className={CLASE_INPUT} id="prod-stock" type="number" min="0" step="1" inputMode="numeric" value={form.stock} onChange={campo("stock")} />
+                </div>
+                <div className="flex flex-col gap-1.5">
+                  <label className="text-sm font-medium" htmlFor="prod-minimo">Stock mínimo</label>
+                  <input className={CLASE_INPUT} id="prod-minimo" type="number" min="0" step="1" inputMode="numeric" value={form.minimo} onChange={campo("minimo")} />
+                </div>
+              </>
+            )}
           </div>
 
           {error && <p className="text-sm text-(--stock-agotado)" role="alert">{error}</p>}

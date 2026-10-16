@@ -1,8 +1,9 @@
 import { useMemo } from "react";
+import { api } from "../lib/api.js";
 import { db, guardar, nulo, ok } from "./db.js";
 import { invalidar, useConsulta } from "./consultas.js";
 import { avisarError } from "./avisos.js";
-import { CLAVE_PRODUCTOS, registrarMovimiento, useProductosDB } from "./productos.js";
+import { CLAVE_PRODUCTOS, useProductosDB } from "./productos.js";
 
 const CLAVE_VENTAS = "ventas";
 const CLAVE_GASTOS = "gastos";
@@ -93,70 +94,27 @@ export function useFinanzas() {
   );
 
   // venta sin id: { fecha, hora, items, metodo, total }
+  // La API arma la venta completa en un solo paso: guarda los ítems, baja el stock y anota los movimientos.
+  // El total y los precios los calcula el servidor con los datos de la base.
   async function agregarVenta(venta) {
     const porSku = new Map(filasProductos.map((p) => [p.sku, p]));
-
-    // Se revisa el stock antes de guardar nada
+    const items = [];
     for (const it of venta.items) {
       const p = porSku.get(it.sku);
-      if (p && p.stock < it.cantidad) {
-        avisarError('Stock insuficiente de "' + it.nombre + '": quedan ' + p.stock + " y querés vender " + it.cantidad + ".");
+      if (!p) {
+        avisarError('El producto "' + it.nombre + '" ya no existe en tu inventario.');
         return false;
       }
+      items.push({ producto_id: p.id, cantidad: it.cantidad });
     }
-
-    let ventaId = null;
-    const exito = await guardar(async () => {
-      const creada = ok(
-        await db()
-          .from("ventas")
-          .insert({ fecha: venta.fecha, metodo: venta.metodo, total: venta.total })
-          .select("id")
-          .single(),
-      );
-      ventaId = creada.id;
-
-      ok(
-        await db()
-          .from("venta_items")
-          .insert(
-            venta.items.map((it) => ({
-              venta_id: ventaId,
-              producto_id: porSku.get(it.sku)?.id ?? null,
-              sku: it.sku,
-              nombre: it.nombre,
-              precio: it.precio,
-              cantidad: it.cantidad,
-            })),
-          ),
-      );
-
-      for (const it of venta.items) {
-        const p = porSku.get(it.sku);
-        if (!p) continue;
-        ok(await db().from("productos").update({ stock: p.stock - it.cantidad }).eq("id", p.id));
-        await registrarMovimiento(p.id, "venta", -it.cantidad, "Venta #" + ventaId);
-      }
-    });
-
-    // Si algo falló después de crear la venta, se borra para no dejarla a medias
-    if (!exito && ventaId) await db().from("ventas").delete().eq("id", ventaId);
+    const exito = await guardar(() => api("POST", "/ventas", { fecha: venta.fecha, metodo: venta.metodo, items }));
     invalidar(CLAVE_VENTAS, CLAVE_PRODUCTOS);
     return exito;
   }
 
+  // La API elimina la venta y devuelve el stock de los productos
   async function eliminarVenta(id) {
-    const venta = filasVentas.find((v) => v.id === id);
-    const exito = await guardar(async () => {
-      ok(await db().from("ventas").delete().eq("id", id));
-      // Se devuelve el stock de los productos que siguen existiendo
-      for (const it of venta?.venta_items || []) {
-        const p = filasProductos.find((x) => x.id === it.producto_id);
-        if (!p) continue;
-        ok(await db().from("productos").update({ stock: p.stock + it.cantidad }).eq("id", p.id));
-        await registrarMovimiento(p.id, "entrada", it.cantidad, "Venta #" + id + " eliminada");
-      }
-    });
+    const exito = await guardar(() => api("DELETE", "/ventas/" + id));
     invalidar(CLAVE_VENTAS, CLAVE_PRODUCTOS);
     return exito;
   }
