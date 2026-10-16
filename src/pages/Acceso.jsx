@@ -5,16 +5,14 @@ import { useAuth } from "../context/AuthContext.jsx";
 import useTitulo from "../hooks/useTitulo.js";
 import { traducirError } from "../lib/errores.js";
 
-/** Pantalla de acceso. modo="login" (ruta /login) o modo="registro" (ruta /registro). */
-export default function Acceso({ modo }) {
-  const { user, cargando, iniciarSesion, registrarse } = useAuth();
+/** Pantalla de inicio de sesión. Las cuentas las crea el administrador: no hay registro público. */
+export default function Acceso() {
+  useTitulo("Iniciar sesión | Gestión de Stock");
+  const { user, cargando, iniciarSesion } = useAuth();
   const navigate = useNavigate();
   const [verPassword, setVerPassword] = useState(false);
-  const [mensaje, setMensaje] = useState({ tipo: "", texto: "" });
+  const [mensaje, setMensaje] = useState("");
   const [enviando, setEnviando] = useState(false);
-  const esRegistro = modo === "registro";
-
-  useTitulo(esRegistro ? "Crear cuenta | Gestión de Stock" : "Iniciar sesión | Gestión de Stock");
 
   // Si ya hay una sesión iniciada, no tiene sentido ver el login
   if (!cargando && user) return <Navigate to="/dashboard" replace />;
@@ -23,49 +21,23 @@ export default function Acceso({ modo }) {
     e.preventDefault();
     const formulario = e.currentTarget;
     if (!formulario.checkValidity()) {
-      setMensaje({ tipo: "error", texto: "Completá todos los campos con un email válido." });
+      setMensaje("Completá un email válido y tu contraseña.");
       return;
     }
-    const email = formulario.email.value.trim();
-    const password = formulario.password.value;
-    const nombre = esRegistro ? formulario.nombre.value.trim() : "";
-    if (esRegistro && !nombre) {
-      setMensaje({ tipo: "error", texto: "Contanos tu nombre." });
-      return;
-    }
-
     setEnviando(true);
-    setMensaje({ tipo: "", texto: "" });
-    const { data, error } = esRegistro
-      ? await registrarse(email, password, nombre)
-      : await iniciarSesion(email, password);
+    setMensaje("");
+    const { error } = await iniciarSesion(formulario.email.value.trim(), formulario.password.value);
     setEnviando(false);
-
     if (error) {
-      setMensaje({ tipo: "error", texto: traducirError(error) });
+      setMensaje(traducirError(error));
       return;
     }
-    // Con la confirmación por mail apagada, el registro ya devuelve la sesión
-    if (data?.session) {
-      navigate("/dashboard", { replace: true });
-    } else {
-      setMensaje({ tipo: "ok", texto: "Cuenta creada. Revisá tu email para confirmarla y después iniciá sesión." });
-    }
+    navigate("/dashboard", { replace: true });
   }
 
   return (
-    <LayoutAcceso
-      titulo={esRegistro ? "Crear cuenta" : "Iniciar sesión"}
-      subtitulo={esRegistro ? "Registrate para empezar a gestionar tu stock." : "Ingresá para gestionar tu stock."}
-    >
+    <LayoutAcceso titulo="Iniciar sesión" subtitulo="Ingresá para gestionar tu stock.">
       <form className="mt-6 flex flex-col gap-4" onSubmit={enviar} noValidate>
-        {esRegistro && (
-          <div className="flex flex-col gap-1.5">
-            <label className="text-sm font-medium text-(--texto)" htmlFor="nombre">Nombre</label>
-            <input className={CLASE_INPUT_ACCESO} type="text" id="nombre" name="nombre" placeholder="Tu nombre" autoComplete="given-name" maxLength={40} required />
-          </div>
-        )}
-
         <div className="flex flex-col gap-1.5">
           <label className="text-sm font-medium text-(--texto)" htmlFor="email">Email</label>
           <input className={CLASE_INPUT_ACCESO} type="email" id="email" name="email" placeholder="tu@email.com" autoComplete="email" required />
@@ -79,9 +51,8 @@ export default function Acceso({ modo }) {
               type={verPassword ? "text" : "password"}
               id="password"
               name="password"
-              placeholder={esRegistro ? "Mínimo 6 caracteres" : "Tu contraseña"}
-              autoComplete={esRegistro ? "new-password" : "current-password"}
-              minLength={esRegistro ? 6 : undefined}
+              placeholder="Tu contraseña"
+              autoComplete="current-password"
               required
             />
             <button
@@ -95,32 +66,22 @@ export default function Acceso({ modo }) {
           </div>
         </div>
 
-        {!esRegistro && (
-          <div className="flex items-center justify-end text-sm">
-            <Link className="text-(--acento-hover) hover:underline" to="/recuperar">¿Olvidaste tu contraseña?</Link>
-          </div>
-        )}
+        <div className="flex items-center justify-end text-sm">
+          <Link className="text-(--acento-hover) hover:underline" to="/recuperar">¿Olvidaste tu contraseña?</Link>
+        </div>
 
-        {mensaje.texto && (
-          <p
-            className={"text-sm text-center " + (mensaje.tipo === "ok" ? "text-(--viz-verde-texto)" : "text-(--stock-agotado)")}
-            role="alert"
-          >
-            {mensaje.texto}
-          </p>
+        {mensaje && (
+          <p className="text-sm text-center text-(--stock-agotado)" role="alert">{mensaje}</p>
         )}
 
         <button className={CLASE_BOTON_ACCESO} type="submit" disabled={enviando}>
-          {enviando ? "Un momento…" : esRegistro ? "Crear cuenta" : "Ingresar"}
+          {enviando ? "Un momento…" : "Ingresar"}
           {!enviando && <i className="fa-solid fa-arrow-right text-sm"></i>}
         </button>
       </form>
 
       <p className="mt-6 text-sm text-center text-(--texto-suave)">
-        {esRegistro ? "¿Ya tenés cuenta? " : "¿No tenés cuenta? "}
-        <Link className="font-medium text-(--acento-hover) hover:underline" to={esRegistro ? "/login" : "/registro"}>
-          {esRegistro ? "Iniciá sesión" : "Registrate"}
-        </Link>
+        ¿No tenés cuenta? Pedísela al administrador.
       </p>
     </LayoutAcceso>
   );
