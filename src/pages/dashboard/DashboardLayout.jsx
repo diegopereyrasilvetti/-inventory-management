@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, NavLink, Outlet, useLocation, useNavigate } from "react-router-dom";
+import Icono from "../../components/Icono.jsx";
 import { LOGO, Marca } from "../../components/Logo.jsx";
 import { useAuth } from "../../context/AuthContext.jsx";
 import { nombreDe } from "../../lib/usuario.js";
@@ -148,7 +149,7 @@ export default function DashboardLayout() {
               </button>
               {menuUsuario && (
                 <ul id="menu-usuario" className="absolute right-0 top-full mt-2 w-56 bg-(--superficie) border border-(--borde) rounded-xl shadow-[0_8px_24px_rgba(59,42,32,0.12)] p-2" role="menu">
-                  <li role="none"><a className={CLASE_ENLACE_MENU_USUARIO} href="#perfil" role="menuitem"><i className="fa-solid fa-user w-4 text-center"></i> Mi perfil</a></li>
+                  <li role="none"><Link className={CLASE_ENLACE_MENU_USUARIO} to="/dashboard/perfil" role="menuitem"><i className="fa-solid fa-user w-4 text-center"></i> Mi perfil</Link></li>
                   <li role="none"><a className={CLASE_ENLACE_MENU_USUARIO} href="#reportes" role="menuitem"><i className="fa-solid fa-file-lines w-4 text-center"></i> Reportes</a></li>
                   <li role="none"><a className={CLASE_ENLACE_MENU_USUARIO} href="#configuracion" role="menuitem"><i className="fa-solid fa-gear w-4 text-center"></i> Configuración</a></li>
                   <li role="none" className="mt-1 border-t border-(--borde) pt-1">
@@ -171,7 +172,7 @@ export default function DashboardLayout() {
                 setMenuMovil((v) => !v);
               }}
             >
-              <i className={menuMovil ? "fa-solid fa-xmark" : "fa-solid fa-bars"}></i>
+              <Icono clase={menuMovil ? "fa-solid fa-xmark" : "fa-solid fa-bars"} />
             </button>
           </div>
         </div>
