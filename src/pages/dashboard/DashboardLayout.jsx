@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { Link, NavLink, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { LOGO, Marca } from "../../components/Logo.jsx";
 import { useAuth } from "../../context/AuthContext.jsx";
-import { inicialDe, nombreDe } from "../../lib/usuario.js";
+import { nombreDe } from "../../lib/usuario.js";
 import { estadoDe, useInventario } from "../../store/inventario.js";
 import useTitulo from "../../hooks/useTitulo.js";
 
@@ -35,7 +35,9 @@ export default function DashboardLayout() {
   useTitulo("Panel | Gestión de Stock");
   const { pathname } = useLocation();
   const navigate = useNavigate();
-  const { user, cerrarSesion } = useAuth();
+  const { user, perfil, cerrarSesion } = useAuth();
+  const nombre = perfil?.nombre || nombreDe(user);
+  const rolTexto = perfil?.rol === "admin" ? "Administrador" : "Usuario";
   const { productos } = useInventario();
   const [menuMovil, setMenuMovil] = useState(false);
   const [menuUsuario, setMenuUsuario] = useState(false);
@@ -131,10 +133,10 @@ export default function DashboardLayout() {
                 aria-controls="menu-usuario"
                 onClick={() => setMenuUsuario((v) => !v)}
               >
-                <span className="flex size-8 items-center justify-center rounded-full bg-(--acento-hover) text-xs font-semibold text-white" aria-hidden="true">{inicialDe(user)}</span>
+                <span className="flex size-8 items-center justify-center rounded-full bg-(--acento-hover) text-xs font-semibold text-white" aria-hidden="true">{nombre.charAt(0).toUpperCase() || "U"}</span>
                 <span className="hidden md:block text-left leading-tight">
-                  <span className="block max-w-40 truncate text-sm font-semibold text-(--texto)">{nombreDe(user)}</span>
-                  <span className="block max-w-40 truncate text-xs text-(--texto-suave)">{user?.email}</span>
+                  <span className="block max-w-40 truncate text-sm font-semibold text-(--texto)">{nombre}</span>
+                  <span className="block max-w-40 truncate text-xs text-(--texto-suave)" title={user?.email}>{rolTexto}</span>
                 </span>
                 <span className="hidden md:block"><i className="fa-solid fa-chevron-down text-xs text-(--texto-suave)"></i></span>
               </button>

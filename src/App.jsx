@@ -23,8 +23,7 @@ export default function App() {
       <AvisoErrores />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Acceso key="login" modo="login" />} />
-        <Route path="/registro" element={<Acceso key="registro" modo="registro" />} />
+        <Route path="/login" element={<Acceso />} />
         <Route path="/recuperar" element={<RecuperarPassword />} />
         <Route path="/nueva-password" element={<NuevaPassword />} />
         <Route element={<RutaPrivada />}>
