@@ -1,6 +1,7 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, NavLink, Outlet, useLocation, useNavigate } from "react-router-dom";
 import Icono from "../../components/Icono.jsx";
+import MenuUsuario from "../../components/MenuUsuario.jsx";
 import { LOGO, Marca } from "../../components/Logo.jsx";
 import { useAuth } from "../../context/AuthContext.jsx";
 import { nombreDe } from "../../lib/usuario.js";
@@ -15,13 +16,10 @@ const SECCIONES = [
   { ruta: "/dashboard/proveedores", texto: "Proveedores", icono: "fa-truck" },
   { ruta: "/dashboard/ventas", texto: "Ventas", icono: "fa-cart-shopping" },
   { ruta: "/dashboard/balances", texto: "Balances", icono: "fa-scale-balanced" },
-  { ruta: "/dashboard/usuarios", texto: "Personas", icono: "fa-users", soloAdmin: true },
 ];
 
 const CLASE_BUSCADOR =
   "text-sm rounded-lg bg-(--fondo) border border-(--borde) text-(--texto) placeholder:text-(--texto-suave)/60 focus:outline-none focus:border-(--acento) focus:ring-2 focus:ring-(--acento)/30";
-const CLASE_ENLACE_MENU_USUARIO =
-  "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-(--texto) hover:bg-(--fondo) hover:text-(--acento-hover)";
 const CLASE_SOCIAL =
   "flex size-7 items-center justify-center rounded-full border border-[#e8dcc8]/25 text-xs text-[#e8dcc8] transition hover:bg-(--acento) hover:border-(--acento) hover:text-white";
 const CLASE_LEGAL = "text-[#e8dcc8]/80 hover:text-white transition-colors";
@@ -38,13 +36,11 @@ export default function DashboardLayout() {
   const { pathname } = useLocation();
   const navigate = useNavigate();
   const { user, perfil, esAdmin, cerrarSesion } = useAuth();
-  const secciones = SECCIONES.filter((s) => !s.soloAdmin || esAdmin); // "Personas" solo la ven los administradores
   const nombre = perfil?.nombre || nombreDe(user);
   const rolTexto = perfil?.rol === "admin" ? "Administrador" : "Usuario";
   const { productos } = useInventario();
   const [menuMovil, setMenuMovil] = useState(false);
   const [menuUsuario, setMenuUsuario] = useState(false);
-  const usuarioRef = useRef(null);
 
   const alertas = productos.filter((p) => estadoDe(p) !== "disponible").length;
 
@@ -58,7 +54,7 @@ export default function DashboardLayout() {
   // El menú de usuario se cierra al hacer clic afuera o con Escape
   useEffect(() => {
     function alClic(e) {
-      if (usuarioRef.current && !usuarioRef.current.contains(e.target)) setMenuUsuario(false);
+      if (!e.target.closest("[data-menu-usuario]")) setMenuUsuario(false);
     }
     function alTecla(e) {
       if (e.key === "Escape") {
@@ -80,6 +76,19 @@ export default function DashboardLayout() {
     navigate("/", { replace: true });
   }
 
+  const propsMenuUsuario = {
+    abierto: menuUsuario,
+    alAlternar: () => {
+      setMenuMovil(false); // abrir el menú de usuario cierra el de navegación
+      setMenuUsuario((v) => !v);
+    },
+    nombre,
+    rolTexto,
+    esAdmin,
+    email: user?.email,
+    alSalir: salir,
+  };
+
   // La campana lleva a Alertas; si ya estás ahí, vuelve al inicio del panel
   function alTocarCampana(e) {
     if (pathname === "/dashboard/alertas") {
@@ -91,14 +100,14 @@ export default function DashboardLayout() {
   return (
     <div className="min-h-screen flex flex-col">
       <header id="inicio" className="sticky top-0 z-30 bg-(--superficie) border-b border-(--borde)">
-        <div className="flex items-center justify-between gap-2 px-3 py-3 min-[360px]:gap-4 min-[360px]:px-4 sm:px-6 lg:px-8">
-          <Link className="flex shrink-0 items-center gap-2" to="/dashboard" aria-label="Ir al panel">
+        <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-2 px-3 py-3 min-[360px]:px-4 sm:px-6 lg:px-8 xl:flex xl:justify-between xl:gap-4">
+          <Link className="flex shrink-0 items-center gap-2 justify-self-start" to="/dashboard" aria-label="Ir al panel">
             <img className="block h-8 w-auto min-[360px]:h-9" src={LOGO} alt="Logo de Gestión De Stock" />
-            <Marca className="text-xl font-extrabold tracking-[0.02em] text-(--texto) min-[360px]:text-2xl" />
+            <Marca className="hidden text-xl font-extrabold tracking-[0.02em] text-(--texto) sm:inline min-[360px]:sm:text-2xl" />
           </Link>
 
           <nav className="hidden xl:flex items-center gap-1" aria-label="Principal">
-            {secciones.map((s) => (
+            {SECCIONES.map((s) => (
               <NavLink
                 key={s.ruta}
                 to={s.ruta}
@@ -110,7 +119,11 @@ export default function DashboardLayout() {
             ))}
           </nav>
 
-          <div className="flex items-center gap-1 sm:gap-2">
+          <div className="min-w-0 justify-self-center xl:hidden">
+            <MenuUsuario variante="centro" {...propsMenuUsuario} />
+          </div>
+
+          <div className="flex items-center justify-self-end gap-1 sm:gap-2 xl:justify-self-auto">
             <form className="relative hidden 2xl:block" role="search" onSubmit={(e) => e.preventDefault()}>
               <i className="fa-solid fa-magnifying-glass pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-xs text-(--texto-suave)"></i>
               <input className={"w-52 pl-8 pr-3 py-2 " + CLASE_BUSCADOR} type="search" name="buscar" placeholder="Buscar producto…" aria-label="Buscar producto" />
@@ -130,37 +143,8 @@ export default function DashboardLayout() {
               )}
             </Link>
 
-            <div className="relative" ref={usuarioRef}>
-              <button
-                className="flex items-center gap-2 rounded-full py-1 pl-1 pr-2 cursor-pointer transition hover:bg-(--fondo)"
-                type="button"
-                aria-haspopup="menu"
-                aria-expanded={menuUsuario}
-                aria-controls="menu-usuario"
-                onClick={() => {
-                  setMenuMovil(false); // abrir el menú de usuario cierra el de navegación
-                  setMenuUsuario((v) => !v);
-                }}
-              >
-                <span className="flex size-8 items-center justify-center rounded-full bg-(--acento-hover) text-xs font-semibold text-white" aria-hidden="true">{nombre.charAt(0).toUpperCase() || "U"}</span>
-                <span className="hidden md:block text-left leading-tight">
-                  <span className="block max-w-40 truncate text-sm font-semibold text-(--texto)">{nombre}</span>
-                  <span className="block max-w-40 truncate text-xs text-(--texto-suave)" title={user?.email}>{rolTexto}</span>
-                </span>
-                <span className="hidden md:block"><i className="fa-solid fa-chevron-down text-xs text-(--texto-suave)"></i></span>
-              </button>
-              {menuUsuario && (
-                <ul id="menu-usuario" className="absolute right-0 top-full mt-2 w-56 bg-(--superficie) border border-(--borde) rounded-xl shadow-[0_8px_24px_rgba(59,42,32,0.12)] p-2" role="menu">
-                  <li role="none"><Link className={CLASE_ENLACE_MENU_USUARIO} to="/dashboard/perfil" role="menuitem"><i className="fa-solid fa-user w-4 text-center"></i> Mi perfil</Link></li>
-                  <li role="none"><a className={CLASE_ENLACE_MENU_USUARIO} href="#reportes" role="menuitem"><i className="fa-solid fa-file-lines w-4 text-center"></i> Reportes</a></li>
-                  <li role="none"><a className={CLASE_ENLACE_MENU_USUARIO} href="#configuracion" role="menuitem"><i className="fa-solid fa-gear w-4 text-center"></i> Configuración</a></li>
-                  <li role="none" className="mt-1 border-t border-(--borde) pt-1">
-                    <button className="flex w-full items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-(--stock-agotado) hover:bg-(--fondo) cursor-pointer" type="button" role="menuitem" onClick={salir}>
-                      <i className="fa-solid fa-right-from-bracket w-4 text-center"></i> Cerrar sesión
-                    </button>
-                  </li>
-                </ul>
-              )}
+            <div className="hidden xl:block">
+              <MenuUsuario variante="derecha" {...propsMenuUsuario} />
             </div>
 
             <button
@@ -186,7 +170,7 @@ export default function DashboardLayout() {
               <input className={"w-full pl-8 pr-3 py-2.5 " + CLASE_BUSCADOR} type="search" name="buscar-movil" placeholder="Buscar producto…" aria-label="Buscar producto" />
             </form>
             <ul className="grid gap-1 sm:grid-cols-2">
-              {secciones.map((s) => (
+              {SECCIONES.map((s) => (
                 <li key={s.ruta}>
                   <NavLink
                     to={s.ruta}
