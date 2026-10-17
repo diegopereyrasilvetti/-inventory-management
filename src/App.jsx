@@ -4,6 +4,8 @@ import Acceso from "./pages/Acceso.jsx";
 import RecuperarPassword from "./pages/RecuperarPassword.jsx";
 import NuevaPassword from "./pages/NuevaPassword.jsx";
 import RutaPrivada from "./components/RutaPrivada.jsx";
+import RutaAdmin from "./components/RutaAdmin.jsx";
+import Usuarios from "./pages/dashboard/Usuarios.jsx";
 import DashboardLayout from "./pages/dashboard/DashboardLayout.jsx";
 import Resumen from "./pages/dashboard/Resumen.jsx";
 import Alertas from "./pages/dashboard/Alertas.jsx";
@@ -38,6 +40,9 @@ export default function App() {
             <Route path="ventas" element={<Ventas />} />
             <Route path="balances" element={<Balances />} />
             <Route path="perfil" element={<Perfil />} />
+            <Route element={<RutaAdmin />}>
+              <Route path="usuarios" element={<Usuarios />} />
+            </Route>
           </Route>
         </Route>
         <Route path="*" element={<Navigate to="/" replace />} />

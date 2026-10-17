@@ -15,6 +15,7 @@ const SECCIONES = [
   { ruta: "/dashboard/proveedores", texto: "Proveedores", icono: "fa-truck" },
   { ruta: "/dashboard/ventas", texto: "Ventas", icono: "fa-cart-shopping" },
   { ruta: "/dashboard/balances", texto: "Balances", icono: "fa-scale-balanced" },
+  { ruta: "/dashboard/usuarios", texto: "Personas", icono: "fa-users", soloAdmin: true },
 ];
 
 const CLASE_BUSCADOR =
@@ -36,7 +37,8 @@ export default function DashboardLayout() {
   useTitulo("Panel | Gestión de Stock");
   const { pathname } = useLocation();
   const navigate = useNavigate();
-  const { user, perfil, cerrarSesion } = useAuth();
+  const { user, perfil, esAdmin, cerrarSesion } = useAuth();
+  const secciones = SECCIONES.filter((s) => !s.soloAdmin || esAdmin); // "Personas" solo la ven los administradores
   const nombre = perfil?.nombre || nombreDe(user);
   const rolTexto = perfil?.rol === "admin" ? "Administrador" : "Usuario";
   const { productos } = useInventario();
@@ -96,7 +98,7 @@ export default function DashboardLayout() {
           </Link>
 
           <nav className="hidden xl:flex items-center gap-1" aria-label="Principal">
-            {SECCIONES.map((s) => (
+            {secciones.map((s) => (
               <NavLink
                 key={s.ruta}
                 to={s.ruta}
@@ -184,7 +186,7 @@ export default function DashboardLayout() {
               <input className={"w-full pl-8 pr-3 py-2.5 " + CLASE_BUSCADOR} type="search" name="buscar-movil" placeholder="Buscar producto…" aria-label="Buscar producto" />
             </form>
             <ul className="grid gap-1 sm:grid-cols-2">
-              {SECCIONES.map((s) => (
+              {secciones.map((s) => (
                 <li key={s.ruta}>
                   <NavLink
                     to={s.ruta}

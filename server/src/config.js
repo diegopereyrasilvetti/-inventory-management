@@ -10,7 +10,10 @@ export const config = {
     .filter(Boolean),
   supabaseUrl: env.SUPABASE_URL || "",
   supabaseAnonKey: env.SUPABASE_ANON_KEY || "",
+  // Clave "secret" de Supabase: SOLO para el panel de administración de personas. Nunca va en la web.
+  supabaseServiceKey: env.SUPABASE_SERVICE_ROLE_KEY || "",
   produccion: env.NODE_ENV === "production",
 };
 
 export const supabaseConfigurado = Boolean(config.supabaseUrl && config.supabaseAnonKey);
+export const adminConfigurado = Boolean(config.supabaseUrl && config.supabaseServiceKey);

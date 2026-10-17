@@ -4,7 +4,9 @@ import rateLimit from "express-rate-limit";
 import helmet from "helmet";
 import { config, supabaseConfigurado } from "./config.js";
 import { requiereUsuario } from "./middleware/auth.js";
+import { requiereAdmin } from "./middleware/admin.js";
 import { productosRouter } from "./routes/productos.js";
+import { usuariosRouter } from "./routes/usuarios.js";
 import { ventasRouter } from "./routes/ventas.js";
 
 export const app = express();
@@ -60,6 +62,9 @@ app.get("/api/me", requiereUsuario, (req, res) => {
 // Operaciones de stock (todas exigen iniciar sesión)
 app.use("/api/ventas", requiereUsuario, ventasRouter);
 app.use("/api/productos", requiereUsuario, productosRouter);
+
+// Administración de personas: solo para administradores
+app.use("/api/admin/usuarios", requiereUsuario, requiereAdmin, usuariosRouter);
 
 // Ruta inexistente
 app.use((_req, res) => {
